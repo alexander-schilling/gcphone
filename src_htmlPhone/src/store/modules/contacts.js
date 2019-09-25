@@ -44,12 +44,12 @@ if (process.env.NODE_ENV !== 'production') {
   // eslint-disable-next-line
   state.contacts = [{
     id: 2,
-    number: '336-4557',
+    number: '33-457',
     display: 'John doe'
   },
   {
     id: 4,
-    number: '336-4553',
+    number: '36-453',
     display: 'Nop user'
   }]
 }
