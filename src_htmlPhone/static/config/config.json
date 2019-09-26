@@ -66,14 +66,14 @@
       "display": "Police",
       "icon": "/html/static/img/icons_app/police.png",
       "subMenu": [{
-          "title": "Envoyer un message",
+          "title": "Send Message",
           "eventName": "esx_addons_gcphone:call",
           "type": {
             "number": "police"
           }
         },
         {
-          "title": "Appeler le standard",
+          "title": "Call 911",
           "eventName": "gcphone:autoCallNumber",
           "type": {
             "number": "911"
@@ -85,7 +85,7 @@
       "display": "Ambulance",
       "backgroundColor": "red",
       "subMenu": [{
-        "title": "Envoyer un message",
+        "title": "Send message",
         "eventName": "esx_addons_gcphone:call",
         "type": {
           "number": "ambulance"

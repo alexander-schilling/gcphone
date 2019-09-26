@@ -29,7 +29,7 @@ import Photo from '@/components/Photo/Photo'
 
 import App9GAG from '@/components/App9GAG'
 
-import MDTSystem from '@/components/MDTSystem'
+// import MDTSystem from '@/components/MDTSystem'
 
 Vue.use(Router)
 
