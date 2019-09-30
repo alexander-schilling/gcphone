@@ -27,7 +27,7 @@ const getters = {
       return state.appelsInfo.receiver_num
     }
     if (state.appelsInfo.hidden === true) {
-      return '###-####'
+      return '##-###'
     }
     return state.appelsInfo.transmitter_num
   },

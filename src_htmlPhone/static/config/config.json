@@ -1,5 +1,5 @@
 {
-  "reseau": "Gannon",
+  "reseau": "Dirt Nap RP",
   "warningMessageCount": 250,
   "themeColor": "#303f9f",
   "colors": [
@@ -214,6 +214,11 @@
       "name": "9GAG",
       "icons": "/html/static/img/icons_app/9gag.png",
       "routeName": "9gag"
+    },
+    {
+      "name": "CAD/MDT",
+      "icons": "/html/static/img/icons_app/mdt.png",
+      "routeName": "mdt"
     }
   ],
   "defaultLanguage": "en_US",
@@ -420,7 +425,9 @@
       "APP_TWITTER_NOTIF_NEW_PASSWORD_ERROR": "Oops.... Your password could not be changed.",
       "APP_TWITTER_NOTIF_NEW_PASSWORD_MISS_MATCH": "Passwords do not match",
       "APP_TWITTER_NOTIF_NEW_PASSWORD_LENGTH_ERROR": "Password too short",
-      "APP_MDTSYSTEM_TITLE": "MDT System",
+      "APP_MDTSYSTEM_TITLE": "Computer-Aided Dispatch",
+      "APP_LOGIN_USERNAME_LABEL": "Enter Username",
+      "APP_LOGIN_PASSWORD_LABEL": "Enter Password",
 
       "TIMEAGO": [
         "just now",

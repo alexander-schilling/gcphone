@@ -9,6 +9,7 @@ import bank from './modules/bank'
 import bourse from './modules/bourse'
 import tchat from './modules/tchat'
 import twitter from './modules/twitter'
+import mdt from './modules/mdt'
 
 Vue.use(Vuex)
 
@@ -21,7 +22,8 @@ export default new Vuex.Store({
     bank,
     bourse,
     tchat,
-    twitter
+    twitter,
+    mdt
   },
   strict: true
 })

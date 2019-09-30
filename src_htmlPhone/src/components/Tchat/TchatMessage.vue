@@ -3,7 +3,7 @@
     <PhoneTitle :title="channelName" backgroundColor="#090f20" @back="onQuit"/>
     <div class="phone_content">
       <div class="elements" ref="elementsDiv">
-          <div class="element" v-for='(elem) in tchatMessages' 
+          <div class="element" v-for='(elem) in tchatMessages'
             v-bind:key="elem.id"
             >
             <div class="time">{{formatTime(elem.time)}}</div>
@@ -15,7 +15,7 @@
 
       <div class='tchat_write'>
           <input type="text" placeholder="..." v-model="message" @keyup.enter.prevent="sendMessage">
-          <span class='tchat_send' @click="sendMessage">></span>
+          <span class='tchat_send' v-on:click="sendMessage">></span>
       </div>
     </div>
   </div>
@@ -148,7 +148,7 @@ export default {
   line-height: 18px;
   font-size: 18px;
   padding-bottom: 6px;
-  
+
   flex-direction: row;
   height: 60px; */
 }

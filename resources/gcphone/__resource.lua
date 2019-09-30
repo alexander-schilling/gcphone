@@ -32,10 +32,12 @@ files {
 	'html/static/img/icons_app/bank.png',
 	'html/static/img/icons_app/9gag.png',
 	'html/static/img/icons_app/twitter.png',
+	'html/static/img/icons_app/mdt.png',
 	
 	'html/static/img/app_bank/logo_mazebank.jpg',
 
 	'html/static/img/app_tchat/splashtchat.png',
+	'html/static/img/app_mdt/login_screen.png',
 
 	'html/static/img/twitter/bird.png',
 	'html/static/img/twitter/default_profile.png',

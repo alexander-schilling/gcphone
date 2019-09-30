@@ -29,7 +29,7 @@ import Photo from '@/components/Photo/Photo'
 
 import App9GAG from '@/components/App9GAG'
 
-// import MDTSystem from '@/components/MDTSystem'
+import MDTLogIn from '@/components/MDTSystem/MDTLogin'
 
 Vue.use(Router)
 
@@ -121,6 +121,10 @@ export default new Router({
       path: '/9gag',
       name: '9gag',
       component: App9GAG
+    }, {
+      path: '/mdtlogin',
+      name: 'mdt',
+      component: MDTLogIn
     }, {
       path: '*',
       redirect: '/'

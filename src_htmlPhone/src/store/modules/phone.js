@@ -4,7 +4,7 @@ import PhoneAPI from './../../PhoneAPI'
 const state = {
   show: process.env.NODE_ENV !== 'production',
   tempoHide: false,
-  myPhoneNumber: '###-####',
+  myPhoneNumber: '##-###',
   background: JSON.parse(window.localStorage['gc_background'] || null),
   coque: JSON.parse(window.localStorage['gc_coque'] || null),
   zoom: window.localStorage['gc_zoom'] || '100%',
@@ -12,7 +12,7 @@ const state = {
   mouse: window.localStorage['gc_mouse'] === 'true',
   lang: window.localStorage['gc_language'],
   config: {
-    reseau: 'Gannon',
+    reseau: 'Dirt Nap RP',
     useFormatNumberFrance: false,
     apps: [],
     themeColor: '#2A56C6',
