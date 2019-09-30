@@ -11,14 +11,12 @@
       <span><input type="password" :placeholder="IntlString('APP_LOGIN_PASSWORD_LABEL')" v-model="password" required></span>
 
       <span ><button type="submit" v-on:click="login">Login</button></span>
-
-      <span> <p>{{ username }}</p> </span>
     </div>
   </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import PhoneTitle from './../PhoneTitle'
 
 export default {
@@ -33,23 +31,22 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['IntlString', 'useMouse', 'mdtInfo'])
+    ...mapGetters(['IntlString', 'useMouse', 'mdtUsername', 'mdtPassword'])
   },
   methods: {
     quit () {
       if (this.ignoreControls === true) return
       this.$router.push({ name: 'home' })
     },
+    ...mapActions(['mdtLoginRequest']),
     login () {
       const username = this.username.trim()
       const password = this.password.trim()
       if (username.length !== 0 && password.length !== 0) {
-        this.loginRequest({
+        this.mdtLoginRequest({
           username,
           password
         })
-        this.username = ''
-        this.password = ''
       }
     }
   },
@@ -57,13 +54,15 @@ export default {
     if (!this.useMouse) {
       this.$bus.$on('keyUpArrowDown', this.onDown)
       this.$bus.$on('keyUpArrowUp', this.onUp)
+      this.$bus.$on('keyUpEnter', this.onEnter)
     }
-    this.$bus.$on('keyUpBackspace', this.onBackspace)
+    this.$bus.$on('keyUpBackspace', this.onBack)
   },
   beforeDestroy () {
     this.$bus.$off('keyUpArrowDown', this.onDown)
     this.$bus.$off('keyUpArrowUp', this.onUp)
-    this.$bus.$off('keyUpBackspace', this.onBackspace)
+    this.$bus.$off('keyUpEnter', this.onEnter)
+    this.$bus.$off('keyUpBackspace', this.onBack)
   }
 }
 </script>

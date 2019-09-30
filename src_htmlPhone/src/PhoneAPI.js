@@ -156,6 +156,16 @@ class PhoneAPI {
     this.post('tchat_addMessage', { channel, message })
   }
 
+  // === App MDT
+  async mdtLoginRequest (username, password) {
+    this.post('mdt_loginRequest', {username, password})
+  }
+
+  // === MDT Events
+  onmdt_login (data) {
+    store.dispatch('mdtLogin', data)
+  }
+
   // ==========================================================================
   //  Gestion des events
   // ==========================================================================
