@@ -15,7 +15,7 @@
 
       <div class='tchat_write'>
           <input type="text" placeholder="..." v-model="message" @keyup.enter.prevent="sendMessage">
-          <span class='tchat_send' v-on:click="sendMessage">></span>
+          <span class='tchat_send' @click="sendMessage">></span>
       </div>
     </div>
   </div>
