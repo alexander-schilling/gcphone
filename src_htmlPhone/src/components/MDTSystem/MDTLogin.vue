@@ -11,6 +11,12 @@
       <span><input type="password" :placeholder="IntlString('APP_LOGIN_PASSWORD_LABEL')" v-model="password" required></span>
 
       <span ><button type="submit" v-on:click="login">Login</button></span>
+      <span>DEBUG STUFF</span>
+      <span> <p>{{ username }}</p> </span>
+      <span> <p>{{ mdtUsername }}</p> </span>
+
+      <span> <p>{{ password }}</p> </span>
+      <span> <p>{{ mdtPassword }}</p> </span>
     </div>
   </div>
 </template>
@@ -47,6 +53,10 @@ export default {
           username,
           password
         })
+        // setTimeout(function () { }, 500)
+        if (this.username === this.mdtUsername && this.password === this.mdtPassword) {
+          this.$router.push({ name: 'mdt.dashboard' })
+        }
       }
     }
   },

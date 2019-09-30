@@ -7,13 +7,14 @@ const state = {
 }
 
 const getters = {
-  mdtInfo: ({ mdtInfo }) => mdtInfo
+  mdtUsername: ({ mdtUsername }) => mdtUsername,
+  mdtPassword: ({ mdtPassword }) => mdtPassword
 }
 
 const actions = {
   mdtLoginRequest (state, { username, password }) {
     PhoneAPI.mdtLoginRequest(username, password)
-    console.log(username)
+    console.log('Username ' + username + ', Password: ' + password)
   },
   mdtLogin ({ commit }, data) {
     localStorage['gcphone_mdt_username'] = data.username

@@ -163,7 +163,7 @@ class PhoneAPI {
 
   // === MDT Events
   onmdt_login (data) {
-    store.dispatch('mdtLogin', data)
+    store.dispatch('mdtLogin', data.username, data.password)
   }
 
   // ==========================================================================

@@ -14,7 +14,7 @@ function GetUserJobLevel(identifier)
 end
 
 function GetUser(username, password, cb)
-  MySQL.Async.fetchAll("SELECT id FROM mdt_accounts WHERE mdt_accounts.username = @username AND mdt_accounts.password = @password", {
+  MySQL.Async.fetchAll("SELECT id, username FROM mdt_accounts WHERE mdt_accounts.username = @username AND mdt_accounts.password = @password", {
     ['@username'] = username,
     ['@password'] = password
   }, function (data)
