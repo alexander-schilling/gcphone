@@ -28,7 +28,7 @@ function GetUserJobLevel(identifier)
 end
 
 function GetUser(username, password, cb)
-  MySQL.Async.fetchAll("SELECT id, username FROM mdt_accounts WHERE mdt_accounts.username = @username AND mdt_accounts.password = @password", {
+  MySQL.Async.fetchAll("SELECT * FROM mdt_accounts WHERE mdt_accounts.username = @username AND mdt_accounts.password = @password", {
     ['@username'] = username,
     ['@password'] = password
   }, function (data)
@@ -48,10 +48,11 @@ end)
 RegisterServerEvent('gcPhone:mdt_loginRequest')
 AddEventHandler('gcPhone:mdt_loginRequest', function(username, password)
   local sourcePlayer = tonumber(source)
-  TriggerEvent("serverlog", "sourcePlayer: " .. sourcePlayer .. " | username: " .. username .. " | password " .. password)
+
   GetUser(username, password, function (user)
     if user ~= nil then
-      TriggerClientEvent('gcPhone:mdt_login', sourcePlayer, username, password)
+			TriggerEvent("serverlog", "Work:" .. user.work .. " | ID:" .. user.id)
+      TriggerClientEvent('gcPhone:mdt_login', sourcePlayer, username, password, user.work, user.id)
 		end
   end)
 end)

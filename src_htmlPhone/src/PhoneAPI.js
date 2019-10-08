@@ -159,12 +159,10 @@ class PhoneAPI {
   // === App MDT
   async mdtLoginRequest (username, password) {
     this.post('mdt_loginRequest', { username, password })
-    console.log('PhoneAPI Post: Username: ' + username + ', Password: ' + password)
   }
 
   // === MDT Events
   onmdt_login (data) {
-    console.log('PhoneAPI Recieve: Username: ' + data.username + ', Password: ' + data.password)
     store.dispatch('mdtLogin', data)
   }
 

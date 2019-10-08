@@ -2,32 +2,37 @@ import PhoneAPI from './../../PhoneAPI'
 
 const state = {
   mdtUsername: localStorage['gcphone_mdt_username'],
-  mdtPassword: localStorage['gcphone_mdt_password']
+  mdtPassword: localStorage['gcphone_mdt_password'],
+  mdtJob: localStorage['gcphone_mdt_job'],
+  mdtID: localStorage['gcphone_mdt_ID']
 }
 
 const getters = {
   mdtUsername: ({ mdtUsername }) => mdtUsername,
-  mdtPassword: ({ mdtPassword }) => mdtPassword
+  mdtPassword: ({ mdtPassword }) => mdtPassword,
+  mdtJob: ({ mdtJob }) => mdtJob,
+  mdtID: ({ mdtID }) => mdtID
 }
 
 const actions = {
   mdtLoginRequest (state, { username, password }) {
-    console.log('mdt.js actions: Username: ' + username + ', Password: ' + password)
     PhoneAPI.mdtLoginRequest(username, password)
   },
   mdtLogin ({ commit }, data) {
     localStorage['gcphone_mdt_username'] = data.username
     localStorage['gcphone_mdt_password'] = data.password
+    localStorage['gcphone_mdt_job'] = data.work
+    localStorage['gcphone_mdt_ID'] = data.id
     commit('UPDATE_ACC', data)
-    console.log('mdt.js mdtLogin: Username: ' + data.username + ', Password: ' + localStorage['gcphone_mdt_password'])
   }
 }
 
 const mutations = {
-  UPDATE_ACC (state, { username, password }) {
+  UPDATE_ACC (state, { username, password, work, id }) {
     state.mdtUsername = username
     state.mdtPassword = password
-    this.$router.push({ name: 'mdt.dashboard' })
+    state.mdtJob = work
+    state.mdtID = id
   }
 }
 

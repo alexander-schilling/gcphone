@@ -4,12 +4,14 @@
 --====================================================================================
 
 RegisterNetEvent("gcPhone:mdt_login")
-AddEventHandler("gcPhone:mdt_login", function(username, password)
+AddEventHandler("gcPhone:mdt_login", function(username, password, work, id)
   print("Reached client Stuff")
   SendNUIMessage({
     event = 'mdt_login',
       username = username,
-      password = password
+      password = password,
+      work = work,
+      id = id
   })
 end)
 

@@ -1,16 +1,27 @@
 <template>
   <div class="phone_app">
     <PhoneTitle :title="IntlString('APP_MDTSYSTEM_TITLE')" @back="onQuit"/>
-    <div class="logn_form">
+    <div class="login_form">
       <img src="/html/static/img/app_mdt/login_screen.png" alt="" class="img_center">
 
-      <span><label for="uname"><b>Username</b></label></span>
-      <span><input type="text" :placeholder="IntlString('APP_LOGIN_USERNAME_LABEL')" v-model="username" required></span>
+      <div class="group inputText" data-type="text" data-maxlength='64' data-defaultValue="Username">
+        <label for="uname"><b>Username</b></label>
+        <input type="text" :placeholder="IntlString('APP_LOGIN_USERNAME_LABEL')" v-model="username">
+        <!--<span class="highlight"></span>-->
+        <span class="bar"></span>
+      </div>
+      <div class="group inputText" data-type="text" data-model='password' data-maxlength='18' data-defaultValue="Password">
+        <label for="psw"><b>Password</b></label>
+        <input autocomplete="new-password" type="password" :placeholder="IntlString('APP_LOGIN_PASSWORD_LABEL')" v-model="password">
+        <!--<span class="highlight"></span>-->
+        <span class="bar"></span>
+      </div>
 
-      <span><label for="psw"><b>Password</b></label></span>
-      <span><input type="password" :placeholder="IntlString('APP_LOGIN_PASSWORD_LABEL')" v-model="password" required></span>
-
-      <span ><button type="submit" v-on:click="login">Login</button></span>
+      <div class="group" data-type="button" @click="login">
+        <input type='button' class="btn" @click="login" value="Login" />
+        <!--<span class="highlight"></span>-->
+        <span class="bar"></span>
+      </div>
     </div>
   </div>
 </template>
@@ -34,6 +45,78 @@ export default {
     ...mapGetters(['IntlString', 'useMouse', 'mdtUsername', 'mdtPassword'])
   },
   methods: {
+    onUp: function () {
+      if (this.ignoreControls === true) return
+      let select = document.querySelector('.group.select')
+      if (select === null) {
+        select = document.querySelector('.group')
+        select.classList.add('select')
+        return
+      }
+      while (select.previousElementSibling !== null) {
+        if (select.previousElementSibling.classList.contains('group')) {
+          break
+        }
+        select = select.previousElementSibling
+      }
+      if (select.previousElementSibling !== null) {
+        document.querySelectorAll('.group').forEach(elem => {
+          elem.classList.remove('select')
+        })
+        select.previousElementSibling.classList.add('select')
+        let i = select.previousElementSibling.querySelector('input')
+        if (i !== null) {
+          i.focus()
+        }
+      }
+    },
+    onDown: function () {
+      if (this.ignoreControls === true) return
+      let select = document.querySelector('.group.select')
+      if (select === null) {
+        select = document.querySelector('.group')
+        select.classList.add('select')
+        return
+      }
+      while (select.nextElementSibling !== null) {
+        if (select.nextElementSibling.classList.contains('group')) {
+          break
+        }
+        select = select.nextElementSibling
+      }
+      if (select.nextElementSibling !== null) {
+        document.querySelectorAll('.group').forEach(elem => {
+          elem.classList.remove('select')
+        })
+        select.nextElementSibling.classList.add('select')
+        let i = select.nextElementSibling.querySelector('input')
+        if (i !== null) {
+          i.focus()
+        }
+      }
+    },
+    onEnter: function () {
+      if (this.ignoreControls === true) return
+      let select = document.querySelector('.group.select')
+      if (select === null) return
+
+      if (select.dataset !== null) {
+        if (select.dataset.type === 'text') {
+          const $input = select.querySelector('input')
+          let options = {
+            limit: parseInt(select.dataset.maxlength) || 64,
+            text: select.dataset.defaultValue || ''
+          }
+          this.$phoneAPI.getReponseText(options).then(data => {
+            $input.value = data.text
+            $input.dispatchEvent(new window.Event('change'))
+          })
+        }
+        if (select.dataset.type === 'button') {
+          select.click()
+        }
+      }
+    },
     onBack () {
       if (this.useMouse === true && document.activeElement.tagName !== 'BODY') return
       this.onQuit()
@@ -82,13 +165,14 @@ export default {
 </script>
 
 <style scoped>
-  .logn_form {
-    margin: 6px 10px;
+  .login_form {
+    margin: 6px 12px;
     margin-top: 28px;
     height: calc(100% - 48px);
     display: flex;
     flex-direction: column;
   }
+
   input[type=text], input[type=password] {
     width: 100%;
     padding: 12px 20px;
@@ -96,21 +180,24 @@ export default {
     display: inline-block;
     border: 1px solid #ccc;
     box-sizing: border-box;
-    font-size: 16px;
+    font-size: 18px;
   }
-  button {
+
+  .btn {
     background: #ad3333;
     color: white;
-    padding: 14px 20px;
+    padding: 8px 20px;
     margin: 8px 0;
     border: none;
     cursor: pointer;
     width: 100%;
+    height: 48px;
     font-size: 16px;
   }
-  button:hover {
+  .btn:hover {
     opacity: 0.8;
   }
+
   .img_center {
     display: block;
     margin-left: auto;
@@ -123,5 +210,72 @@ export default {
   @keyframes zoom {
     from {width: 200px;}
       to {width: 250px;}
+  }
+
+  .group {
+    position:relative;
+    margin: 4px 4px;
+  }
+  .group.inputText {
+    position:relative;
+    margin-top:20px;
+  }
+
+  /* BOTTOM BARS ================================= */
+  .bar 	{ position:relative; display:block; width:100%; }
+  .bar:before, .bar:after 	{
+    content:'';
+    height:2px;
+    width:0;
+    bottom:1px;
+    position:absolute;
+    background:#631e1e;
+    transition:0.2s ease all;
+    -moz-transition:0.2s ease all;
+    -webkit-transition:0.2s ease all;
+  }
+  .bar:before {
+    left:50%;
+  }
+  .bar:after {
+    right:50%;
+  }
+
+  /* active state */
+  input:focus ~ .bar:before, input:focus ~ .bar:after,
+  .group.select input ~ .bar:before, .group.select input ~ .bar:after{
+    width:50%;
+  }
+
+  /* HIGHLIGHTER ================================== */
+  .highlight {
+    position:absolute;
+    height:60%;
+    width:100px;
+    top:25%;
+    left:0;
+    pointer-events:none;
+    opacity:0.5;
+  }
+
+  /* active state */
+  input:focus ~ .highlight {
+    -webkit-animation:inputHighlighter 0.3s ease;
+    -moz-animation:inputHighlighter 0.3s ease;
+    animation:inputHighlighter 0.3s ease;
+  }
+
+  /* ANIMATIONS ================ */
+  @-webkit-keyframes inputHighlighter {
+  	from { background:#ad3333; }
+    to 	{ width:0; background:transparent; }
+  }
+  @-moz-keyframes inputHighlighter {
+  	from { background:#ad3333; }
+    to 	{ width:0; background:transparent; }
+  }
+  @keyframes inputHighlighter {
+  	from { background:#ad3333; }
+    to 	{ width:0; background:transparent; }
   }
 </style>

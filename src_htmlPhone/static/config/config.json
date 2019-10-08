@@ -426,6 +426,7 @@
       "APP_TWITTER_NOTIF_NEW_PASSWORD_MISS_MATCH": "Passwords do not match",
       "APP_TWITTER_NOTIF_NEW_PASSWORD_LENGTH_ERROR": "Password too short",
       "APP_MDTSYSTEM_TITLE": "Computer-Aided Dispatch",
+      "APP_MDTSYSTEM_DASHBOARD_TITLE": "CAD Dashboard",
       "APP_LOGIN_USERNAME_LABEL": "Enter Username",
       "APP_LOGIN_PASSWORD_LABEL": "Enter Password",
 
