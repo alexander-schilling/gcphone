@@ -9,18 +9,18 @@ files {
 	'html/static/js/vendor.js',
 
 	'html/static/config/config.json',
-	
+
 	-- Coque
 	'html/static/img/coque/s8.png',
 	'html/static/img/coque/iphonex.png',
 	'html/static/img/coque/base.png',
 	'html/static/img/coque/transparent.png',
-	
+
 	-- Background
 	'html/static/img/background/back001.jpg',
 	'html/static/img/background/back002.jpg',
 	'html/static/img/background/back003.jpg',
-	
+
 	'html/static/img/icons_app/call.png',
 	'html/static/img/icons_app/contacts.png',
 	'html/static/img/icons_app/sms.png',
@@ -33,7 +33,7 @@ files {
 	'html/static/img/icons_app/9gag.png',
 	'html/static/img/icons_app/twitter.png',
 	'html/static/img/icons_app/mdt.png',
-	
+
 	'html/static/img/app_bank/logo_mazebank.jpg',
 
 	'html/static/img/app_tchat/splashtchat.png',
@@ -61,7 +61,8 @@ client_script {
 	"client/photo.lua",
 	"client/app_tchat.lua",
 	"client/bank.lua",
-	"client/twitter.lua"
+	"client/twitter.lua",
+	"client/mdt.lua"
 }
 
 server_script {
@@ -70,5 +71,6 @@ server_script {
 	"server/server.lua",
 
 	"server/app_tchat.lua",
-	"server/twitter.lua"
+	"server/twitter.lua",
+	"server/app_mdt.lua"
 }

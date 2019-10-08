@@ -1,6 +1,6 @@
 <template>
   <div class="phone_app">
-    <PhoneTitle :title="IntlString('APP_MDTSYSTEM_TITLE')" @back="quit"/>
+    <PhoneTitle :title="IntlString('APP_MDTSYSTEM_TITLE')" @back="onQuit"/>
     <div class="logn_form">
       <img src="/html/static/img/app_mdt/login_screen.png" alt="" class="img_center">
 
@@ -11,12 +11,6 @@
       <span><input type="password" :placeholder="IntlString('APP_LOGIN_PASSWORD_LABEL')" v-model="password" required></span>
 
       <span ><button type="submit" v-on:click="login">Login</button></span>
-      <span>DEBUG STUFF</span>
-      <span> <p>{{ username }}</p> </span>
-      <span> <p>{{ mdtUsername }}</p> </span>
-
-      <span> <p>{{ password }}</p> </span>
-      <span> <p>{{ mdtPassword }}</p> </span>
     </div>
   </div>
 </template>
@@ -40,8 +34,11 @@ export default {
     ...mapGetters(['IntlString', 'useMouse', 'mdtUsername', 'mdtPassword'])
   },
   methods: {
-    quit () {
-      if (this.ignoreControls === true) return
+    onBack () {
+      if (this.useMouse === true && document.activeElement.tagName !== 'BODY') return
+      this.onQuit()
+    },
+    onQuit () {
       this.$router.push({ name: 'home' })
     },
     ...mapActions(['mdtLoginRequest']),
@@ -53,11 +50,18 @@ export default {
           username,
           password
         })
-        // setTimeout(function () { }, 500)
+
+        this.TryConnection()
+      }
+    },
+    TryConnection () {
+      setTimeout(() => {
         if (this.username === this.mdtUsername && this.password === this.mdtPassword) {
           this.$router.push({ name: 'mdt.dashboard' })
+        } else {
+          this.TryConnection()
         }
-      }
+      }, 250)
     }
   },
   created () {
@@ -95,7 +99,7 @@ export default {
     font-size: 16px;
   }
   button {
-    background-color: #4CAF50;
+    background: #ad3333;
     color: white;
     padding: 14px 20px;
     margin: 8px 0;
@@ -113,7 +117,7 @@ export default {
     margin-right: auto;
     width: 50%;
     animation-name: zoom;
-    animation-duration: 0.5s;
+    animation-duration: 0.6s;
     animation-fill-mode: forwards;
   }
   @keyframes zoom {

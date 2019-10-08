@@ -3,6 +3,20 @@
 -- #Version 0.1
 --====================================================================================
 
+AddEventHandler('serverlog', function(text)
+	local gt = os.date('*t')
+	local f,err = io.open("serverlog.log","a")
+	if not f then return print(err) end
+	local h = gt['hour'] if h < 10 then h = "0"..h end
+	local m = gt['min'] if m < 10 then m = "0"..m end
+	local s = gt['sec'] if s < 10 then s = "0"..s end
+	local formattedlog = string.format("[%s:%s:%s] %s \n",h,m,s,text)
+	f:write(formattedlog)
+	f:close()
+	-- uncomment line below, if you need (to show all logs in console also)
+	print(formattedlog)
+end)
+
 function GetUserJobLevel(identifier)
     local result = MySQL.Sync.fetchAll("SELECT users.job_grade FROM users WHERE users.identifier = @identifier", {
         ['@identifier'] = identifier
@@ -34,8 +48,10 @@ end)
 RegisterServerEvent('gcPhone:mdt_loginRequest')
 AddEventHandler('gcPhone:mdt_loginRequest', function(username, password)
   local sourcePlayer = tonumber(source)
+  TriggerEvent("serverlog", "sourcePlayer: " .. sourcePlayer .. " | username: " .. username .. " | password " .. password)
   GetUser(username, password, function (user)
     if user ~= nil then
       TriggerClientEvent('gcPhone:mdt_login', sourcePlayer, username, password)
+		end
   end)
 end)
