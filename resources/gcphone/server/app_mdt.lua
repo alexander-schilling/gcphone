@@ -36,6 +36,15 @@ function GetUser(username, password, cb)
   end)
 end
 
+function GetCitizen(name, surname, cb)
+  MySQL.Async.fetchAll("SELECT firstname, lastname, dateofbirth, sex, height, identifier FROM users WHERE users.firstname = @name AND users.lastname = @surname", {
+    ['@name'] = name,
+    ['@surname'] = surname
+  }, function (data)
+    cb(data[1])
+  end)
+end
+
 -- ====================================================================================
 -- Events that JS can access
 -- ====================================================================================
