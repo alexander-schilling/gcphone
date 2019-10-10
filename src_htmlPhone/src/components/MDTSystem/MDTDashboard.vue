@@ -4,19 +4,98 @@
     <template v-if="state === STATES.MAIN_POLICE">
       <div class="main-panel">
         <div class="info-area">
-          <span>Username: {{ mdtUsername }} | Account ID: {{ mdtID }}</span>
+          <div class="logo">
+            <img src="/html/static/img/app_mdt/police.png" alt="">
+          </div>
+          <span>Username: {{ mdtUsername }}</span>
+          <span>Account ID: {{ mdtID }}</span>
+          <span>Admin Level: {{ mdtAdmin }}</span>
         </div>
         <div class="button-area">
-          <div class="button-item">1</div>
-          <div class="button-item">2</div>
-          <div class="button-item">3</div>
-          <div class="button-item">4</div>
-          <div class="button-item">5</div>
-          <div class="button-item">6</div>
+          <div class="button-item">Manage Account</div>
+          <div class="button-item">Jobs</div>
+          <div class="button-item">Name Database</div>
+          <div class="button-item">Plate Database</div>
+          <div class="button-item">Wanted List</div>
+          <div v-if="isAdmin" class="button-item">Admin</div>
         </div>
       </div>
     </template>
-  </div>
+
+    <template v-else-if="state === STATES.MAIN_EMS">
+      <div class="main-panel">
+        <div class="logo">
+          <img src="/html/static/img/app_mdt/ems.png" alt="">
+        </div>
+        <div class="info-area">
+          <span>Username: {{ mdtUsername }}</span>
+          <span>Account ID: {{ mdtID }}</span>
+          <span>Admin Level: {{ mdtAdmin }}</span>
+        </div>
+        <div class="button-area">
+          <div class="button-item">Manage Account</div>
+          <div class="button-item">Jobs</div>
+          <div class="button-item">Name Database</div>
+          <div v-if="isAdmin" class="button-item">Admin</div>
+        </div>
+      </div>
+    </template>
+
+    <template v-else-if="state === STATES.MAIN_FIREDEPT">
+      <div class="main-panel">
+        <div class="logo">
+          <img src="/html/static/img/app_mdt/firedept.png" alt="">
+        </div>
+        <div class="info-area">
+          <span>Username: {{ mdtUsername }}</span>
+          <span>Account ID: {{ mdtID }}</span>
+          <span>Admin Level: {{ mdtAdmin }}</span>
+        </div>
+        <div class="button-area">
+          <div class="button-item">Manage Account</div>
+          <div class="button-item">Jobs</div>
+          <div class="button-item">Name Database</div>
+          <div v-if="isAdmin" class="button-item">Admin</div>
+        </div>
+      </div>
+    </template>
+
+    <template v-else-if="state === STATES.NAME_DATABASE">
+      <div class="main-panel">
+
+      </div>
+    </template>
+
+    <template v-else-if="state === STATES.VEHICLE_DATABASE">
+      <div class="main-panel">
+
+      </div>
+    </template>
+
+    <template v-else-if="state === STATES.JOBS_MENU">
+      <div class="main-panel">
+
+      </div>
+    </template>
+
+    <template v-else-if="state === STATES.WANTED_LIST">
+      <div class="main-panel">
+
+      </div>
+    </template>
+
+    <template v-else-if="state === STATES.ADMIN_VIEW">
+      <div class="main-panel">
+
+      </div>
+    </template>
+
+    <template v-else-if="state === STATES.MANAGE_ACCOUNT">
+      <div class="main-panel">
+
+      </div>
+    </template>
+
 </template>
 
 <script>
@@ -30,9 +109,9 @@ const STATES = Object.freeze({
   NAME_DATABASE: 3,
   VEHICLE_DATABASE: 4,
   JOBS_MENU: 5,
-  SHIFT_CHANGE: 6,
-  ADMIN_VIEW: 7,
-  WANTED_LIST: 8
+  ADMIN_VIEW: 6,
+  WANTED_LIST: 7,
+  MANAGE_ACCOUNT: 8
 })
 
 export default {
@@ -42,18 +121,14 @@ export default {
   data () {
     return {
       STATES,
-      state: STATES.MAIN_POLICE,
-      localAccount: {
-        username: '',
-        password: '',
-        id: '',
-        userBadge: '',
-        userRank: ''
-      }
+      state: STATES.MAIN_POLICE
     }
   },
   computed: {
-    ...mapGetters(['IntlString', 'useMouse', 'mdtUsername', 'mdtJob', 'mdtID'])
+    ...mapGetters(['IntlString', 'useMouse', 'mdtUsername', 'mdtJob', 'mdtID', 'mdtAdmin']),
+    isAdmin () {
+      return this.mdtAdmin >= 1 || this.mdtAdmin >= 2
+    }
   },
   methods: {
     onBack () {
@@ -65,6 +140,19 @@ export default {
     },
     onQuit () {
       this.$router.push({ name: 'mdt' })
+    },
+    onLoad () {
+      switch (this.mdtJob) {
+        case '0':
+          this.state = this.STATES.MAIN_POLICE
+          break
+        case '1':
+          this.state = this.STATES.MAIN_EMS
+          break
+        case '2':
+          this.state = this.STATES.MAIN_FIREDEPT
+          break
+      }
     }
     // ...mapActions(['mdtLoginRequest'])
   },
@@ -81,6 +169,9 @@ export default {
     this.$bus.$off('keyUpArrowUp', this.onUp)
     this.$bus.$off('keyUpEnter', this.onEnter)
     this.$bus.$off('keyUpBackspace', this.onBack)
+  },
+  beforeMount () {
+    this.onLoad()
   }
 }
 </script>
@@ -91,35 +182,45 @@ export default {
 .main-panel {
   width: 100%;
   height: 100%;
-  background: #3b3b3b;
+  background: #dbdbdb;
 }
 
 .info-area {
   width: 100%;
   height: 20%;
-  background: #3b3b3b;
+  background: #dbdbdb;
 
   box-shadow: 0px 8px 10px grey;
 }
 
+.info-area span {
+  padding-left: 1%;
+  display: block;
+}
+
+.logo img {
+  float: left;
+  width: 30%;
+}
+
 .button-area {
   width: 100%;
-  height: 40%;
-  background: #3b3b3b;
+  height: 80%;
+  background: #dbdbdb;
 
-  display: grid;
-  grid-row-gap: 10px;
-  grid-column-gap: 10px;
-  grid-template-columns: auto auto auto;
+  display: block;
   padding: 10px;
 }
 
 .button-item {
-  background-color: #ffffff;
-  padding: 20px;
+  background-color: #080808;
+  color: #dbdbdb;
+  padding: 10px;
   font-size: 30px;
   text-align: center;
-  box-shadow: 0px 6px 10px grey;
+  box-shadow: 0px 5px 5px grey;
+
+  margin-top: 2%;
 }
 
 </style>

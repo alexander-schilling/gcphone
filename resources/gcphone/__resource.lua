@@ -38,6 +38,9 @@ files {
 
 	'html/static/img/app_tchat/splashtchat.png',
 	'html/static/img/app_mdt/login_screen.png',
+	'html/static/img/app_mdt/police.png',
+	'html/static/img/app_mdt/firedept.png',
+	'html/static/img/app_mdt/ems.png',
 
 	'html/static/img/twitter/bird.png',
 	'html/static/img/twitter/default_profile.png',

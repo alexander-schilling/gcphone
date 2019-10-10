@@ -1,7 +1,7 @@
 <template>
   <div class='phone_content content inputText'>
     <template v-if="state === STATES.MENU">
-      <template v-if="!isLogin"
+      <template v-if="!isLogin">
         <div class="group" data-type="button" @click.stop="state = STATES.LOGIN">
           <input type='button' class="btn btn-blue" @click.stop="state = STATES.LOGIN" :value="IntlString('APP_TWITTER_ACCOUNT_LOGIN')"/>
         </div>

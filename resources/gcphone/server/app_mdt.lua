@@ -2,7 +2,7 @@
 -- #Author: Olle Strand | Cünter#1634
 -- #Version 0.1
 --====================================================================================
-
+RegisterServerEvent('serverlog')
 AddEventHandler('serverlog', function(text)
 	local gt = os.date('*t')
 	local f,err = io.open("serverlog.log","a")
@@ -60,8 +60,8 @@ AddEventHandler('gcPhone:mdt_loginRequest', function(username, password)
 
   GetUser(username, password, function (user)
     if user ~= nil then
-			TriggerEvent("serverlog", "Work:" .. user.work .. " | ID:" .. user.id)
-      TriggerClientEvent('gcPhone:mdt_login', sourcePlayer, username, password, user.work, user.id)
+			TriggerEvent("serverlog", "Admin:" .. user.adminlevel .. " | ID:" .. user.id)
+      TriggerClientEvent('gcPhone:mdt_login', sourcePlayer, username, password, user.work, user.id, tonumber(user.adminlevel))
 		end
   end)
 end)

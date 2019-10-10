@@ -17,8 +17,8 @@
         <span class="bar"></span>
       </div>
 
-      <div class="group" data-type="button" @click="login">
-        <input type='button' class="btn" @click="login" value="Login" />
+      <div class="group" data-type="button" v-on:click="login">
+        <input type='button' class="btn" v-on:click="login" value="Login" />
         <!--<span class="highlight"></span>-->
         <span class="bar"></span>
       </div>
