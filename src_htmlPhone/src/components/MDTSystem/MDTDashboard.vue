@@ -159,11 +159,24 @@
 
         </div>
         <div class="result-area">
-          {{ mdtCitName }}
-          {{ mdtCitSurName }}
-          {{ mdtCitDOB }}
-          {{ mdtCitSex }}
-          {{ mdtCitHeight }}
+          <table>
+            <tr>
+              <td>Name:</td>
+              <td>{{ mdtCitName }} {{ mdtCitSurName }}</td>
+            </tr>
+            <tr>
+              <td>Date Of Birth:</td>
+              <td>{{ mdtCitDOB }}</td>
+            </tr>
+            <tr>
+              <td>Sex:</td>
+              <td>{{ mdtCitSex }}</td>
+            </tr>
+            <tr>
+              <td>Height:</td>
+              <td>{{ mdtCitHeight }}</td>
+            </tr>
+          </table>
           {{ mdtCitID }}
         </div>
       </div>
@@ -171,7 +184,38 @@
 
     <template v-else-if="state === STATES.VEHICLE_DATABASE">
       <div class="main-panel">
+        <div class="main-panel">
+          <div class="input-area">
+            <div class="group inputText" data-type="text" data-maxlength='64' data-defaultValue="First Name">
+              <input type="text" :placeholder="IntlString('APP_VEHICLE_PLATE_LABEL')" v-model="plate">
+              <!--<span class="highlight"></span>-->
+              <span class="bar"></span>
+            </div>
 
+            <div class="group" data-type="button" v-on:click="checkVehicle">
+              <input type='button' class="btn" @click.stop="checkVehicle" value="Lookup" />
+              <!--<span class="highlight"></span>-->
+              <span class="bar"></span>
+            </div>
+
+          </div>
+          <div class="result-area">
+            <table>
+              <tr>
+                <td>Owner:</td>
+                <td>{{ mdtCitName }} {{ mdtCitSurName }}</td>
+              </tr>
+              <tr>
+                <td>Plate:</td>
+                <td>{{ mdtVehPlate }}</td>
+              </tr>
+              <tr>
+                <td>Model:</td>
+                <td>{{ mdtVehModel }}</td>
+              </tr>
+            </table>
+          </div>
+        </div>
       </div>
     </template>
 
@@ -228,7 +272,13 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['IntlString', 'useMouse', 'mdtUsername', 'mdtJob', 'mdtID', 'mdtAdmin', 'mdtCitName', 'mdtCitSurName', 'mdtCitDOB', 'mdtCitSex', 'mdtCitHeight', 'mdtCitID']),
+    ...mapGetters([
+    'IntlString', 'useMouse', 'mdtUsername',
+    'mdtJob', 'mdtID', 'mdtAdmin',
+    'mdtCitName', 'mdtCitSurName', 'mdtCitDOB',
+    'mdtCitSex', 'mdtCitHeight', 'mdtCitID',
+    'mdtVehPlate', 'mdtVehModel'
+    ]),
     isAdmin () {
       return this.mdtAdmin >= 1
     }
@@ -246,6 +296,24 @@ export default {
         this.onQuit()
       }
     },
+    checkCitizen () {
+      const firsname = this.firsname.trim()
+      const lastname = this.lastname.trim()
+      if (firstname.length !== 0 && lastname.length !== 0) {
+        this.mdtCitizenRequest({
+          firsname,
+          lastname
+        })
+      }
+    },
+    checkVehicle () {
+      const plate = this.plate
+      if (plate.length !== 0) {
+        this.mdtVehicleRequest({
+          plate
+        })
+      }
+    }
     onQuit () {
       this.$router.push({ name: 'mdt' })
     },
@@ -285,7 +353,7 @@ export default {
 
 <style scoped>
 
-/*MAIN PANEL SECTION ================================= */
+/*MAIN PANEL SECTION =========================== */
 .main-panel {
   width: 100%;
   height: 100%;
@@ -329,10 +397,10 @@ export default {
 
   margin-top: 2%;
 }
-/*NAMEDB PANEL SECTION ================================= */
+/*NAMEDB PANEL SECTION ========================= */
 .input-area {
   width: 100%;
-  height: 20%;
+  height: 35%;
   background: #dbdbdb;
 
   box-shadow: 0px 8px 10px grey;
@@ -340,14 +408,28 @@ export default {
 
 .result-area {
   width: 100%;
-  height: 80%;
+  height: 65%;
   background: #dbdbdb;
 
   display: block;
   padding: 10px;
 }
 
-/*Button CSS*/
+.result-area table {
+  width: 100%;
+}
+
+.result-area td {
+  border: 2px solid #ad3333;
+  text-align: left;
+  padding: 8px;
+}
+
+.result-area tr:nth-child(even) {
+  background-color: #cfcfcf;
+}
+
+/*BUTTON DESIGN ================================ */
 input[type=text], input[type=password] {
   width: 100%;
   padding: 12px 20px;
@@ -377,6 +459,7 @@ input[type=text], input[type=password] {
   position:relative;
   margin: 4px 4px;
 }
+
 .group.inputText {
   position:relative;
   margin-top:20px;

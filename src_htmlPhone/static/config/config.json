@@ -431,6 +431,7 @@
       "APP_LOGIN_PASSWORD_LABEL": "Enter Password",
       "APP_USER_NAME_LABEL": "Enter First Name",
       "APP_USER_SURNAME_LABEL": "Enter Last Name",
+      "APP_VEHICLE_PLATE_LABEL": "Enter Plate"
 
       "TIMEAGO": [
         "just now",

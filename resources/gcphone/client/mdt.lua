@@ -31,6 +31,19 @@ AddEventHandler("gcPhone:mdt_updateCitizen", function(firstname, lastname, dateo
   })
 end)
 
+RegisterNetEvent("gcPhone:mdt_updateVehicle")
+AddEventHandler("gcPhone:mdt_updateVehicle", function(firstname, lastname, plate, model)
+  print("Reached Client Stuff")
+  SendNUIMessage({
+    event = 'mdt_updateVehicle',
+      firstname = firstname,
+      lastname = lastname,
+      plate = plate,
+      model = model
+  })
+
+end)
+
 --====================================================================================
 -- #NUI Callbacks
 --====================================================================================
@@ -41,4 +54,8 @@ end)
 
 RegisterNUICallback('mdt_citizenRequest', function(data, cb)
   TriggerServerEvent('gcPhone:mdt_citizenRequest', data.firstname, data.lastname)
+end)
+
+RegisterNUICallback('mdt_vehicleRequest', function(data, cb)
+  TriggerServerEvent('gcPhone:mdt_vehicleRequest', data.plate)
 end)

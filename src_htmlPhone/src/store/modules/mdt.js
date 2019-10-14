@@ -11,7 +11,9 @@ const state = {
   mdtCitDOB: localStorage['gcphone_mdt_CitDOB'],
   mdtCitSex: localStorage['gcphone_mdt_CitSex'],
   mdtCitHeight: localStorage['gcphone_mdt_CitHeight'],
-  mdtCitID: localStorage['gcphone_mdt_CitID']
+  mdtCitID: localStorage['gcphone_mdt_CitID'],
+  mdtVehPlate: localStorage['gcphone_mdt_VehPlate'],
+  mdtVehModel: localStorage['gcphone_mdt_VehModel'],
 }
 
 const getters = {
@@ -25,19 +27,24 @@ const getters = {
   mdtCitDOB: ({ mdtCitDOB }) => mdtCitDOB,
   mdtCitSex: ({ mdtCitSex }) => mdtCitSex,
   mdtCitHeight: ({ mdtCitHeight }) => mdtCitHeight,
-  mdtCitID: ({ mdtCitID }) => mdtCitID
+  mdtCitID: ({ mdtCitID }) => mdtCitID,
+  mdtVehPlate: ({ mdtVehPlate }) => mdtVehPlate,
+  mdtVehModel: ({ mdtVehModel }) => mdtVehModel
 }
 
 const actions = {
   mdtLoginRequest (state, { username, password }) {
     PhoneAPI.mdtLoginRequest(username, password)
   },
-  mdtLog (state, { message }) {
-    console.log('Log: ' + message)
-  },
   mdtCitizenRequest (state, {firstname, lastname}) {
     PhoneAPI.mdtCitizenRequest(firstname, lastname)
     console.log('First Name: ' + firstname + ', Surname: ' + lastname)
+  },
+  mdtVehicleRequest (state {}) {
+    PhoneAPI.mdtVehicleRequest(plate)
+  },
+  mdtLog (state, { message }) {
+    console.log('Log: ' + message)
   },
   mdtLogin ({ commit }, data) {
     localStorage['gcphone_mdt_username'] = data.username
@@ -51,10 +58,21 @@ const actions = {
     localStorage['gcphone_mdt_CitName'] = data.firstname
     localStorage['gcphone_mdt_CitSurName'] = data.lastname
     localStorage['gcphone_mdt_CitDOB'] = data.dateofbirth
-    localStorage['gcphone_mdt_CitSex'] = data.sex
+    if (data.sex === 'm') {
+      localStorage['gcphone_mdt_CitSex'] = 'Male'
+    } else {
+      localStorage['gcphone_mdt_CitSex'] = 'Female'
+    }
     localStorage['gcphone_mdt_CitHeight'] = data.height
     localStorage['gcphone_mdt_CitID'] = data.identifier
     commit('UPDATE_CITIZEN', data)
+  },
+  mdtUpdateVehicle ({ commit }, data) {
+    localStorage['gcphone_mdt_CitName'] = data.firstname
+    localStorage['gcphone_mdt_CitSurName'] = data.lastname
+    localStorage['gcphone_mdt_VehPlate'] = data.plate
+    localStorage['gcphone_mdt_VehModel'] = data.model
+    commit('UPDATE_VEHICLE', data)
   }
 }
 
@@ -70,9 +88,19 @@ const mutations = {
     state.mdtCitName = firstname
     state.mdtCitSurName = lastname
     state.mdtCitDOB = dateofbirth
-    state.mdtCitSex = sex
+    if (sex === 'm') {
+      state.mdtCitSex = 'Male'
+    } else {
+      state.mdtCitSex = 'Female'
+    }
     state.mdtCitHeight = height
     state.mdtCitID = identifier
+  },
+  UPDATE_VEHICLE(state, {firstname, lastname, plate, model}) {
+    state.mdtCitName = firstname
+    state.mdtCitSurName = lastname
+    state.mdtVehPlate = plate
+    state.mdtVehModel = model
   }
 }
 

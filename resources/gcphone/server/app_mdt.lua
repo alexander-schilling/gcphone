@@ -45,11 +45,24 @@ function GetCitizen(name, surname, cb)
   end)
 end
 
---[[
 function GetVehicle(plate, cb)
-	MySQL.Async.fetchAll("SELECT *")
+	MySQL.Async.fetchAll("SELECT identifier, vehicle, job FROM owned_vehicles WHRE owned_vehicles.plate = @plate"), {
+		['@plate'] = plate
+	}, function (data[1])
+			local vehicle = json.decode(data[1].vehicle)
+			table.insert(car, {vehicle = vehicle, plate = v.plate, identifier = data[1].identifier})
+		cb(car)
+	end)
 end
-]]
+
+function GetVehicleOwner(identifier, cb)
+	MySQL.Async.fetchAll("SELECT firstname, lastname FROM users WHERE users.identifier = @identifier"), {
+		['@identifier'] = identifier
+	}, function (data[1])
+		cb(data[1])
+	end)
+end
+
 
 -- ====================================================================================
 -- Events that JS can access
@@ -70,4 +83,30 @@ AddEventHandler('gcPhone:mdt_loginRequest', function(username, password)
       TriggerClientEvent('gcPhone:mdt_login', sourcePlayer, username, password, user.work, user.id, tonumber(user.adminlevel))
 		end
   end)
+end)
+
+RegisterServerEvent('gcPhone:mdt_citizenRequest')
+AddEventHandler('gcPhone:mdt_citizenRequest', function(firstname, lastname)
+  local sourcePlayer = tonumber(source)
+
+  GetCitizen(firstname, lastname, function (citizen)
+    if user ~= nil then
+      TriggerClientEvent('gcPhone:mdt_updateCitizen', sourcePlayer, firstname, lastname, citizen.dateofbirth, citizen.sex, citizen.height, citizen.identifier)
+		end
+  end)
+end)
+
+RegisterServerEvent('gcPhone:mdt_vehicleRequest')
+AddEventHandler('gcPhone:mdt_vehicleRequest', function(plate)
+	local sourceplayer = tonumber(source)
+
+	GetVehicle(plate, function (veh)
+		if vehicle ~= nil then
+			GetVehicleOwner(vehicle.identifier, function(owner)
+				local hashVehicle = veh.vehicle.model
+				local vehicleModel = GetDisplayNameFromVehicleModel(hashVehicle)
+				TriggerClientEvent('gcPhone:mdt_updateVehicle', sourcePlayer, owner.firstname, owner.lastname, plate, vehicleModel)
+			end)
+		end
+	end)
 end)

@@ -165,6 +165,10 @@ class PhoneAPI {
     this.post('mdt_citizenRequest', { firstname, lastname })
   }
 
+  async mdtVehicleRequest(plate) {
+    this.post('mdt_vehicleRequest', { plate })
+  }
+
   // === MDT Events
   onmdt_login (data) {
     store.dispatch('mdtLogin', data)
@@ -172,6 +176,10 @@ class PhoneAPI {
 
   onmdt_updateCitizen (data) {
     store.dispatch('mdtUpdateCitizen', data)
+  }
+
+  onmdt_updateVehicle (data) {
+    store.dispatch('mdtUpdateVehicle', data)
   }
 
   // ==========================================================================
