@@ -1,6 +1,6 @@
 <template>
   <div class="phone_app">
-    <PhoneTitle :title="IntlString('APP_MDTSYSTEM_DASHBOARD_TITLE')" @back="onBack"/>
+    <PhoneTitle :title="IntlString('APP_MDTSYSTEM_DASHBOARD_TITLE')" @back="onQuit"/>
     <template v-if="state === STATES.MAIN_POLICE">
       <div class="main-panel">
         <div class="main-info-area">
@@ -161,19 +161,19 @@
         <div class="result-area">
           <table>
             <tr>
-              <td>Name:</td>
+              <td>Name</td>
               <td>{{ mdtCitName }} {{ mdtCitSurName }}</td>
             </tr>
             <tr>
-              <td>Date Of Birth:</td>
+              <td>Date Of Birth</td>
               <td>{{ mdtCitDOB }}</td>
             </tr>
             <tr>
-              <td>Sex:</td>
+              <td>Sex</td>
               <td>{{ mdtCitSex }}</td>
             </tr>
             <tr>
-              <td>Height:</td>
+              <td>Height</td>
               <td>{{ mdtCitHeight }}</td>
             </tr>
           </table>
@@ -202,15 +202,15 @@
           <div class="result-area">
             <table>
               <tr>
-                <td>Owner:</td>
+                <td>Owner</td>
                 <td>{{ mdtCitName }} {{ mdtCitSurName }}</td>
               </tr>
               <tr>
-                <td>Plate:</td>
+                <td>Plate</td>
                 <td>{{ mdtVehPlate }}</td>
               </tr>
               <tr>
-                <td>Model:</td>
+                <td>Model</td>
                 <td>{{ mdtVehModel }}</td>
               </tr>
             </table>
@@ -272,20 +272,89 @@ export default {
     }
   },
   computed: {
-    ...mapGetters([
-      'IntlString', 'useMouse', 'mdtUsername',
-      'mdtJob', 'mdtID', 'mdtAdmin',
-      'mdtCitName', 'mdtCitSurName', 'mdtCitDOB',
-      'mdtCitSex', 'mdtCitHeight', 'mdtCitID',
-      'mdtVehPlate', 'mdtVehModel'
-    ]),
+    ...mapGetters(['IntlString', 'useMouse', 'mdtUsername', 'mdtJob', 'mdtID', 'mdtAdmin', 'mdtCitName', 'mdtCitSurName', 'mdtCitDOB', 'mdtCitSex', 'mdtCitHeight', 'mdtCitID', 'mdtVehPlate', 'mdtVehModel']),
     isAdmin () {
       return this.mdtAdmin >= 1
     }
   },
   methods: {
-    ...mapActions(['mdtLog']),
+    onUp: function () {
+      if (this.ignoreControls === true) return
+      let select = document.querySelector('.group.select')
+      if (select === null) {
+        select = document.querySelector('.group')
+        select.classList.add('select')
+        return
+      }
+      while (select.previousElementSibling !== null) {
+        if (select.previousElementSibling.classList.contains('group')) {
+          break
+        }
+        select = select.previousElementSibling
+      }
+      if (select.previousElementSibling !== null) {
+        document.querySelectorAll('.group').forEach(elem => {
+          elem.classList.remove('select')
+        })
+        select.previousElementSibling.classList.add('select')
+        let i = select.previousElementSibling.querySelector('input')
+        if (i !== null) {
+          i.focus()
+        }
+      }
+    },
+    onDown: function () {
+      if (this.ignoreControls === true) return
+      let select = document.querySelector('.group.select')
+      if (select === null) {
+        select = document.querySelector('.group')
+        select.classList.add('select')
+        return
+      }
+      while (select.nextElementSibling !== null) {
+        if (select.nextElementSibling.classList.contains('group')) {
+          break
+        }
+        select = select.nextElementSibling
+      }
+      if (select.nextElementSibling !== null) {
+        document.querySelectorAll('.group').forEach(elem => {
+          elem.classList.remove('select')
+        })
+        select.nextElementSibling.classList.add('select')
+        let i = select.nextElementSibling.querySelector('input')
+        if (i !== null) {
+          i.focus()
+        }
+      }
+    },
+    onEnter: function () {
+      if (this.ignoreControls === true) return
+      let select = document.querySelector('.group.select')
+      if (select === null) return
+
+      if (select.dataset !== null) {
+        if (select.dataset.type === 'text') {
+          const $input = select.querySelector('input')
+          let options = {
+            limit: parseInt(select.dataset.maxlength) || 64,
+            text: select.dataset.defaultValue || ''
+          }
+          this.$phoneAPI.getReponseText(options).then(data => {
+            $input.value = data.text
+            $input.dispatchEvent(new window.Event('change'))
+          })
+        }
+        if (select.dataset.type === 'button') {
+          select.click()
+        }
+      }
+    },
     onBack () {
+      if (this.useMouse === true && document.activeElement.tagName !== 'BODY') return
+      this.onQuit()
+    },
+    onQuit () {
       if (this.state !== this.STATES.MAIN_POLICE && this.mdtJob === '0') {
         this.state = this.STATES.MAIN_POLICE
       } else if (this.state !== this.STATES.MAIN_EMS && this.mdtJob === '1') {
@@ -293,12 +362,14 @@ export default {
       } else if (this.state !== this.STATES.MAIN_FIREDEPT && this.mdtJob === '2') {
         this.state = this.STATES.MAIN_FIREDEPT
       } else {
-        this.onQuit()
+        this.$router.push({ name: 'mdt' })
       }
+      this.mdtResetData()
     },
+    ...mapActions(['mdtLog', 'mdtCitizenRequest', 'mdtVehicleRequest', 'mdtResetData']),
     checkCitizen () {
       const firstname = this.firstname.trim()
-      const lastname = this.lastname.trim()
+      const lastname = this.surname.trim()
       if (firstname.length !== 0 && lastname.length !== 0) {
         this.mdtCitizenRequest({
           firstname,
@@ -306,8 +377,13 @@ export default {
         })
       }
     },
-    onQuit () {
-      this.$router.push({ name: 'mdt' })
+    checkVehicle () {
+      const plate = this.plate
+      if (plate.length !== 0) {
+        this.mdtVehicleRequest({
+          plate
+        })
+      }
     },
     onLoad () {
       switch (this.mdtJob) {
@@ -321,16 +397,8 @@ export default {
           this.state = this.STATES.MAIN_FIREDEPT
           break
       }
-    },
-    checkVehicle () {
-      const plate = this.plate
-      if (plate.length !== 0) {
-        this.mdtVehicleRequest({
-          plate
-        })
-      }
+      this.mdtResetData()
     }
-
   },
   created () {
     if (!this.useMouse) {

@@ -10,6 +10,7 @@
         <!--<span class="highlight"></span>-->
         <span class="bar"></span>
       </div>
+
       <div class="group inputText" data-type="text" data-model='password' data-maxlength='18' data-defaultValue="Password">
         <label for="psw"><b>Password</b></label>
         <input autocomplete="new-password" type="password" :placeholder="IntlString('APP_LOGIN_PASSWORD_LABEL')" v-model="password">
@@ -17,9 +18,8 @@
         <span class="bar"></span>
       </div>
 
-      <div class="group" data-type="button" v-on:click="login">
+      <div class="group" data-type="button" @click.stop="login">
         <input type='button' class="btn" @click.stop="login" value="Login" />
-        <!--<span class="highlight"></span>-->
         <span class="bar"></span>
       </div>
     </div>

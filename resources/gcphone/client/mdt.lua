@@ -6,7 +6,6 @@
 RegisterNetEvent("gcPhone:mdt_login")
 AddEventHandler("gcPhone:mdt_login", function(username, password, work, id, adminlevel)
   print("Reached client Stuff")
-  TriggerServerEvent("serverlog", "Admin:" .. adminlevel)
   SendNUIMessage({
     event = 'mdt_login',
       username = username,
@@ -32,14 +31,16 @@ AddEventHandler("gcPhone:mdt_updateCitizen", function(firstname, lastname, dateo
 end)
 
 RegisterNetEvent("gcPhone:mdt_updateVehicle")
-AddEventHandler("gcPhone:mdt_updateVehicle", function(firstname, lastname, plate, model)
+AddEventHandler("gcPhone:mdt_updateVehicle", function(firstname, lastname, plate, vehicle)
   print("Reached Client Stuff")
+  local hashVehicule = vehicle.model
+	local aheadVehName = GetDisplayNameFromVehicleModel(hashVehicule)
   SendNUIMessage({
     event = 'mdt_updateVehicle',
       firstname = firstname,
       lastname = lastname,
       plate = plate,
-      model = model
+      model = aheadVehName
   })
 
 end)

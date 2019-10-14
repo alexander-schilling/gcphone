@@ -33,6 +33,18 @@ const getters = {
 }
 
 const actions = {
+  mdtResetData ({ commit }) {
+    localStorage.removeItem('gcphone_mdt_CitName')
+    localStorage.removeItem('gcphone_mdt_CitSurName')
+    localStorage.removeItem('gcphone_mdt_CitDOB')
+    localStorage.removeItem('gcphone_mdt_CitSex')
+    localStorage.removeItem('gcphone_mdt_CitHeight')
+    localStorage.removeItem('gcphone_mdt_CitID')
+    localStorage.removeItem('gcphone_mdt_VehPlate')
+    localStorage.removeItem('gcphone_mdt_VehModel')
+
+    commit('RESET_DATA', {type: undefined})
+  },
   mdtLoginRequest (state, { username, password }) {
     PhoneAPI.mdtLoginRequest(username, password)
   },
@@ -90,8 +102,10 @@ const mutations = {
     state.mdtCitDOB = dateofbirth
     if (sex === 'm') {
       state.mdtCitSex = 'Male'
-    } else {
+    } else if (sex === 'f') {
       state.mdtCitSex = 'Female'
+    } else {
+      state.mdtCitSex = undefined
     }
     state.mdtCitHeight = height
     state.mdtCitID = identifier
@@ -101,6 +115,16 @@ const mutations = {
     state.mdtCitSurName = lastname
     state.mdtVehPlate = plate
     state.mdtVehModel = model
+  },
+  RESET_DATA (state, {type}) {
+    state.mdtCitName = type
+    state.mdtCitSurName = type
+    state.mdtCitDOB = type
+    state.mdtCitSex = type
+    state.mdtCitHeight = type
+    state.mdtCitID = type
+    state.mdtVehPlate = type
+    state.mdtVehModel = type
   }
 }
 

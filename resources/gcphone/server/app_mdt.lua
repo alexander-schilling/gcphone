@@ -45,12 +45,15 @@ function GetCitizen(name, surname, cb)
   end)
 end
 
+
 function GetVehicle(plate, cb)
-	MySQL.Async.fetchAll("SELECT identifier, vehicle, job FROM owned_vehicles WHRE owned_vehicles.plate = @plate", {
+	MySQL.Async.fetchAll("SELECT owner, vehicle, job FROM owned_vehicles WHERE owned_vehicles.plate = @plate", {
 		['@plate'] = plate
 	}, function (data)
-			local vehicle = json.decode(data[1].vehicle)
-			table.insert(car, {vehicle = vehicle, plate = v.plate, identifier = data[1].identifier})
+			-- local vehicle = json.decode(data[1].vehicle)
+			-- TriggerEvent("serverlog", "owner: " .. data[1].owner .. ", vehicle: " .. json.decode(data[1].vehicle) .. ", job: " .. data[1].job)
+			local car = {vehicle = json.decode(data[1].vehicle), plate = data[1].plate, owner = data[1].owner, job = data[1].job}
+			-- table.insert(car, {vehicle = vehicle, plate = data[1].plate, identifier = data[1].owner})
 		cb(car)
 	end)
 end
@@ -90,7 +93,8 @@ AddEventHandler('gcPhone:mdt_citizenRequest', function(firstname, lastname)
   local sourcePlayer = tonumber(source)
 
   GetCitizen(firstname, lastname, function (citizen)
-    if user ~= nil then
+    if citizen ~= nil then
+			TriggerEvent("serverlog", "firstname:" .. firstname .. " | DOB:" .. citizen.dateofbirth)
       TriggerClientEvent('gcPhone:mdt_updateCitizen', sourcePlayer, firstname, lastname, citizen.dateofbirth, citizen.sex, citizen.height, citizen.identifier)
 		end
   end)
@@ -98,14 +102,16 @@ end)
 
 RegisterServerEvent('gcPhone:mdt_vehicleRequest')
 AddEventHandler('gcPhone:mdt_vehicleRequest', function(plate)
-	local sourceplayer = tonumber(source)
-
+	local sourcePlayer = tonumber(source)
+	TriggerEvent("serverlog", "Reached: mdt_vehicleRequest")
 	GetVehicle(plate, function (veh)
-		if vehicle ~= nil then
-			GetVehicleOwner(vehicle.identifier, function(owner)
-				local hashVehicle = veh.vehicle.model
-				local vehicleModel = GetDisplayNameFromVehicleModel(hashVehicle)
-				TriggerClientEvent('gcPhone:mdt_updateVehicle', sourcePlayer, owner.firstname, owner.lastname, plate, vehicleModel)
+		if veh ~= nil then
+			TriggerEvent("serverlog", "plate:" .. plate)
+			GetVehicleOwner(veh.owner, function(owner)
+				-- local hashVehicle = veh.vehicle.model
+				-- local vehicleModel = GetDisplayNameFromVehicleModel(hashVehicle)
+				TriggerEvent("serverlog", "plate: " .. plate .. " | Model: " .. veh.vehicle.model .. " | Job: " .. veh.job)
+				TriggerClientEvent('gcPhone:mdt_updateVehicle', sourcePlayer, owner.firstname, owner.lastname, plate, veh.vehicle)
 			end)
 		end
 	end)
