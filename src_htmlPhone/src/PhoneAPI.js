@@ -165,7 +165,7 @@ class PhoneAPI {
     this.post('mdt_citizenRequest', { firstname, lastname })
   }
 
-  async mdtVehicleRequest(plate) {
+  async mdtVehicleRequest (plate) {
     this.post('mdt_vehicleRequest', { plate })
   }
 

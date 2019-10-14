@@ -273,11 +273,11 @@ export default {
   },
   computed: {
     ...mapGetters([
-    'IntlString', 'useMouse', 'mdtUsername',
-    'mdtJob', 'mdtID', 'mdtAdmin',
-    'mdtCitName', 'mdtCitSurName', 'mdtCitDOB',
-    'mdtCitSex', 'mdtCitHeight', 'mdtCitID',
-    'mdtVehPlate', 'mdtVehModel'
+      'IntlString', 'useMouse', 'mdtUsername',
+      'mdtJob', 'mdtID', 'mdtAdmin',
+      'mdtCitName', 'mdtCitSurName', 'mdtCitDOB',
+      'mdtCitSex', 'mdtCitHeight', 'mdtCitID',
+      'mdtVehPlate', 'mdtVehModel'
     ]),
     isAdmin () {
       return this.mdtAdmin >= 1
@@ -297,23 +297,15 @@ export default {
       }
     },
     checkCitizen () {
-      const firsname = this.firsname.trim()
+      const firstname = this.firstname.trim()
       const lastname = this.lastname.trim()
       if (firstname.length !== 0 && lastname.length !== 0) {
         this.mdtCitizenRequest({
-          firsname,
+          firstname,
           lastname
         })
       }
     },
-    checkVehicle () {
-      const plate = this.plate
-      if (plate.length !== 0) {
-        this.mdtVehicleRequest({
-          plate
-        })
-      }
-    }
     onQuit () {
       this.$router.push({ name: 'mdt' })
     },
@@ -329,7 +321,16 @@ export default {
           this.state = this.STATES.MAIN_FIREDEPT
           break
       }
+    },
+    checkVehicle () {
+      const plate = this.plate
+      if (plate.length !== 0) {
+        this.mdtVehicleRequest({
+          plate
+        })
+      }
     }
+
   },
   created () {
     if (!this.useMouse) {

@@ -13,7 +13,7 @@ const state = {
   mdtCitHeight: localStorage['gcphone_mdt_CitHeight'],
   mdtCitID: localStorage['gcphone_mdt_CitID'],
   mdtVehPlate: localStorage['gcphone_mdt_VehPlate'],
-  mdtVehModel: localStorage['gcphone_mdt_VehModel'],
+  mdtVehModel: localStorage['gcphone_mdt_VehModel']
 }
 
 const getters = {
@@ -36,11 +36,11 @@ const actions = {
   mdtLoginRequest (state, { username, password }) {
     PhoneAPI.mdtLoginRequest(username, password)
   },
-  mdtCitizenRequest (state, {firstname, lastname}) {
+  mdtCitizenRequest (state, { firstname, lastname }) {
     PhoneAPI.mdtCitizenRequest(firstname, lastname)
     console.log('First Name: ' + firstname + ', Surname: ' + lastname)
   },
-  mdtVehicleRequest (state {}) {
+  mdtVehicleRequest (state, { plate }) {
     PhoneAPI.mdtVehicleRequest(plate)
   },
   mdtLog (state, { message }) {
@@ -96,7 +96,7 @@ const mutations = {
     state.mdtCitHeight = height
     state.mdtCitID = identifier
   },
-  UPDATE_VEHICLE(state, {firstname, lastname, plate, model}) {
+  UPDATE_VEHICLE (state, {firstname, lastname, plate, model}) {
     state.mdtCitName = firstname
     state.mdtCitSurName = lastname
     state.mdtVehPlate = plate

@@ -46,9 +46,9 @@ function GetCitizen(name, surname, cb)
 end
 
 function GetVehicle(plate, cb)
-	MySQL.Async.fetchAll("SELECT identifier, vehicle, job FROM owned_vehicles WHRE owned_vehicles.plate = @plate"), {
+	MySQL.Async.fetchAll("SELECT identifier, vehicle, job FROM owned_vehicles WHRE owned_vehicles.plate = @plate", {
 		['@plate'] = plate
-	}, function (data[1])
+	}, function (data)
 			local vehicle = json.decode(data[1].vehicle)
 			table.insert(car, {vehicle = vehicle, plate = v.plate, identifier = data[1].identifier})
 		cb(car)
@@ -56,9 +56,9 @@ function GetVehicle(plate, cb)
 end
 
 function GetVehicleOwner(identifier, cb)
-	MySQL.Async.fetchAll("SELECT firstname, lastname FROM users WHERE users.identifier = @identifier"), {
+	MySQL.Async.fetchAll("SELECT firstname, lastname FROM users WHERE users.identifier = @identifier", {
 		['@identifier'] = identifier
-	}, function (data[1])
+	}, function (data)
 		cb(data[1])
 	end)
 end
