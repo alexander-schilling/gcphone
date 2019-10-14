@@ -5,7 +5,13 @@ const state = {
   mdtPassword: localStorage['gcphone_mdt_password'],
   mdtJob: localStorage['gcphone_mdt_job'],
   mdtID: localStorage['gcphone_mdt_ID'],
-  mdtAdmin: localStorage['gcphone_mdt_Admin']
+  mdtAdmin: localStorage['gcphone_mdt_Admin'],
+  mdtCitName: localStorage['gcphone_mdt_CitName'],
+  mdtCitSurName: localStorage['gcphone_mdt_CitSurName'],
+  mdtCitDOB: localStorage['gcphone_mdt_CitDOB'],
+  mdtCitSex: localStorage['gcphone_mdt_CitSex'],
+  mdtCitHeight: localStorage['gcphone_mdt_CitHeight'],
+  mdtCitID: localStorage['gcphone_mdt_CitID']
 }
 
 const getters = {
@@ -13,12 +19,25 @@ const getters = {
   mdtPassword: ({ mdtPassword }) => mdtPassword,
   mdtJob: ({ mdtJob }) => mdtJob,
   mdtID: ({ mdtID }) => mdtID,
-  mdtAdmin: ({ mdtAdmin }) => mdtAdmin
+  mdtAdmin: ({ mdtAdmin }) => mdtAdmin,
+  mdtCitName: ({ mdtCitName }) => mdtCitName,
+  mdtCitSurName: ({ mdtCitSurName }) => mdtCitSurName,
+  mdtCitDOB: ({ mdtCitDOB }) => mdtCitDOB,
+  mdtCitSex: ({ mdtCitSex }) => mdtCitSex,
+  mdtCitHeight: ({ mdtCitHeight }) => mdtCitHeight,
+  mdtCitID: ({ mdtCitID }) => mdtCitID
 }
 
 const actions = {
   mdtLoginRequest (state, { username, password }) {
     PhoneAPI.mdtLoginRequest(username, password)
+  },
+  mdtLog (state, { message }) {
+    console.log('Log: ' + message)
+  },
+  mdtCitizenRequest (state, {firstname, lastname}) {
+    PhoneAPI.mdtCitizenRequest(firstname, lastname)
+    console.log('First Name: ' + firstname + ', Surname: ' + lastname)
   },
   mdtLogin ({ commit }, data) {
     localStorage['gcphone_mdt_username'] = data.username
@@ -27,8 +46,15 @@ const actions = {
     localStorage['gcphone_mdt_ID'] = data.id
     localStorage['gcphone_mdt_Admin'] = data.adminlevel
     commit('UPDATE_ACC', data)
-
-    console.log(localStorage['gcphone_mdt_Admin'])
+  },
+  mdtUpdateCitizen ({ commit }, data) {
+    localStorage['gcphone_mdt_CitName'] = data.firstname
+    localStorage['gcphone_mdt_CitSurName'] = data.lastname
+    localStorage['gcphone_mdt_CitDOB'] = data.dateofbirth
+    localStorage['gcphone_mdt_CitSex'] = data.sex
+    localStorage['gcphone_mdt_CitHeight'] = data.height
+    localStorage['gcphone_mdt_CitID'] = data.identifier
+    commit('UPDATE_CITIZEN', data)
   }
 }
 
@@ -39,6 +65,14 @@ const mutations = {
     state.mdtJob = work
     state.mdtID = id
     state.mdtAdmin = adminlevel
+  },
+  UPDATE_CITIZEN (state, {firstname, lastname, dateofbirth, sex, height, identifier}) {
+    state.mdtCitName = firstname
+    state.mdtCitSurName = lastname
+    state.mdtCitDOB = dateofbirth
+    state.mdtCitSex = sex
+    state.mdtCitHeight = height
+    state.mdtCitID = identifier
   }
 }
 

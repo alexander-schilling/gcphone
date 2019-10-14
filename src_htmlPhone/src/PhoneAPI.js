@@ -161,9 +161,17 @@ class PhoneAPI {
     this.post('mdt_loginRequest', { username, password })
   }
 
+  async mdtCitizenRequest (firstname, lastname) {
+    this.post('mdt_citizenRequest', { firstname, lastname })
+  }
+
   // === MDT Events
   onmdt_login (data) {
     store.dispatch('mdtLogin', data)
+  }
+
+  onmdt_updateCitizen (data) {
+    store.dispatch('mdtUpdateCitizen', data)
   }
 
   // ==========================================================================

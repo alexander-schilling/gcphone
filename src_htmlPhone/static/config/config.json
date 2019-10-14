@@ -429,6 +429,8 @@
       "APP_MDTSYSTEM_DASHBOARD_TITLE": "CAD Dashboard",
       "APP_LOGIN_USERNAME_LABEL": "Enter Username",
       "APP_LOGIN_PASSWORD_LABEL": "Enter Password",
+      "APP_USER_NAME_LABEL": "Enter First Name",
+      "APP_USER_SURNAME_LABEL": "Enter Last Name",
 
       "TIMEAGO": [
         "just now",

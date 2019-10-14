@@ -1,7 +1,7 @@
 <template>
   <div class="phone_app">
     <PhoneTitle :title="IntlString('APP_MDTSYSTEM_TITLE')" @back="onQuit"/>
-    <div class="login_form">
+    <div class="login-form">
       <img src="/html/static/img/app_mdt/login_screen.png" alt="" class="img_center">
 
       <div class="group inputText" data-type="text" data-maxlength='64' data-defaultValue="Username">
@@ -18,7 +18,7 @@
       </div>
 
       <div class="group" data-type="button" v-on:click="login">
-        <input type='button' class="btn" v-on:click="login" value="Login" />
+        <input type='button' class="btn" @click.stop="login" value="Login" />
         <!--<span class="highlight"></span>-->
         <span class="bar"></span>
       </div>
@@ -165,7 +165,7 @@ export default {
 </script>
 
 <style scoped>
-  .login_form {
+  .login-form {
     margin: 6px 12px;
     margin-top: 28px;
     height: calc(100% - 48px);

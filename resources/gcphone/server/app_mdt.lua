@@ -65,3 +65,14 @@ AddEventHandler('gcPhone:mdt_loginRequest', function(username, password)
 		end
   end)
 end)
+
+RegisterServerEvent('gcPhone:mdt_citizenRequest')
+AddEventHandler('gcPhone:mdt_citizenRequest', function(firstname, lastname)
+  local sourcePlayer = tonumber(source)
+
+  GetCitizen(firstname, lastname, function (citizen)
+    if user ~= nil then
+      TriggerClientEvent('gcPhone:mdt_updateCitizen', sourcePlayer, firstname, lastname, citizen.dateofbirth, citizen.sex, citizen.height, citizen.identifier)
+		end
+  end)
+end)

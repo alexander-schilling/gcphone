@@ -1,9 +1,9 @@
 <template>
   <div class="phone_app">
-    <PhoneTitle :title="IntlString('APP_MDTSYSTEM_DASHBOARD_TITLE')" @back="onQuit"/>
+    <PhoneTitle :title="IntlString('APP_MDTSYSTEM_DASHBOARD_TITLE')" @back="onBack"/>
     <template v-if="state === STATES.MAIN_POLICE">
       <div class="main-panel">
-        <div class="info-area">
+        <div class="main-info-area">
           <div class="logo">
             <img src="/html/static/img/app_mdt/police.png" alt="">
           </div>
@@ -11,13 +11,50 @@
           <span>Account ID: {{ mdtID }}</span>
           <span>Admin Level: {{ mdtAdmin }}</span>
         </div>
-        <div class="button-area">
-          <div class="button-item">Manage Account</div>
-          <div class="button-item">Jobs</div>
-          <div class="button-item">Name Database</div>
-          <div class="button-item">Plate Database</div>
-          <div class="button-item">Wanted List</div>
-          <div v-if="isAdmin" class="button-item">Admin</div>
+        <div class="main-button-area">
+
+          <div class="main-button-item">
+            <div class="group" data-type="button" @click.stop="state = STATES.MANAGE_ACCOUNT">
+              Manage Account
+              <span class="bar"></span>
+            </div>
+          </div>
+
+          <div class="main-button-item">
+            <div class="group" data-type="button" @click.stop="state = STATES.JOBS_MENU">
+              Jobs
+              <span class="bar"></span>
+            </div>
+          </div>
+
+          <div class="main-button-item">
+            <div class="group" data-type="button" @click.stop="state = STATES.NAME_DATABASE">
+              Name Database
+              <span class="bar"></span>
+            </div>
+          </div>
+
+          <div class="main-button-item">
+            <div class="group" data-type="button" @click.stop="state = STATES.VEHICLE_DATABASE">
+              Plate Database
+              <span class="bar"></span>
+            </div>
+          </div>
+
+          <div class="main-button-item">
+            <div class="group" data-type="button" @click.stop="state = STATES.WANTED_LIST">
+              Wanted List
+              <span class="bar"></span>
+            </div>
+          </div>
+
+          <div v-if="isAdmin" class="main-button-item">
+            <div class="group" data-type="button" @click.stop="state = STATES.ADMIN_VIEW">
+              Admin
+              <span class="bar"></span>
+            </div>
+          </div>
+
         </div>
       </div>
     </template>
@@ -27,16 +64,39 @@
         <div class="logo">
           <img src="/html/static/img/app_mdt/ems.png" alt="">
         </div>
-        <div class="info-area">
+        <div class="main-info-area">
           <span>Username: {{ mdtUsername }}</span>
           <span>Account ID: {{ mdtID }}</span>
           <span>Admin Level: {{ mdtAdmin }}</span>
         </div>
-        <div class="button-area">
-          <div class="button-item">Manage Account</div>
-          <div class="button-item">Jobs</div>
-          <div class="button-item">Name Database</div>
-          <div v-if="isAdmin" class="button-item">Admin</div>
+        <div class="main-button-area">
+          <div class="main-button-item">
+            <div class="group" data-type="button" @click.stop="state = STATES.MANAGE_ACCOUNT">
+              Manage Account
+              <span class="bar"></span>
+            </div>
+          </div>
+
+          <div class="main-button-item">
+            <div class="group" data-type="button" @click.stop="state = STATES.JOBS_MENU">
+              Jobs
+              <span class="bar"></span>
+            </div>
+          </div>
+
+          <div class="main-button-item">
+            <div class="group" data-type="button" @click.stop="state = STATES.NAME_DATABASE">
+              Name Database
+              <span class="bar"></span>
+            </div>
+          </div>
+
+          <div v-if="isAdmin" class="main-button-item">
+            <div class="group" data-type="button" @click.stop="state = STATES.ADMIN_VIEW">
+              Admin
+              <span class="bar"></span>
+            </div>
+          </div>
         </div>
       </div>
     </template>
@@ -46,23 +106,66 @@
         <div class="logo">
           <img src="/html/static/img/app_mdt/firedept.png" alt="">
         </div>
-        <div class="info-area">
+        <div class="main-info-area">
           <span>Username: {{ mdtUsername }}</span>
           <span>Account ID: {{ mdtID }}</span>
           <span>Admin Level: {{ mdtAdmin }}</span>
         </div>
-        <div class="button-area">
-          <div class="button-item">Manage Account</div>
-          <div class="button-item">Jobs</div>
-          <div class="button-item">Name Database</div>
-          <div v-if="isAdmin" class="button-item">Admin</div>
+        <div class="main-button-area">
+          <div class="main-button-item">
+            <div class="group" data-type="button" @click.stop="state = STATES.MANAGE_ACCOUNT">
+              Manage Account
+              <span class="bar"></span>
+            </div>
+          </div>
+
+          <div class="main-button-item">
+            <div class="group" data-type="button" @click.stop="state = STATES.JOBS_MENU">
+              Jobs
+              <span class="bar"></span>
+            </div>
+          </div>
+
+          <div v-if="isAdmin" class="button-item">
+            <div class="group" data-type="button" @click.stop="state = STATES.ADMIN_VIEW">
+              Admin
+              <span class="bar"></span>
+            </div>
+          </div>
         </div>
       </div>
     </template>
 
     <template v-else-if="state === STATES.NAME_DATABASE">
       <div class="main-panel">
+        <div class="input-area">
+          <div class="group inputText" data-type="text" data-maxlength='64' data-defaultValue="First Name">
+            <input type="text" :placeholder="IntlString('APP_USER_NAME_LABEL')" v-model="firstname">
+            <!--<span class="highlight"></span>-->
+            <span class="bar"></span>
+          </div>
 
+          <div class="group inputText" data-type="text" data-maxlength='64' data-defaultValue="Last Name">
+            <input type="text" :placeholder="IntlString('APP_USER_SURNAME_LABEL')" v-model="surname">
+            <!--<span class="highlight"></span>-->
+            <span class="bar"></span>
+          </div>
+
+          <div class="group" data-type="button" v-on:click="checkCitizen">
+            <input type='button' class="btn" @click.stop="checkCitizen" value="Lookup" />
+            <!--<span class="highlight"></span>-->
+            <span class="bar"></span>
+          </div>
+
+        </div>
+        <div class="result-area">
+          {{ mdtCitName }}
+          {{ mdtCitSurName }}
+          {{ mdtCitDOB }}
+          {{ mdtCitSex }}
+          {{ mdtCitHeight }}
+          {{ mdtCitID }}
+        </div>
       </div>
     </template>
 
@@ -99,7 +202,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import PhoneTitle from './../PhoneTitle'
 
 const STATES = Object.freeze({
@@ -125,15 +228,20 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['IntlString', 'useMouse', 'mdtUsername', 'mdtJob', 'mdtID', 'mdtAdmin']),
+    ...mapGetters(['IntlString', 'useMouse', 'mdtUsername', 'mdtJob', 'mdtID', 'mdtAdmin', 'mdtCitName', 'mdtCitSurName', 'mdtCitDOB', 'mdtCitSex', 'mdtCitHeight', 'mdtCitID']),
     isAdmin () {
-      return this.mdtAdmin >= 1 || this.mdtAdmin >= 2
+      return this.mdtAdmin >= 1
     }
   },
   methods: {
+    ...mapActions(['mdtLog']),
     onBack () {
-      if (this.state !== this.STATES.MENU) {
-        this.state = this.STATES.MENU
+      if (this.state !== this.STATES.MAIN_POLICE && this.mdtJob === '0') {
+        this.state = this.STATES.MAIN_POLICE
+      } else if (this.state !== this.STATES.MAIN_EMS && this.mdtJob === '1') {
+        this.state = this.STATES.MAIN_EMS
+      } else if (this.state !== this.STATES.MAIN_FIREDEPT && this.mdtJob === '2') {
+        this.state = this.STATES.MAIN_FIREDEPT
       } else {
         this.onQuit()
       }
@@ -154,7 +262,6 @@ export default {
           break
       }
     }
-    // ...mapActions(['mdtLoginRequest'])
   },
   created () {
     if (!this.useMouse) {
@@ -178,14 +285,14 @@ export default {
 
 <style scoped>
 
-/*PANEL SECTION ================================= */
+/*MAIN PANEL SECTION ================================= */
 .main-panel {
   width: 100%;
   height: 100%;
   background: #dbdbdb;
 }
 
-.info-area {
+.main-info-area {
   width: 100%;
   height: 20%;
   background: #dbdbdb;
@@ -193,7 +300,7 @@ export default {
   box-shadow: 0px 8px 10px grey;
 }
 
-.info-area span {
+.main-info-area span {
   padding-left: 1%;
   display: block;
 }
@@ -203,7 +310,7 @@ export default {
   width: 30%;
 }
 
-.button-area {
+.main-button-area {
   width: 100%;
   height: 80%;
   background: #dbdbdb;
@@ -212,7 +319,7 @@ export default {
   padding: 10px;
 }
 
-.button-item {
+.main-button-item {
   background-color: #080808;
   color: #dbdbdb;
   padding: 10px;
@@ -221,6 +328,98 @@ export default {
   box-shadow: 0px 5px 5px grey;
 
   margin-top: 2%;
+}
+/*NAMEDB PANEL SECTION ================================= */
+.input-area {
+  width: 100%;
+  height: 20%;
+  background: #dbdbdb;
+
+  box-shadow: 0px 8px 10px grey;
+}
+
+.result-area {
+  width: 100%;
+  height: 80%;
+  background: #dbdbdb;
+
+  display: block;
+  padding: 10px;
+}
+
+/*Button CSS*/
+input[type=text], input[type=password] {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+  font-size: 18px;
+}
+
+.btn {
+  background: #ad3333;
+  color: white;
+  padding: 8px 20px;
+  margin: 8px 0;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  height: 48px;
+  font-size: 16px;
+}
+.btn:hover {
+  opacity: 0.8;
+}
+
+.group {
+  position:relative;
+  margin: 4px 4px;
+}
+.group.inputText {
+  position:relative;
+  margin-top:20px;
+}
+
+/* BOTTOM BARS ================================= */
+.bar 	{ position:relative; display:block; width:100%; }
+.bar:before, .bar:after 	{
+  content:'';
+  height:2px;
+  width:0;
+  bottom:1px;
+  position:absolute;
+  background:#631e1e;
+  transition:0.2s ease all;
+  -moz-transition:0.2s ease all;
+  -webkit-transition:0.2s ease all;
+}
+.bar:before {
+  left:50%;
+}
+.bar:after {
+  right:50%;
+}
+
+/* active state */
+input:focus ~ .bar:before, input:focus ~ .bar:after,
+.group.select input ~ .bar:before, .group.select input ~ .bar:after{
+  width:50%;
+}
+
+/* ANIMATIONS ================ */
+@-webkit-keyframes inputHighlighter {
+  from { background:#ad3333; }
+  to 	{ width:0; background:transparent; }
+}
+@-moz-keyframes inputHighlighter {
+  from { background:#ad3333; }
+  to 	{ width:0; background:transparent; }
+}
+@keyframes inputHighlighter {
+  from { background:#ad3333; }
+  to 	{ width:0; background:transparent; }
 }
 
 </style>
