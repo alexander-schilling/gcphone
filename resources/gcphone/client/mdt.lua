@@ -21,12 +21,13 @@ RegisterNetEvent("gcPhone:mdt_updateCitizen")
 AddEventHandler("gcPhone:mdt_updateCitizen", function(firstname, lastname, dateofbirth, sex, height, identifier)
   print("Reached client Stuff")
   SendNUIMessage({
-    event = 'mdt_login',
-      username = username,
-      password = password,
-      work = work,
-      id = id,
-      adminlevel = adminlevel
+    event = 'mdt_updateCitizen',
+      firstname = firstname,
+      lastname = lastname,
+      dateofbirth = dateofbirth,
+      sex = sex,
+      height = height,
+      identifier = identifier
   })
 end)
 
@@ -35,11 +36,9 @@ end)
 --====================================================================================
 
 RegisterNUICallback('mdt_loginRequest', function(data, cb)
-  -- print('PhoneAPI Post: Username: ' + username + ', Password: ' + password)
   TriggerServerEvent('gcPhone:mdt_loginRequest', data.username, data.password)
 end)
 
 RegisterNUICallback('mdt_citizenRequest', function(data, cb)
-  -- print('PhoneAPI Post: Username: ' + username + ', Password: ' + password)
   TriggerServerEvent('gcPhone:mdt_citizenRequest', data.firstname, data.lastname)
 end)

@@ -37,13 +37,19 @@ function GetUser(username, password, cb)
 end
 
 function GetCitizen(name, surname, cb)
-  MySQL.Async.fetchAll("SELECT firstname, lastname, dateofbirth, sex, height, identifier FROM users WHERE users.firstname = @name AND users.lastname = @surname", {
+  MySQL.Async.fetchAll("SELECT dateofbirth, sex, height, identifier FROM users WHERE users.firstname = @name AND users.lastname = @surname", {
     ['@name'] = name,
     ['@surname'] = surname
   }, function (data)
     cb(data[1])
   end)
 end
+
+--[[
+function GetVehicle(plate, cb)
+	MySQL.Async.fetchAll("SELECT *")
+end
+]]
 
 -- ====================================================================================
 -- Events that JS can access
@@ -62,17 +68,6 @@ AddEventHandler('gcPhone:mdt_loginRequest', function(username, password)
     if user ~= nil then
 			TriggerEvent("serverlog", "Admin:" .. user.adminlevel .. " | ID:" .. user.id)
       TriggerClientEvent('gcPhone:mdt_login', sourcePlayer, username, password, user.work, user.id, tonumber(user.adminlevel))
-		end
-  end)
-end)
-
-RegisterServerEvent('gcPhone:mdt_citizenRequest')
-AddEventHandler('gcPhone:mdt_citizenRequest', function(firstname, lastname)
-  local sourcePlayer = tonumber(source)
-
-  GetCitizen(firstname, lastname, function (citizen)
-    if user ~= nil then
-      TriggerClientEvent('gcPhone:mdt_updateCitizen', sourcePlayer, firstname, lastname, citizen.dateofbirth, citizen.sex, citizen.height, citizen.identifier)
 		end
   end)
 end)
