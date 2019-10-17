@@ -233,6 +233,18 @@ AddEventHandler('gcPhone:addJobToDB', function(message, department, coordX, coor
 	})
 end)
 
+RegisterServerEvent('gcPhone:getJobsFromDB')
+AddEventHandler('gcPhone:getJobsFromDB', function(department)
+  MySQL.Async.fetchAll("SELECT * FROM mdt_jobs WHERE mdt_jobs.department = @department", {
+    ['@department'] = department
+  }, function (data)
+    for k,v in pairs(data) do
+      -- Send each item at a time
+      -- clientEvent data[k].value
+    end
+  end)
+end)
+
 RegisterServerEvent('gcPhone:sendMessage')
 AddEventHandler('gcPhone:sendMessage', function(phoneNumber, message)
     local sourcePlayer = tonumber(source)
