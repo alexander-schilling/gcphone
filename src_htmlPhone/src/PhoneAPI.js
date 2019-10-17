@@ -182,6 +182,11 @@ class PhoneAPI {
     store.dispatch('mdtUpdateVehicle', data)
   }
 
+  onmdt_addJob (data) {
+    console.log('PhoneAPI: ' + data.department)
+    store.commit('MDT_ADD_JOB', data)
+  }
+
   // ==========================================================================
   //  Gestion des events
   // ==========================================================================

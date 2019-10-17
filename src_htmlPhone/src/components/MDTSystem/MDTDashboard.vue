@@ -126,7 +126,7 @@
             </div>
           </div>
 
-          <div v-if="isAdmin" class="button-item">
+          <div v-if="isAdmin" class="main-button-item">
             <div class="group" data-type="button" @click.stop="state = STATES.ADMIN_VIEW">
               Admin
               <span class="bar"></span>
@@ -176,6 +176,14 @@
               <td>Height</td>
               <td>{{ mdtCitHeight }}</td>
             </tr>
+            <tr>
+              <td>Licenses</td>
+              <td>{{ mdtCitLicenses }}</td>
+            </tr>
+            <tr>
+              <td>Criminal Records</td>
+              <td>WIP</td>
+            </tr>
           </table>
           {{ mdtCitID }}
         </div>
@@ -220,14 +228,23 @@
     </template>
 
     <template v-else-if="state === STATES.JOBS_MENU">
-      <div class="main-panel">
-
+      <div v-if="mdtWork === '0'"> <!--Police-->
+        <div class="main-panel">
+          Does this work??
+          <div v-for="job in mdtJobs">
+            {{ job.message }}
+          </div>
+        </div>
       </div>
-    </template>
+      <div v-else-if="mdtWork === '1'"> <!--EMS-->
+        <div class="main-panel">
 
-    <template v-else-if="state === STATES.WANTED_LIST">
-      <div class="main-panel">
+        </div>
+      </div>
+      <div v-else-if="mdtWork === '2'"> <!--Fire Department-->
+        <div class="main-panel">
 
+        </div>
       </div>
     </template>
 
@@ -257,8 +274,7 @@ const STATES = Object.freeze({
   VEHICLE_DATABASE: 4,
   JOBS_MENU: 5,
   ADMIN_VIEW: 6,
-  WANTED_LIST: 7,
-  MANAGE_ACCOUNT: 8
+  MANAGE_ACCOUNT: 7
 })
 
 export default {
@@ -272,7 +288,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['IntlString', 'useMouse', 'mdtUsername', 'mdtJob', 'mdtID', 'mdtAdmin', 'mdtCitName', 'mdtCitSurName', 'mdtCitDOB', 'mdtCitSex', 'mdtCitHeight', 'mdtCitID', 'mdtVehPlate', 'mdtVehModel']),
+    ...mapGetters(['IntlString', 'useMouse', 'mdtUsername', 'mdtWork', 'mdtID', 'mdtAdmin', 'mdtCitName', 'mdtCitSurName', 'mdtCitDOB', 'mdtCitSex', 'mdtCitHeight', 'mdtCitID', 'mdtVehPlate', 'mdtVehModel', 'mdtCitLicenses', 'mdtJobs']),
     isAdmin () {
       return this.mdtAdmin >= 1
     }
@@ -355,11 +371,11 @@ export default {
       this.onQuit()
     },
     onQuit () {
-      if (this.state !== this.STATES.MAIN_POLICE && this.mdtJob === '0') {
+      if (this.state !== this.STATES.MAIN_POLICE && this.mdtWork === '0') {
         this.state = this.STATES.MAIN_POLICE
-      } else if (this.state !== this.STATES.MAIN_EMS && this.mdtJob === '1') {
+      } else if (this.state !== this.STATES.MAIN_EMS && this.mdtWork === '1') {
         this.state = this.STATES.MAIN_EMS
-      } else if (this.state !== this.STATES.MAIN_FIREDEPT && this.mdtJob === '2') {
+      } else if (this.state !== this.STATES.MAIN_FIREDEPT && this.mdtWork === '2') {
         this.state = this.STATES.MAIN_FIREDEPT
       } else {
         this.$router.push({ name: 'mdt' })
@@ -386,7 +402,7 @@ export default {
       }
     },
     onLoad () {
-      switch (this.mdtJob) {
+      switch (this.mdtWork) {
         case '0':
           this.state = this.STATES.MAIN_POLICE
           break

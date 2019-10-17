@@ -180,6 +180,93 @@ AddEventHandler('gcPhone:deleteContact', function(id)
 end)
 
 --====================================================================================
+--  Messages - Olle Strand CUSTOM
+--====================================================================================
+
+--[[
+function _internalAddMessage(transmitter, receiver, message, owner)
+    local Query = "INSERT INTO phone_messages (`transmitter`, `receiver`,`message`, `isRead`,`owner`) VALUES(@transmitter, @receiver, @message, @isRead, @owner);"
+    local Query2 = 'SELECT * from phone_messages WHERE `id` = @id;'
+	local Parameters = {
+        ['@transmitter'] = transmitter,
+        ['@receiver'] = receiver,
+        ['@message'] = message,
+        ['@isRead'] = owner,
+        ['@owner'] = owner
+    }
+    local id = MySQL.Sync.insert(Query, Parameters)
+    return MySQL.Sync.fetchAll(Query2, {
+        ['@id'] = id
+    })[1]
+end
+]]
+
+function autoRespond(source, identifier, phone_number, type)
+    local message = ""
+    if type == "approved" then
+      message = "Your message has been recieved. We will get back to as soon as someone responds to this call!"
+    elseif type == "shortMsg" then
+      message = "Your message is considered too short. Please explain more!"
+    else
+      message = "There is currently an error in the system. Please try later!"
+    end
+    local sourcePlayer = tonumber(source)
+    local myPhone = getNumberPhone(identifier)
+
+    local tomess = _internalAddMessage(phone_number, myPhone, message, 0)
+    TriggerClientEvent("gcPhone:receiveMessage", sourcePlayer, tomess)
+
+    local memess = _internalAddMessage(myPhone, phone_number, message, 1)
+    TriggerClientEvent("gcPhone:receiveMessage", sourcePlayer, memess)
+end
+
+RegisterServerEvent('gcPhone:addJobToDB')
+AddEventHandler('gcPhone:addJobToDB', function(message, department, coordX, coordY, coordZ)
+
+
+  MySQL.Async.fetchAll("INSERT INTO mdt_jobs (`message`, `department`,`coordX`, `coordY`,`coordZ`) VALUES(@message, @department, @coordX, @coordY, @coordZ);", {
+		['@message'] = message,
+    ['@department'] = department,
+    ['@coordX'] = coordX,
+    ['@coordY'] = coordY,
+    ['@coordZ'] = coordZ
+	})
+end)
+
+RegisterServerEvent('gcPhone:sendMessage')
+AddEventHandler('gcPhone:sendMessage', function(phoneNumber, message)
+    local sourcePlayer = tonumber(source)
+    local identifier = getPlayerID(source)
+
+    addMessage(sourcePlayer, identifier, phoneNumber, message)
+    if phoneNumber == "police" then
+      if message:len() >= 10 then
+        TriggerClientEvent("gcPhone:mdt_addJob", sourcePlayer, message, "police")
+        autoRespond(source, identifier, phoneNumber, "approved")
+      else
+        autoRespond(source, identifier, phoneNumber, "shortMsg")
+      end
+    elseif phoneNumber == "ambulance" then
+      if message:len() >= 10 then
+        TriggerClientEvent("gcPhone:mdt_addJob", sourcePlayer, message, "ambulance")
+        autoRespond(source, identifier, phoneNumber, "approved")
+      else
+        autoRespond(source, identifier, phoneNumber, "shortMsg")
+      end
+
+    elseif phoneNumber == "firedept" then
+      if message:len() >= 10 then
+        TriggerClientEvent("gcPhone:mdt_addJob", sourcePlayer, message, "firedept")
+        autoRespond(source, identifier, phoneNumber, "approved")
+      else
+        autoRespond(source, identifier, phoneNumber, "shortMsg")
+      end
+
+    end
+end)
+
+
+--====================================================================================
 --  Messages
 --====================================================================================
 function getMessages(identifier)
@@ -198,13 +285,15 @@ end)
 function _internalAddMessage(transmitter, receiver, message, owner)
     local Query = "INSERT INTO phone_messages (`transmitter`, `receiver`,`message`, `isRead`,`owner`) VALUES(@transmitter, @receiver, @message, @isRead, @owner);"
     local Query2 = 'SELECT * from phone_messages WHERE `id` = @id;'
-	local Parameters = {
+	   local Parameters = {
         ['@transmitter'] = transmitter,
         ['@receiver'] = receiver,
         ['@message'] = message,
         ['@isRead'] = owner,
         ['@owner'] = owner
     }
+
+
     local id = MySQL.Sync.insert(Query, Parameters)
     return MySQL.Sync.fetchAll(Query2, {
         ['@id'] = id
@@ -255,13 +344,14 @@ function deleteAllMessage(identifier)
         ['@mePhoneNumber'] = mePhoneNumber
     })
 end
-
+--[[
 RegisterServerEvent('gcPhone:sendMessage')
 AddEventHandler('gcPhone:sendMessage', function(phoneNumber, message)
     local sourcePlayer = tonumber(source)
     local identifier = getPlayerID(source)
     addMessage(sourcePlayer, identifier, phoneNumber, message)
 end)
+]]
 
 RegisterServerEvent('gcPhone:deleteMessage')
 AddEventHandler('gcPhone:deleteMessage', function(msgId)

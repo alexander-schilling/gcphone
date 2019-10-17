@@ -9,9 +9,9 @@
       </span>
     </span>
     <div class='home_buttons'>
-      <button 
-          v-for="(but, key) of AppsHome" 
-          v-bind:key="but.name" 
+      <button
+          v-for="(but, key) of AppsHome"
+          v-bind:key="but.name"
           v-bind:class="{ select: key === currentSelect}"
           v-bind:style="{backgroundImage: 'url(' + but.icons +')'}"
           @click="openApp(but)"
@@ -19,16 +19,16 @@
           {{but.intlName}}
           <span class="puce" v-if="but.puce !== undefined && but.puce !== 0">{{but.puce}}</span>
       </button>
-      <div class="btn_menu_ctn">
-        <button 
+      <!--<div class="btn_menu_ctn">
+        <button
           class="btn_menu"
           :class="{ select: AppsHome.length === currentSelect}"
           v-bind:style="{backgroundImage: 'url(' + '/html/static/img/icons_app/menu.png' +')'}"
           @click="openApp({routeName: 'menu'})"
           >
         </button>
-      </div>
-    </div> 
+      </div>-->
+    </div>
   </div>
 </template>
 
@@ -147,7 +147,7 @@ export default {
 
 .home_buttons{
   display: flex;
-  padding: 0 16px; 
+  padding: 0 16px;
   width: 100%;
   bottom:1px;
   position: absolute;
@@ -172,7 +172,7 @@ button{
   font-size: 14px;
   padding-top: 72px;
   font-weight: 700;
-  text-shadow: -1px 0 0 rgba(0,0,0, 0.8), 
+  text-shadow: -1px 0 0 rgba(0,0,0, 0.8),
              1px 0 0 rgba(0,0,0, 0.8),
              0 -1px 0 rgba(0,0,0, 0.8),
              0 1px 0 rgba(0,0,0, 0.8);

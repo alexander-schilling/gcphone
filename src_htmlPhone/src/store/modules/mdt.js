@@ -3,7 +3,7 @@ import PhoneAPI from './../../PhoneAPI'
 const state = {
   mdtUsername: localStorage['gcphone_mdt_username'],
   mdtPassword: localStorage['gcphone_mdt_password'],
-  mdtJob: localStorage['gcphone_mdt_job'],
+  mdtWork: localStorage['gcphone_mdt_work'],
   mdtID: localStorage['gcphone_mdt_ID'],
   mdtAdmin: localStorage['gcphone_mdt_Admin'],
   mdtCitName: localStorage['gcphone_mdt_CitName'],
@@ -12,14 +12,17 @@ const state = {
   mdtCitSex: localStorage['gcphone_mdt_CitSex'],
   mdtCitHeight: localStorage['gcphone_mdt_CitHeight'],
   mdtCitID: localStorage['gcphone_mdt_CitID'],
+  mdtCitLicenses: localStorage['gcphone_mdt_CitLicenses'],
+  mdtCitCrimRec: localStorage['gcphone_mdt_CitCrimRec'],
   mdtVehPlate: localStorage['gcphone_mdt_VehPlate'],
-  mdtVehModel: localStorage['gcphone_mdt_VehModel']
+  mdtVehModel: localStorage['gcphone_mdt_VehModel'],
+  mdtJobs: []
 }
 
 const getters = {
   mdtUsername: ({ mdtUsername }) => mdtUsername,
   mdtPassword: ({ mdtPassword }) => mdtPassword,
-  mdtJob: ({ mdtJob }) => mdtJob,
+  mdtWork: ({ mdtWork }) => mdtWork,
   mdtID: ({ mdtID }) => mdtID,
   mdtAdmin: ({ mdtAdmin }) => mdtAdmin,
   mdtCitName: ({ mdtCitName }) => mdtCitName,
@@ -28,8 +31,11 @@ const getters = {
   mdtCitSex: ({ mdtCitSex }) => mdtCitSex,
   mdtCitHeight: ({ mdtCitHeight }) => mdtCitHeight,
   mdtCitID: ({ mdtCitID }) => mdtCitID,
+  mdtCitLicenses: ({ mdtCitLicenses }) => mdtCitLicenses,
+  mdtCitCrimRec: ({ mdtCitCrimRec }) => mdtCitCrimRec,
   mdtVehPlate: ({ mdtVehPlate }) => mdtVehPlate,
-  mdtVehModel: ({ mdtVehModel }) => mdtVehModel
+  mdtVehModel: ({ mdtVehModel }) => mdtVehModel,
+  mdtJobs: ({ mdtJobs }) => mdtJobs
 }
 
 const actions = {
@@ -40,6 +46,8 @@ const actions = {
     localStorage.removeItem('gcphone_mdt_CitSex')
     localStorage.removeItem('gcphone_mdt_CitHeight')
     localStorage.removeItem('gcphone_mdt_CitID')
+    localStorage.removeItem('gcphone_mdt_CitLicenses')
+    localStorage.removeItem('gcphone_mdt_CitCrimRec')
     localStorage.removeItem('gcphone_mdt_VehPlate')
     localStorage.removeItem('gcphone_mdt_VehModel')
 
@@ -61,7 +69,7 @@ const actions = {
   mdtLogin ({ commit }, data) {
     localStorage['gcphone_mdt_username'] = data.username
     localStorage['gcphone_mdt_password'] = data.password
-    localStorage['gcphone_mdt_job'] = data.work
+    localStorage['gcphone_mdt_work'] = data.work
     localStorage['gcphone_mdt_ID'] = data.id
     localStorage['gcphone_mdt_Admin'] = data.adminlevel
     commit('UPDATE_ACC', data)
@@ -77,6 +85,7 @@ const actions = {
     }
     localStorage['gcphone_mdt_CitHeight'] = data.height
     localStorage['gcphone_mdt_CitID'] = data.identifier
+    localStorage['gcphone_mdt_CitLicenses'] = data.license
     commit('UPDATE_CITIZEN', data)
   },
   mdtUpdateVehicle ({ commit }, data) {
@@ -85,6 +94,18 @@ const actions = {
     localStorage['gcphone_mdt_VehPlate'] = data.plate
     localStorage['gcphone_mdt_VehModel'] = data.model
     commit('UPDATE_VEHICLE', data)
+  },
+  mdtAddJob ({ commit }, data) {
+    var job = {
+      message: data.message,
+      department: data.department,
+      isAssigned: data.isAssigned,
+      coordX: data.coordX,
+      coordY: data.coordY,
+      coordZ: data.coordZ,
+      jobID: data.jobID
+    }
+    commit('ADD_JOB', job)
   }
 }
 
@@ -92,11 +113,11 @@ const mutations = {
   UPDATE_ACC (state, { username, password, work, id, adminlevel }) {
     state.mdtUsername = username
     state.mdtPassword = password
-    state.mdtJob = work
+    state.mdtWork = work
     state.mdtID = id
     state.mdtAdmin = adminlevel
   },
-  UPDATE_CITIZEN (state, {firstname, lastname, dateofbirth, sex, height, identifier}) {
+  UPDATE_CITIZEN (state, {firstname, lastname, dateofbirth, sex, height, identifier, license}) {
     state.mdtCitName = firstname
     state.mdtCitSurName = lastname
     state.mdtCitDOB = dateofbirth
@@ -109,12 +130,28 @@ const mutations = {
     }
     state.mdtCitHeight = height
     state.mdtCitID = identifier
+    state.mdtCitLicenses = license
+
+    console.log('UPDATE_CITIZEN: ' + state.mdtCitName + ' ' + state.mdtCitSurName)
   },
   UPDATE_VEHICLE (state, {firstname, lastname, plate, model}) {
     state.mdtCitName = firstname
     state.mdtCitSurName = lastname
     state.mdtVehPlate = plate
     state.mdtVehModel = model
+  },
+  MDT_ADD_JOB (state, {message, department, isAssigned, coordX, coordY, coordZ, jobID}) {
+    console.log('Commit stage: ' + message)
+
+    state.mdtJobs.unshift({
+      message: message,
+      department: department,
+      isAssigned: isAssigned,
+      coordX: coordX,
+      coordY: coordY,
+      coordZ: coordZ,
+      jobID: jobID
+    })
   },
   RESET_DATA (state, {type}) {
     state.mdtCitName = type
@@ -123,6 +160,8 @@ const mutations = {
     state.mdtCitSex = type
     state.mdtCitHeight = type
     state.mdtCitID = type
+    state.mdtCitLicenses = type
+    state.mdtCitCrimRec = type
     state.mdtVehPlate = type
     state.mdtVehModel = type
   }

@@ -177,7 +177,7 @@
       "es_ES__name": "Banquillo",
       "icons": "/html/static/img/icons_app/bank.png",
       "routeName": "bank",
-      "inHomePage": false
+      "inHomePage": true
     },
     {
       "name": "Bourse",
@@ -187,7 +187,8 @@
       "de_DE__name": "Börse",
       "icons": "/html/static/img/icons_app/bourse.png",
       "routeName": "bourse",
-      "enabled": true
+      "enabled": true,
+      "inHomePage": true
     },
     {
       "name": "Camera",
@@ -198,7 +199,8 @@
       "pl_PL__name": "Kamera",
       "es_ES__name": "Cámara",
       "icons": "/html/static/img/icons_app/photo.png",
-      "routeName": "photo"
+      "routeName": "photo",
+      "inHomePage": true
     },
     {
       "name": "Dark Chat",
@@ -208,17 +210,20 @@
       "pl_PL__name": "Czat czarny",
       "es_ES__name": "Chat Oscuro",
       "icons": "/html/static/img/icons_app/tchat.png",
-      "routeName": "tchat"
+      "routeName": "tchat",
+      "inHomePage": true
     },
     {
       "name": "9GAG",
       "icons": "/html/static/img/icons_app/9gag.png",
-      "routeName": "9gag"
+      "routeName": "9gag",
+      "inHomePage": true
     },
     {
       "name": "CAD/MDT",
       "icons": "/html/static/img/icons_app/mdt.png",
-      "routeName": "mdt"
+      "routeName": "mdt",
+      "inHomePage": true
     }
   ],
   "defaultLanguage": "en_US",

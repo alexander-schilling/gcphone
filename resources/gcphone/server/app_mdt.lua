@@ -45,6 +45,14 @@ function GetCitizen(name, surname, cb)
   end)
 end
 
+function GetCitizenLicenses(identifier, cb)
+  MySQL.Async.fetchAll("SELECT type FROM user_licenses WHERE user_licenses.owner = @owner", {
+    ['@owner'] = identifier
+  }, function (data)
+    cb(data)
+  end)
+end
+
 
 function GetVehicle(plate, cb)
 	MySQL.Async.fetchAll("SELECT owner, vehicle, job FROM owned_vehicles WHERE owned_vehicles.plate = @plate", {
@@ -94,8 +102,18 @@ AddEventHandler('gcPhone:mdt_citizenRequest', function(firstname, lastname)
 
   GetCitizen(firstname, lastname, function (citizen)
     if citizen ~= nil then
-			TriggerEvent("serverlog", "firstname:" .. firstname .. " | DOB:" .. citizen.dateofbirth)
-      TriggerClientEvent('gcPhone:mdt_updateCitizen', sourcePlayer, firstname, lastname, citizen.dateofbirth, citizen.sex, citizen.height, citizen.identifier)
+			GetCitizenLicenses(citizen.identifier, function (licenses)
+				local licenseString = ""
+
+				if licenses ~= nil then
+					for k,v in pairs(licenses) do
+						licenseString = licenseString .. ", " .. licenses[k].type
+					end
+				end
+				licenseString = licenseString:sub(2)
+				TriggerEvent("serverlog", "firstname:" .. firstname .. " | DOB:" .. citizen.dateofbirth .. " | " .. licenseString)
+	      TriggerClientEvent('gcPhone:mdt_updateCitizen', sourcePlayer, firstname, lastname, citizen.dateofbirth, citizen.sex, citizen.height, citizen.identifier, licenseString)
+			end)
 		end
   end)
 end)
@@ -108,8 +126,6 @@ AddEventHandler('gcPhone:mdt_vehicleRequest', function(plate)
 		if veh ~= nil then
 			TriggerEvent("serverlog", "plate:" .. plate)
 			GetVehicleOwner(veh.owner, function(owner)
-				-- local hashVehicle = veh.vehicle.model
-				-- local vehicleModel = GetDisplayNameFromVehicleModel(hashVehicle)
 				TriggerEvent("serverlog", "plate: " .. plate .. " | Model: " .. veh.vehicle.model .. " | Job: " .. veh.job)
 				TriggerClientEvent('gcPhone:mdt_updateVehicle', sourcePlayer, owner.firstname, owner.lastname, plate, veh.vehicle)
 			end)

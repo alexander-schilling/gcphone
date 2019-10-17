@@ -17,8 +17,8 @@ AddEventHandler("gcPhone:mdt_login", function(username, password, work, id, admi
 end)
 
 RegisterNetEvent("gcPhone:mdt_updateCitizen")
-AddEventHandler("gcPhone:mdt_updateCitizen", function(firstname, lastname, dateofbirth, sex, height, identifier)
-  print("Reached client Stuff")
+AddEventHandler("gcPhone:mdt_updateCitizen", function(firstname, lastname, dateofbirth, sex, height, identifier, license)
+  print("Reached client Stuff: " .. license)
   SendNUIMessage({
     event = 'mdt_updateCitizen',
       firstname = firstname,
@@ -26,7 +26,8 @@ AddEventHandler("gcPhone:mdt_updateCitizen", function(firstname, lastname, dateo
       dateofbirth = dateofbirth,
       sex = sex,
       height = height,
-      identifier = identifier
+      identifier = identifier,
+      license = license
   })
 end)
 
@@ -43,6 +44,26 @@ AddEventHandler("gcPhone:mdt_updateVehicle", function(firstname, lastname, plate
       model = aheadVehName
   })
 
+end)
+
+RegisterNetEvent("gcPhone:mdt_addJob")
+AddEventHandler("gcPhone:mdt_addJob", function (message, department)
+  print(message)
+
+  local pos = GetEntityCoords(PlayerPedId())
+  message = message .. " | Sent from GPS Coordinates: " .. pos.x .. ", " .. pos.y
+
+  TriggerServerEvent('gcPhone:addJobToDB', message, department, pos.x, pos.y, pos.z)
+
+  --[[SendNUIMessage({
+    event = 'mdt_addJob',
+      message = message,
+      department = department,
+      isAssigned = false,
+      coordX = pos.x,
+      coordY = pos.y,
+      coordZ = pos.z,
+  })]]
 end)
 
 --====================================================================================
