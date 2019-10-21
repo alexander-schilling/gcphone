@@ -16,7 +16,10 @@ const state = {
   mdtCitCrimRec: localStorage['gcphone_mdt_CitCrimRec'],
   mdtVehPlate: localStorage['gcphone_mdt_VehPlate'],
   mdtVehModel: localStorage['gcphone_mdt_VehModel'],
-  mdtJobs: []
+  mdtAccount: [],
+  mdtJobs: [],
+  mdtCitizen: [],
+  mdtVehicle: []
 }
 
 const getters = {
@@ -35,7 +38,10 @@ const getters = {
   mdtCitCrimRec: ({ mdtCitCrimRec }) => mdtCitCrimRec,
   mdtVehPlate: ({ mdtVehPlate }) => mdtVehPlate,
   mdtVehModel: ({ mdtVehModel }) => mdtVehModel,
-  mdtJobs: ({ mdtJobs }) => mdtJobs
+  mdtAccount: ({ mdtAccount }) => mdtAccount,
+  mdtJobs: ({ mdtJobs }) => mdtJobs,
+  mdtCitizen: ({ mdtCitizen }) => mdtCitizen,
+  mdtVehicle: ({ mdtVehicle }) => mdtVehicle
 }
 
 const actions = {
@@ -58,15 +64,21 @@ const actions = {
   },
   mdtCitizenRequest (state, { firstname, lastname }) {
     PhoneAPI.mdtCitizenRequest(firstname, lastname)
-    console.log('First Name: ' + firstname + ', Surname: ' + lastname)
   },
   mdtVehicleRequest (state, { plate }) {
     PhoneAPI.mdtVehicleRequest(plate)
+  },
+  mdtJobsRequest (state, { department }) {
+    PhoneAPI.mdtJobsRequest(department)
+  },
+  mdtJobSelected (state, { job, user }) {
+    // PhoneAPI.updateJob(job, user)
   },
   mdtLog (state, { message }) {
     console.log('Log: ' + message)
   },
   mdtLogin ({ commit }, data) {
+    mdtAccount
     localStorage['gcphone_mdt_username'] = data.username
     localStorage['gcphone_mdt_password'] = data.password
     localStorage['gcphone_mdt_work'] = data.work
@@ -131,8 +143,6 @@ const mutations = {
     state.mdtCitHeight = height
     state.mdtCitID = identifier
     state.mdtCitLicenses = license
-
-    console.log('UPDATE_CITIZEN: ' + state.mdtCitName + ' ' + state.mdtCitSurName)
   },
   UPDATE_VEHICLE (state, {firstname, lastname, plate, model}) {
     state.mdtCitName = firstname
@@ -141,8 +151,6 @@ const mutations = {
     state.mdtVehModel = model
   },
   MDT_ADD_JOB (state, {message, department, isAssigned, coordX, coordY, coordZ, jobID}) {
-    console.log('Commit stage: ' + message)
-
     state.mdtJobs.unshift({
       message: message,
       department: department,
@@ -164,6 +172,10 @@ const mutations = {
     state.mdtCitCrimRec = type
     state.mdtVehPlate = type
     state.mdtVehModel = type
+    state.mdtJobs = []
+    state.mdtAccount = []
+    state.mdtCitizen = []
+    state.mdtVehicle = []
   }
 }
 

@@ -169,6 +169,10 @@ class PhoneAPI {
     this.post('mdt_vehicleRequest', { plate })
   }
 
+  async mdtJobsRequest (department) {
+    this.post('mdt_requestJobs', { department })
+  }
+
   // === MDT Events
   onmdt_login (data) {
     store.dispatch('mdtLogin', data)
@@ -183,7 +187,6 @@ class PhoneAPI {
   }
 
   onmdt_addJob (data) {
-    console.log('PhoneAPI: ' + data.department)
     store.commit('MDT_ADD_JOB', data)
   }
 

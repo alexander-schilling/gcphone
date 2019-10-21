@@ -6,14 +6,14 @@
 
       <div class="group inputText" data-type="text" data-maxlength='64' data-defaultValue="Username">
         <label for="uname"><b>Username</b></label>
-        <input type="text" :placeholder="IntlString('APP_LOGIN_USERNAME_LABEL')" v-model="username">
+        <input type="text" :placeholder="IntlString('APP_LOGIN_USERNAME_LABEL')" :value="localAccount.username" @change="setLocalAccount($event, 'username')">
         <!--<span class="highlight"></span>-->
         <span class="bar"></span>
       </div>
 
       <div class="group inputText" data-type="text" data-model='password' data-maxlength='18' data-defaultValue="Password">
         <label for="psw"><b>Password</b></label>
-        <input autocomplete="new-password" type="password" :placeholder="IntlString('APP_LOGIN_PASSWORD_LABEL')" v-model="password">
+        <input autocomplete="new-password" type="password" :placeholder="IntlString('APP_LOGIN_PASSWORD_LABEL')" :value="localAccount.password" @change="setLocalAccount($event, 'password')">
         <!--<span class="highlight"></span>-->
         <span class="bar"></span>
       </div>
@@ -22,6 +22,7 @@
         <input type='button' class="btn" @click.stop="login" value="Login" />
         <span class="bar"></span>
       </div>
+
     </div>
   </div>
 </template>
@@ -36,8 +37,10 @@ export default {
   },
   data () {
     return {
-      username: '',
-      password: '',
+      localAccount: {
+        username: '',
+        password: ''
+      },
       currentSelect: 0
     }
   },
@@ -97,6 +100,8 @@ export default {
     },
     onEnter: function () {
       if (this.ignoreControls === true) return
+
+      console.log('I just hit Enter')
       let select = document.querySelector('.group.select')
       if (select === null) return
 
@@ -113,9 +118,13 @@ export default {
           })
         }
         if (select.dataset.type === 'button') {
+          console.log('I just hit Enter on a Button')
           select.click()
         }
       }
+    },
+    setLocalAccount ($event, key) {
+      this.localAccount[key] = $event.target.value
     },
     onBack () {
       if (this.useMouse === true && document.activeElement.tagName !== 'BODY') return
@@ -126,12 +135,14 @@ export default {
     },
     ...mapActions(['mdtLoginRequest']),
     login () {
-      const username = this.username.trim()
-      const password = this.password.trim()
-      if (username.length !== 0 && password.length !== 0) {
+      console.log('I was called')
+      if (this.localAccount.username.length !== 0 && this.localAccount.password.length !== 0) {
+        console.log('I was called in the if statement')
+        console.log(this.localAccount.username)
+        console.log(this.localAccount.password)
         this.mdtLoginRequest({
-          username,
-          password
+          username: this.localAccount.username,
+          password: this.localAccount.password
         })
 
         this.TryConnection()
@@ -139,7 +150,7 @@ export default {
     },
     TryConnection () {
       setTimeout(() => {
-        if (this.username === this.mdtUsername && this.password === this.mdtPassword) {
+        if (this.localAccount.username === this.mdtUsername && this.localAccount.password === this.mdtPassword) {
           this.$router.push({ name: 'mdt.dashboard' })
         } else {
           this.TryConnection()

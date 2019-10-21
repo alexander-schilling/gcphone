@@ -183,24 +183,6 @@ end)
 --  Messages - Olle Strand CUSTOM
 --====================================================================================
 
---[[
-function _internalAddMessage(transmitter, receiver, message, owner)
-    local Query = "INSERT INTO phone_messages (`transmitter`, `receiver`,`message`, `isRead`,`owner`) VALUES(@transmitter, @receiver, @message, @isRead, @owner);"
-    local Query2 = 'SELECT * from phone_messages WHERE `id` = @id;'
-	local Parameters = {
-        ['@transmitter'] = transmitter,
-        ['@receiver'] = receiver,
-        ['@message'] = message,
-        ['@isRead'] = owner,
-        ['@owner'] = owner
-    }
-    local id = MySQL.Sync.insert(Query, Parameters)
-    return MySQL.Sync.fetchAll(Query2, {
-        ['@id'] = id
-    })[1]
-end
-]]
-
 function autoRespond(source, identifier, phone_number, type)
     local message = ""
     if type == "approved" then
@@ -210,6 +192,7 @@ function autoRespond(source, identifier, phone_number, type)
     else
       message = "There is currently an error in the system. Please try later!"
     end
+
     local sourcePlayer = tonumber(source)
     local myPhone = getNumberPhone(identifier)
 
@@ -222,8 +205,6 @@ end
 
 RegisterServerEvent('gcPhone:addJobToDB')
 AddEventHandler('gcPhone:addJobToDB', function(message, department, coordX, coordY, coordZ)
-
-
   MySQL.Async.fetchAll("INSERT INTO mdt_jobs (`message`, `department`,`coordX`, `coordY`,`coordZ`) VALUES(@message, @department, @coordX, @coordY, @coordZ);", {
 		['@message'] = message,
     ['@department'] = department,
@@ -233,14 +214,15 @@ AddEventHandler('gcPhone:addJobToDB', function(message, department, coordX, coor
 	})
 end)
 
-RegisterServerEvent('gcPhone:getJobsFromDB')
-AddEventHandler('gcPhone:getJobsFromDB', function(department)
+RegisterServerEvent('gcPhone:mdt_requestJobs')
+AddEventHandler('gcPhone:mdt_requestJobs', function(department)
+  local sourcePlayer = tonumber(source)
+  
   MySQL.Async.fetchAll("SELECT * FROM mdt_jobs WHERE mdt_jobs.department = @department", {
     ['@department'] = department
   }, function (data)
     for k,v in pairs(data) do
-      -- Send each item at a time
-      -- clientEvent data[k].value
+      TriggerClientEvent('gcPhone:mdt_requestJobs', sourcePlayer, data[k].message, data[k].department, data[k].is_assigned, data[k].coordX, data[k].coordY, data[k].coordZ, data[k].id)
     end
   end)
 end)

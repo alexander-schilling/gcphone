@@ -5,7 +5,6 @@
 
 RegisterNetEvent("gcPhone:mdt_login")
 AddEventHandler("gcPhone:mdt_login", function(username, password, work, id, adminlevel)
-  print("Reached client Stuff")
   SendNUIMessage({
     event = 'mdt_login',
       username = username,
@@ -18,7 +17,6 @@ end)
 
 RegisterNetEvent("gcPhone:mdt_updateCitizen")
 AddEventHandler("gcPhone:mdt_updateCitizen", function(firstname, lastname, dateofbirth, sex, height, identifier, license)
-  print("Reached client Stuff: " .. license)
   SendNUIMessage({
     event = 'mdt_updateCitizen',
       firstname = firstname,
@@ -33,7 +31,6 @@ end)
 
 RegisterNetEvent("gcPhone:mdt_updateVehicle")
 AddEventHandler("gcPhone:mdt_updateVehicle", function(firstname, lastname, plate, vehicle)
-  print("Reached Client Stuff")
   local hashVehicule = vehicle.model
 	local aheadVehName = GetDisplayNameFromVehicleModel(hashVehicule)
   SendNUIMessage({
@@ -43,28 +40,35 @@ AddEventHandler("gcPhone:mdt_updateVehicle", function(firstname, lastname, plate
       plate = plate,
       model = aheadVehName
   })
-
 end)
 
 RegisterNetEvent("gcPhone:mdt_addJob")
 AddEventHandler("gcPhone:mdt_addJob", function (message, department)
-  print(message)
-
   local pos = GetEntityCoords(PlayerPedId())
   message = message .. " | Sent from GPS Coordinates: " .. pos.x .. ", " .. pos.y
 
   TriggerServerEvent('gcPhone:addJobToDB', message, department, pos.x, pos.y, pos.z)
+end)
 
-  --[[SendNUIMessage({
+RegisterNetEvent("gcPhone:mdt_requestJobs")
+AddEventHandler("gcPhone:mdt_requestJobs", function(message, department, isAssigned, coordX, coordY, coordZ, id)
+  local assigned = false
+  if isAssigned == '1' then
+    assigned = true
+  end
+
+  SendNUIMessage({
     event = 'mdt_addJob',
       message = message,
       department = department,
-      isAssigned = false,
-      coordX = pos.x,
-      coordY = pos.y,
-      coordZ = pos.z,
-  })]]
+      isAssigned = assigned,
+      coordX = coordX,
+      coordY = coordY,
+      coordZ = coordZ,
+      jobID = id
+  })
 end)
+
 
 --====================================================================================
 -- #NUI Callbacks
@@ -80,4 +84,8 @@ end)
 
 RegisterNUICallback('mdt_vehicleRequest', function(data, cb)
   TriggerServerEvent('gcPhone:mdt_vehicleRequest', data.plate)
+end)
+
+RegisterNUICallback('mdt_requestJobs', function(data, cb)
+  TriggerServerEvent('gcPhone:mdt_requestJobs', data.department)
 end)

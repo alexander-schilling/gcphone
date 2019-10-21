@@ -13,46 +13,29 @@
         </div>
         <div class="main-button-area">
 
-          <div class="main-button-item">
-            <div class="group" data-type="button" @click.stop="state = STATES.MANAGE_ACCOUNT">
-              Manage Account
+          <div class="group main-button-item" data-type="button" @click.stop="state = STATES.MANAGE_ACCOUNT">
+              <input type='button' class="mainBtn" @click.stop="state = STATES.MANAGE_ACCOUNT" value="Manage Account" />
               <span class="bar"></span>
-            </div>
           </div>
 
-          <div class="main-button-item">
-            <div class="group" data-type="button" @click.stop="state = STATES.JOBS_MENU">
-              Jobs
-              <span class="bar"></span>
-            </div>
+          <div class="group main-button-item" data-type="button" @click.stop="state = STATES.JOBS_MENU">
+            <input type='button' class="mainBtn" @click.stop="state = STATES.JOBS_MENU" value="Jobs" />
+            <span class="bar"></span>
           </div>
 
-          <div class="main-button-item">
-            <div class="group" data-type="button" @click.stop="state = STATES.NAME_DATABASE">
-              Name Database
-              <span class="bar"></span>
-            </div>
+          <div class="group main-button-item" data-type="button" @click.stop="state = STATES.NAME_DATABASE">
+            <input type='button' class="mainBtn" @click.stop="state = STATES.NAME_DATABASE" value="Name Database" />
+            <span class="bar"></span>
           </div>
 
-          <div class="main-button-item">
-            <div class="group" data-type="button" @click.stop="state = STATES.VEHICLE_DATABASE">
-              Plate Database
-              <span class="bar"></span>
-            </div>
+          <div class="group main-button-item" data-type="button" @click.stop="state = STATES.VEHICLE_DATABASE">
+            <input type='button' class="mainBtn" @click.stop="state = STATES.VEHICLE_DATABASE" value="Plate Database" />
+            <span class="bar"></span>
           </div>
 
-          <div class="main-button-item">
-            <div class="group" data-type="button" @click.stop="state = STATES.WANTED_LIST">
-              Wanted List
-              <span class="bar"></span>
-            </div>
-          </div>
-
-          <div v-if="isAdmin" class="main-button-item">
-            <div class="group" data-type="button" @click.stop="state = STATES.ADMIN_VIEW">
-              Admin
-              <span class="bar"></span>
-            </div>
+          <div v-if="isAdmin" class="main-button-item" data-type="button" @click.stop="state = STATES.ADMIN_VIEW">
+            <input type='button' class="mainBtn" @click.stop="state = STATES.ADMIN_VIEW" value="Admin" />
+            <span class="bar"></span>
           </div>
 
         </div>
@@ -70,32 +53,32 @@
           <span>Admin Level: {{ mdtAdmin }}</span>
         </div>
         <div class="main-button-area">
-          <div class="main-button-item">
-            <div class="group" data-type="button" @click.stop="state = STATES.MANAGE_ACCOUNT">
-              Manage Account
+          <div class="group main-button-item" data-type="button" @click.stop="state = STATES.MANAGE_ACCOUNT">
+              <div class="group" data-type="button" @click.stop="state = STATES.MANAGE_ACCOUNT">
+                Manage Account
+              </div>
               <span class="bar"></span>
-            </div>
           </div>
 
-          <div class="main-button-item">
+          <div class="group main-button-item" data-type="button" @click.stop="state = STATES.JOBS_MENU">
             <div class="group" data-type="button" @click.stop="state = STATES.JOBS_MENU">
               Jobs
-              <span class="bar"></span>
             </div>
+            <span class="bar"></span>
           </div>
 
-          <div class="main-button-item">
+          <div class="group main-button-item" data-type="button" @click.stop="state = STATES.NAME_DATABASE">
             <div class="group" data-type="button" @click.stop="state = STATES.NAME_DATABASE">
               Name Database
-              <span class="bar"></span>
             </div>
+            <span class="bar"></span>
           </div>
 
-          <div v-if="isAdmin" class="main-button-item">
+          <div v-if="isAdmin" class="main-button-item" data-type="button" @click.stop="state = STATES.ADMIN_VIEW">
             <div class="group" data-type="button" @click.stop="state = STATES.ADMIN_VIEW">
               Admin
-              <span class="bar"></span>
             </div>
+            <span class="bar"></span>
           </div>
         </div>
       </div>
@@ -112,25 +95,25 @@
           <span>Admin Level: {{ mdtAdmin }}</span>
         </div>
         <div class="main-button-area">
-          <div class="main-button-item">
-            <div class="group" data-type="button" @click.stop="state = STATES.MANAGE_ACCOUNT">
-              Manage Account
+          <div class="group main-button-item" data-type="button" @click.stop="state = STATES.MANAGE_ACCOUNT">
+              <div class="group" data-type="button" @click.stop="state = STATES.MANAGE_ACCOUNT">
+                Manage Account
+              </div>
               <span class="bar"></span>
-            </div>
           </div>
 
-          <div class="main-button-item">
+          <div class="group main-button-item" data-type="button" @click.stop="state = STATES.JOBS_MENU">
             <div class="group" data-type="button" @click.stop="state = STATES.JOBS_MENU">
               Jobs
-              <span class="bar"></span>
             </div>
+            <span class="bar"></span>
           </div>
 
-          <div v-if="isAdmin" class="main-button-item">
+          <div v-if="isAdmin" class="main-button-item" data-type="button" @click.stop="state = STATES.ADMIN_VIEW">
             <div class="group" data-type="button" @click.stop="state = STATES.ADMIN_VIEW">
               Admin
-              <span class="bar"></span>
             </div>
+            <span class="bar"></span>
           </div>
         </div>
       </div>
@@ -151,7 +134,7 @@
             <span class="bar"></span>
           </div>
 
-          <div class="group" data-type="button" v-on:click="checkCitizen">
+          <div class="group" data-type="button" @click.stop="checkCitizen">
             <input type='button' class="btn" @click.stop="checkCitizen" value="Lookup" />
             <!--<span class="highlight"></span>-->
             <span class="bar"></span>
@@ -200,7 +183,7 @@
               <span class="bar"></span>
             </div>
 
-            <div class="group" data-type="button" v-on:click="checkVehicle">
+            <div class="group" data-type="button" @click.stop="checkVehicle">
               <input type='button' class="btn" @click.stop="checkVehicle" value="Lookup" />
               <!--<span class="highlight"></span>-->
               <span class="bar"></span>
@@ -228,35 +211,37 @@
     </template>
 
     <template v-else-if="state === STATES.JOBS_MENU">
-      <div v-if="mdtWork === '0'"> <!--Police-->
-        <div class="main-panel">
-          Does this work??
-          <div v-for="job in mdtJobs">
-            {{ job.message }}
+      <div class="job-main-panel">
+        <div v-for="job in mdtJobs">
+          <div class="jobPanel" v-bind:class="{ assigned: job.isAssigned }">
+            <div class="jobtextArea">
+              <p>
+                ID: {{ job.jobID }} <br>
+                Message: {{ job.message }}
+              </p>
+            </div>
+            <div class="jobButtonArea">
+              <div class="group" data-type="button" @click.stop="selectJob(job)">
+                <input type='button' class="jobBtn" @click.stop="selectJob(job)" value="Take job" />
+              </div>
+              <div class="group" data-type="button" @click.stop="completeJob(job)">
+                <input type='button' class="jobBtn" @click.stop="completeJob(job)" value="Complete" />
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
-      <div v-else-if="mdtWork === '1'"> <!--EMS-->
-        <div class="main-panel">
-
-        </div>
-      </div>
-      <div v-else-if="mdtWork === '2'"> <!--Fire Department-->
-        <div class="main-panel">
-
         </div>
       </div>
     </template>
 
     <template v-else-if="state === STATES.ADMIN_VIEW">
       <div class="main-panel">
-
+        Admin View
       </div>
     </template>
 
     <template v-else-if="state === STATES.MANAGE_ACCOUNT">
       <div class="main-panel">
-
+        Manage Account
       </div>
     </template>
 
@@ -294,6 +279,14 @@ export default {
     }
   },
   methods: {
+    scrollIntoViewIfNeeded () {
+      this.$nextTick(() => {
+        const elem = this.$el.querySelector('.select')
+        if (elem !== null) {
+          elem.scrollIntoViewIfNeeded()
+        }
+      })
+    },
     onUp: function () {
       if (this.ignoreControls === true) return
       let select = document.querySelector('.group.select')
@@ -346,6 +339,8 @@ export default {
     },
     onEnter: function () {
       if (this.ignoreControls === true) return
+
+      console.log('I just hit Enter')
       let select = document.querySelector('.group.select')
       if (select === null) return
 
@@ -362,6 +357,7 @@ export default {
           })
         }
         if (select.dataset.type === 'button') {
+          console.log('I just hit Enter on a Button')
           select.click()
         }
       }
@@ -381,8 +377,9 @@ export default {
         this.$router.push({ name: 'mdt' })
       }
       this.mdtResetData()
+      this.loadJobs()
     },
-    ...mapActions(['mdtLog', 'mdtCitizenRequest', 'mdtVehicleRequest', 'mdtResetData']),
+    ...mapActions(['mdtLog', 'mdtCitizenRequest', 'mdtVehicleRequest', 'mdtResetData', 'mdtJobsRequest', 'mdtJobSelected']),
     checkCitizen () {
       const firstname = this.firstname.trim()
       const lastname = this.surname.trim()
@@ -401,6 +398,31 @@ export default {
         })
       }
     },
+    selectJob (job) {
+      const user = this.mdtUsername
+      this.mdtJobSelected({
+        job,
+        user
+      })
+    },
+    completeJob (job) {
+
+    },
+    loadJobs () {
+      let department = ''
+      switch (this.mdtWork) {
+        case '0':
+          department = 'police'
+          break
+        case '1':
+          department = 'ambulance'
+          break
+        case '2':
+          department = 'firedept'
+          break
+      }
+      this.mdtJobsRequest({ department })
+    },
     onLoad () {
       switch (this.mdtWork) {
         case '0':
@@ -414,6 +436,7 @@ export default {
           break
       }
       this.mdtResetData()
+      this.loadJobs()
     }
   },
   created () {
@@ -472,15 +495,25 @@ export default {
   padding: 10px;
 }
 
-.main-button-item {
+.group.main-button-item {
   background-color: #080808;
   color: #dbdbdb;
-  padding: 10px;
+  height: 70px;
   font-size: 30px;
   text-align: center;
   box-shadow: 0px 5px 5px grey;
 
   margin-top: 2%;
+}
+
+.mainBtn {
+  width: 100%;
+  height: 65px;
+  font-size: 30px;
+  background-color: #080808;
+  color: #dbdbdb;
+
+  border-style: none;
 }
 /*NAMEDB PANEL SECTION ========================= */
 .input-area {
@@ -512,6 +545,49 @@ export default {
 
 .result-area tr:nth-child(even) {
   background-color: #cfcfcf;
+}
+
+/* JobsPanel =================================== */
+.job-main-panel {
+  width: 100%;
+  height: 100%;
+  background: #dbdbdb;
+}
+
+.jobPanel {
+  background: #ad3333;
+  padding: 10px;
+  margin-top: 10px;
+}
+
+.jobtextArea {
+  float: left;
+  width: 100%;
+}
+
+.jobButtonArea {
+  width: 70%;
+}
+
+.jobPanel.assigned {
+  background: #33ad35;
+  padding: 10px;
+  margin-top: 10px;
+}
+
+.jobBtn {
+  background: #161616;
+  color: white;
+  padding: 8px 20px;
+  margin: 8px 0;
+  border: none;
+  width: 100%;
+  height: 48px;
+  font-size: 16px;
+}
+
+.jobBtn:hover {
+  opacity: 0.8;
 }
 
 /*BUTTON DESIGN ================================ */
