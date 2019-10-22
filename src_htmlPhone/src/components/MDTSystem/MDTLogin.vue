@@ -45,7 +45,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['IntlString', 'useMouse', 'mdtUsername', 'mdtPassword'])
+    ...mapGetters(['IntlString', 'useMouse', 'mdtAccount'])
   },
   methods: {
     onUp: function () {
@@ -100,8 +100,6 @@ export default {
     },
     onEnter: function () {
       if (this.ignoreControls === true) return
-
-      console.log('I just hit Enter')
       let select = document.querySelector('.group.select')
       if (select === null) return
 
@@ -118,7 +116,6 @@ export default {
           })
         }
         if (select.dataset.type === 'button') {
-          console.log('I just hit Enter on a Button')
           select.click()
         }
       }
@@ -135,11 +132,7 @@ export default {
     },
     ...mapActions(['mdtLoginRequest']),
     login () {
-      console.log('I was called')
       if (this.localAccount.username.length !== 0 && this.localAccount.password.length !== 0) {
-        console.log('I was called in the if statement')
-        console.log(this.localAccount.username)
-        console.log(this.localAccount.password)
         this.mdtLoginRequest({
           username: this.localAccount.username,
           password: this.localAccount.password
@@ -150,7 +143,7 @@ export default {
     },
     TryConnection () {
       setTimeout(() => {
-        if (this.localAccount.username === this.mdtUsername && this.localAccount.password === this.mdtPassword) {
+        if (this.localAccount.username === this.mdtAccount.username && this.localAccount.password === this.mdtAccount.password) {
           this.$router.push({ name: 'mdt.dashboard' })
         } else {
           this.TryConnection()

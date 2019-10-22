@@ -1,43 +1,13 @@
 import PhoneAPI from './../../PhoneAPI'
 
 const state = {
-  mdtUsername: localStorage['gcphone_mdt_username'],
-  mdtPassword: localStorage['gcphone_mdt_password'],
-  mdtWork: localStorage['gcphone_mdt_work'],
-  mdtID: localStorage['gcphone_mdt_ID'],
-  mdtAdmin: localStorage['gcphone_mdt_Admin'],
-  mdtCitName: localStorage['gcphone_mdt_CitName'],
-  mdtCitSurName: localStorage['gcphone_mdt_CitSurName'],
-  mdtCitDOB: localStorage['gcphone_mdt_CitDOB'],
-  mdtCitSex: localStorage['gcphone_mdt_CitSex'],
-  mdtCitHeight: localStorage['gcphone_mdt_CitHeight'],
-  mdtCitID: localStorage['gcphone_mdt_CitID'],
-  mdtCitLicenses: localStorage['gcphone_mdt_CitLicenses'],
-  mdtCitCrimRec: localStorage['gcphone_mdt_CitCrimRec'],
-  mdtVehPlate: localStorage['gcphone_mdt_VehPlate'],
-  mdtVehModel: localStorage['gcphone_mdt_VehModel'],
-  mdtAccount: [],
+  mdtAccount: {},
   mdtJobs: [],
-  mdtCitizen: [],
-  mdtVehicle: []
+  mdtCitizen: {},
+  mdtVehicle: {}
 }
 
 const getters = {
-  mdtUsername: ({ mdtUsername }) => mdtUsername,
-  mdtPassword: ({ mdtPassword }) => mdtPassword,
-  mdtWork: ({ mdtWork }) => mdtWork,
-  mdtID: ({ mdtID }) => mdtID,
-  mdtAdmin: ({ mdtAdmin }) => mdtAdmin,
-  mdtCitName: ({ mdtCitName }) => mdtCitName,
-  mdtCitSurName: ({ mdtCitSurName }) => mdtCitSurName,
-  mdtCitDOB: ({ mdtCitDOB }) => mdtCitDOB,
-  mdtCitSex: ({ mdtCitSex }) => mdtCitSex,
-  mdtCitHeight: ({ mdtCitHeight }) => mdtCitHeight,
-  mdtCitID: ({ mdtCitID }) => mdtCitID,
-  mdtCitLicenses: ({ mdtCitLicenses }) => mdtCitLicenses,
-  mdtCitCrimRec: ({ mdtCitCrimRec }) => mdtCitCrimRec,
-  mdtVehPlate: ({ mdtVehPlate }) => mdtVehPlate,
-  mdtVehModel: ({ mdtVehModel }) => mdtVehModel,
   mdtAccount: ({ mdtAccount }) => mdtAccount,
   mdtJobs: ({ mdtJobs }) => mdtJobs,
   mdtCitizen: ({ mdtCitizen }) => mdtCitizen,
@@ -46,17 +16,6 @@ const getters = {
 
 const actions = {
   mdtResetData ({ commit }) {
-    localStorage.removeItem('gcphone_mdt_CitName')
-    localStorage.removeItem('gcphone_mdt_CitSurName')
-    localStorage.removeItem('gcphone_mdt_CitDOB')
-    localStorage.removeItem('gcphone_mdt_CitSex')
-    localStorage.removeItem('gcphone_mdt_CitHeight')
-    localStorage.removeItem('gcphone_mdt_CitID')
-    localStorage.removeItem('gcphone_mdt_CitLicenses')
-    localStorage.removeItem('gcphone_mdt_CitCrimRec')
-    localStorage.removeItem('gcphone_mdt_VehPlate')
-    localStorage.removeItem('gcphone_mdt_VehModel')
-
     commit('RESET_DATA', {type: undefined})
   },
   mdtLoginRequest (state, { username, password }) {
@@ -78,34 +37,41 @@ const actions = {
     console.log('Log: ' + message)
   },
   mdtLogin ({ commit }, data) {
-    mdtAccount
-    localStorage['gcphone_mdt_username'] = data.username
-    localStorage['gcphone_mdt_password'] = data.password
-    localStorage['gcphone_mdt_work'] = data.work
-    localStorage['gcphone_mdt_ID'] = data.id
-    localStorage['gcphone_mdt_Admin'] = data.adminlevel
-    commit('UPDATE_ACC', data)
+    var account = {
+      username: data.username,
+      password: data.password,
+      work: data.work,
+      id: data.id,
+      adminlevel: data.adminlevel
+    }
+    commit('UPDATE_ACC', account)
   },
   mdtUpdateCitizen ({ commit }, data) {
-    localStorage['gcphone_mdt_CitName'] = data.firstname
-    localStorage['gcphone_mdt_CitSurName'] = data.lastname
-    localStorage['gcphone_mdt_CitDOB'] = data.dateofbirth
+    var sex_ = ''
     if (data.sex === 'm') {
-      localStorage['gcphone_mdt_CitSex'] = 'Male'
+      sex_ = 'Male'
     } else {
-      localStorage['gcphone_mdt_CitSex'] = 'Female'
+      sex_ = 'Female'
     }
-    localStorage['gcphone_mdt_CitHeight'] = data.height
-    localStorage['gcphone_mdt_CitID'] = data.identifier
-    localStorage['gcphone_mdt_CitLicenses'] = data.license
-    commit('UPDATE_CITIZEN', data)
+    var citizen = {
+      firstname: data.firstname,
+      lastname: data.lastname,
+      dateofbirth: data.dateofbirth,
+      sex: sex_,
+      height: data.height,
+      identifier: data.identifier,
+      license: data.license
+    }
+    commit('UPDATE_CITIZEN', citizen)
   },
   mdtUpdateVehicle ({ commit }, data) {
-    localStorage['gcphone_mdt_CitName'] = data.firstname
-    localStorage['gcphone_mdt_CitSurName'] = data.lastname
-    localStorage['gcphone_mdt_VehPlate'] = data.plate
-    localStorage['gcphone_mdt_VehModel'] = data.model
-    commit('UPDATE_VEHICLE', data)
+    var vehicle = {
+      firstname: data.firstname,
+      lastname: data.lastname,
+      plate: data.plate,
+      model: data.model
+    }
+    commit('UPDATE_VEHICLE', vehicle)
   },
   mdtAddJob ({ commit }, data) {
     var job = {
@@ -123,32 +89,32 @@ const actions = {
 
 const mutations = {
   UPDATE_ACC (state, { username, password, work, id, adminlevel }) {
-    state.mdtUsername = username
-    state.mdtPassword = password
-    state.mdtWork = work
-    state.mdtID = id
-    state.mdtAdmin = adminlevel
+    state.mdtAccount = {
+      username: username,
+      password: password,
+      work: work,
+      id: id,
+      adminlevel: adminlevel
+    }
   },
   UPDATE_CITIZEN (state, {firstname, lastname, dateofbirth, sex, height, identifier, license}) {
-    state.mdtCitName = firstname
-    state.mdtCitSurName = lastname
-    state.mdtCitDOB = dateofbirth
-    if (sex === 'm') {
-      state.mdtCitSex = 'Male'
-    } else if (sex === 'f') {
-      state.mdtCitSex = 'Female'
-    } else {
-      state.mdtCitSex = undefined
+    state.mdtCitizen = {
+      firstname: firstname,
+      lastname: lastname,
+      dateofbirth: dateofbirth,
+      sex: sex,
+      height: height,
+      identifier: identifier,
+      license: license
     }
-    state.mdtCitHeight = height
-    state.mdtCitID = identifier
-    state.mdtCitLicenses = license
   },
   UPDATE_VEHICLE (state, {firstname, lastname, plate, model}) {
-    state.mdtCitName = firstname
-    state.mdtCitSurName = lastname
-    state.mdtVehPlate = plate
-    state.mdtVehModel = model
+    state.mdtVehicle = {
+      firstname: firstname,
+      lastname: lastname,
+      plate: plate,
+      model: model
+    }
   },
   MDT_ADD_JOB (state, {message, department, isAssigned, coordX, coordY, coordZ, jobID}) {
     state.mdtJobs.unshift({
@@ -162,20 +128,9 @@ const mutations = {
     })
   },
   RESET_DATA (state, {type}) {
-    state.mdtCitName = type
-    state.mdtCitSurName = type
-    state.mdtCitDOB = type
-    state.mdtCitSex = type
-    state.mdtCitHeight = type
-    state.mdtCitID = type
-    state.mdtCitLicenses = type
-    state.mdtCitCrimRec = type
-    state.mdtVehPlate = type
-    state.mdtVehModel = type
     state.mdtJobs = []
-    state.mdtAccount = []
-    state.mdtCitizen = []
-    state.mdtVehicle = []
+    state.mdtCitizen = {}
+    state.mdtVehicle = {}
   }
 }
 
