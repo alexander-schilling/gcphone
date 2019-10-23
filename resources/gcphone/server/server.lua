@@ -189,6 +189,8 @@ function autoRespond(source, identifier, phone_number, type)
       message = "Your message has been recieved. We will get back to as soon as someone responds to this call!"
     elseif type == "shortMsg" then
       message = "Your message is considered too short. Please explain more!"
+    elseif type == "jobSelected" then
+      message = "Your call has been assigned, they are on their way!"
     else
       message = "There is currently an error in the system. Please try later!"
     end
@@ -217,13 +219,36 @@ end)
 RegisterServerEvent('gcPhone:mdt_requestJobs')
 AddEventHandler('gcPhone:mdt_requestJobs', function(department)
   local sourcePlayer = tonumber(source)
-  
+
   MySQL.Async.fetchAll("SELECT * FROM mdt_jobs WHERE mdt_jobs.department = @department", {
     ['@department'] = department
   }, function (data)
     for k,v in pairs(data) do
       TriggerClientEvent('gcPhone:mdt_requestJobs', sourcePlayer, data[k].message, data[k].department, data[k].is_assigned, data[k].coordX, data[k].coordY, data[k].coordZ, data[k].id)
     end
+  end)
+end)
+
+RegisterServerEvent('gcPhone:mdt_updateJob')
+AddEventHandler('gcPhone:mdt_updateJob', function(job, user)
+  local sourcePlayer = tonumber(source)
+  local identifier = getPlayerID(source)
+
+  MySQL.Sync.execute("UPDATE mdt_jobs set is_assigned='1' WHERE id=@id", {
+    ['@id'] = job.jobID
+  }, function (data)
+    autoRespond(source, identifier, job.department, "jobSelected")
+  end)
+end)
+
+RegisterServerEvent('gcPhone:mdt_removeJob')
+AddEventHandler('gcPhone:mdt_removeJob', function(job)
+  local sourcePlayer = tonumber(source)
+
+  MySQL.Sync.execute("DELETE FROM `mdt_jobs` WHERE `id` = @id;", {
+    ['@id'] = job.jobID
+  }, function (data)
+
   end)
 end)
 

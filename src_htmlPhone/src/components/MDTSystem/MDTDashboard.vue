@@ -223,13 +223,13 @@
 
     <template v-else-if="state === STATES.ADMIN_VIEW">
       <div class="main-panel">
-        Admin View
+        Admin View WIP
       </div>
     </template>
 
     <template v-else-if="state === STATES.MANAGE_ACCOUNT">
       <div class="main-panel">
-        Manage Account
+        Manage Account WIP
       </div>
     </template>
 
@@ -261,7 +261,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['IntlString', 'useMouse', 'mdtAccount', 'mdtJobs', 'mdtCitizen', 'mdtJobs']),
+    ...mapGetters(['IntlString', 'useMouse', 'mdtAccount', 'mdtVehicle', 'mdtCitizen', 'mdtJobs']),
     isAdmin () {
       return this.mdtAccount.adminlevel >= 1
     }
@@ -327,8 +327,6 @@ export default {
     },
     onEnter: function () {
       if (this.ignoreControls === true) return
-
-      console.log('I just hit Enter')
       let select = document.querySelector('.group.select')
       if (select === null) return
 
@@ -345,7 +343,6 @@ export default {
           })
         }
         if (select.dataset.type === 'button') {
-          console.log('I just hit Enter on a Button')
           select.click()
         }
       }
@@ -367,7 +364,7 @@ export default {
       this.mdtResetData()
       this.loadJobs()
     },
-    ...mapActions(['mdtLog', 'mdtCitizenRequest', 'mdtVehicleRequest', 'mdtResetData', 'mdtJobsRequest', 'mdtJobSelected']),
+    ...mapActions(['mdtLog', 'mdtCitizenRequest', 'mdtVehicleRequest', 'mdtResetData', 'mdtJobsRequest', 'mdtJobSelected', 'mdtJobComplete']),
     checkCitizen () {
       const firstname = this.firstname.trim()
       const lastname = this.surname.trim()
@@ -387,6 +384,7 @@ export default {
       }
     },
     selectJob (job) {
+      job.isAssigned = true
       const user = this.mdtAccount.username
       this.mdtJobSelected({
         job,
@@ -394,7 +392,16 @@ export default {
       })
     },
     completeJob (job) {
-
+      console.log('Removing user')
+      for (var i = 0; i < this.mdtJobs.length; i++) {
+        if (this.mdtJobs[i].jobID === job.jobID) {
+          this.mdtJobs.splice(i, 1)
+          i--
+        }
+      }
+      this.mdtJobComplete({
+        job
+      })
     },
     loadJobs () {
       let department = ''

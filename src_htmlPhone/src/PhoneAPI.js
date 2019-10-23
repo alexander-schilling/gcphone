@@ -172,6 +172,12 @@ class PhoneAPI {
   async mdtJobsRequest (department) {
     this.post('mdt_requestJobs', { department })
   }
+  async mdtJobSelected (job, user) {
+    this.post('mdt_jobSelected', { job, user })
+  }
+  async mdtJobRemove (job) {
+    this.post('mdt_jobRemove', { job })
+  }
 
   // === MDT Events
   onmdt_login (data) {

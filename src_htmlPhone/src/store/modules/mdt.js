@@ -31,7 +31,10 @@ const actions = {
     PhoneAPI.mdtJobsRequest(department)
   },
   mdtJobSelected (state, { job, user }) {
-    // PhoneAPI.updateJob(job, user)
+    PhoneAPI.mdtJobSelected(job, user)
+  },
+  mdtJobComplete (state, { job }) {
+    PhoneAPI.mdtJobRemove(job)
   },
   mdtLog (state, { message }) {
     console.log('Log: ' + message)

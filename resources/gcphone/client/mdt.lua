@@ -69,6 +69,26 @@ AddEventHandler("gcPhone:mdt_requestJobs", function(message, department, isAssig
   })
 end)
 
+AddEventHandler("gcPhone:selectJob", function(job, user)
+  local x = tonumber(job.coordX)
+  local y = tonumber(job.coordY)
+  local z = tonumber(job.coordZ)
+
+  Citizen.CreateThread(function()
+    local Blip = AddBlipForCoord(x, y, z)
+
+    SetBlipSprite (Blip, 459)
+    SetBlipDisplay(Blip, 4)
+    SetBlipScale  (Blip, 0.9)
+    SetBlipColour (Blip, 6)
+    SetBlipAsShortRange(Blip, true)
+
+    BeginTextCommandSetBlipName("STRING")
+    AddTextComponentString("MDT Job")
+    EndTextCommandSetBlipName(Blip)
+  end)
+  SetNewWaypoint(x, y)
+end)
 
 --====================================================================================
 -- #NUI Callbacks
@@ -88,4 +108,14 @@ end)
 
 RegisterNUICallback('mdt_requestJobs', function(data, cb)
   TriggerServerEvent('gcPhone:mdt_requestJobs', data.department)
+end)
+
+RegisterNUICallback('mdt_jobSelected', function(data, cb)
+  TriggerServerEvent('gcPhone:mdt_updateJob', data.job, data.user)
+
+  TriggerEvent('gcPhone:selectJob', data.job, data.user)
+end)
+
+RegisterNUICallback('mdt_jobRemove', function(data, cb)
+  TriggerServerEvent('gcPhone:mdt_removeJob', data.job)
 end)
