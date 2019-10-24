@@ -229,7 +229,30 @@
 
     <template v-else-if="state === STATES.MANAGE_ACCOUNT">
       <div class="main-panel">
-        Manage Account WIP
+
+        <div class="group inputText" data-type="text" data-maxlength='64' data-defaultValue="Username">
+          <label for="uname"><b>Username</b></label>
+          <input type="text" :placeholder="IntlString('APP_LOGIN_USERNAME_LABEL')" :value="localAccount.username" @change="setLocalAccount($event, 'username')">
+          <span class="bar"></span>
+        </div>
+
+        <div class="group inputText" data-type="text" data-model='password' data-maxlength='18' data-defaultValue="Password">
+          <label for="psw"><b>Password</b></label>
+          <input autocomplete="new-password" type="password" :placeholder="IntlString('APP_LOGIN_PASSWORD_LABEL')" :value="localAccount.password" @change="setLocalAccount($event, 'password')">
+          <span class="bar"></span>
+        </div>
+
+        <div class="group inputText" data-type="text" data-model='password' data-maxlength='18' data-defaultValue="Password">
+          <label for="psw"><b>Password</b></label>
+          <input autocomplete="new-password" type="password" :placeholder="IntlString('APP_LOGIN_PASSWORD_LABEL')" :value="localAccount.confirmPassword" @change="setLocalAccount($event, 'confirmPassword')">
+          <span class="bar"></span>
+        </div>
+
+        <div class="group" data-type="button" @click.stop="updateAcc">
+          <input type='button' class="btn" @click.stop="updateAcc" value="Change" />
+          <span class="bar"></span>
+        </div>
+
       </div>
     </template>
 
@@ -257,7 +280,12 @@ export default {
   data () {
     return {
       STATES,
-      state: STATES.MAIN_POLICE
+      state: STATES.MAIN_POLICE,
+      localAccount: {
+        username: '',
+        password: '',
+        confirmPassword: ''
+      }
     }
   },
   computed: {

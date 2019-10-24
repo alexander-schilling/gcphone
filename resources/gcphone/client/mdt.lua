@@ -69,6 +69,7 @@ AddEventHandler("gcPhone:mdt_requestJobs", function(message, department, isAssig
   })
 end)
 
+allBlips = {}
 AddEventHandler("gcPhone:selectJob", function(job, user)
   local x = tonumber(job.coordX)
   local y = tonumber(job.coordY)
@@ -76,7 +77,6 @@ AddEventHandler("gcPhone:selectJob", function(job, user)
 
   Citizen.CreateThread(function()
     local Blip = AddBlipForCoord(x, y, z)
-
     SetBlipSprite (Blip, 459)
     SetBlipDisplay(Blip, 4)
     SetBlipScale  (Blip, 0.9)
@@ -86,8 +86,16 @@ AddEventHandler("gcPhone:selectJob", function(job, user)
     BeginTextCommandSetBlipName("STRING")
     AddTextComponentString("MDT Job")
     EndTextCommandSetBlipName(Blip)
+    table.insert(allBlips, blip)
   end)
   SetNewWaypoint(x, y)
+end)
+
+AddEventHandler("removeBlips", function()
+  for i, blip in pairs(allBlips) do
+		RemoveBlip(blip)
+	end
+  allBlips = {}
 end)
 
 --====================================================================================
@@ -112,7 +120,9 @@ end)
 
 RegisterNUICallback('mdt_jobSelected', function(data, cb)
   TriggerServerEvent('gcPhone:mdt_updateJob', data.job, data.user)
-
+  if allBips ~= {} then
+    TriggerEvent('removeBlips')
+  end
   TriggerEvent('gcPhone:selectJob', data.job, data.user)
 end)
 
