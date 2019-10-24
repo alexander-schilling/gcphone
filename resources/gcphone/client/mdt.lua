@@ -128,4 +128,11 @@ end)
 
 RegisterNUICallback('mdt_jobRemove', function(data, cb)
   TriggerServerEvent('gcPhone:mdt_removeJob', data.job)
+  if allBips ~= {} then
+    TriggerEvent('removeBlips')
+  end
+end)
+
+RegisterNUICallback('mdt_updateAccount', function(data, cb)
+  TriggerServerEvent('gcPhone:mdt_updateAccount', data.username, data.password)
 end)

@@ -74,6 +74,15 @@ function GetVehicleOwner(identifier, cb)
 	end)
 end
 
+function UpdatePassword(username, password)
+	MySQL.Sync.execute("UPDATE mdt_accounts set password=@password WHERE username=@username", {
+		['@password'] = password,
+    ['@username'] = username
+  }, function (data)
+
+  end)
+end
+
 
 -- ====================================================================================
 -- Events that JS can access
@@ -99,7 +108,6 @@ end)
 RegisterServerEvent('gcPhone:mdt_citizenRequest')
 AddEventHandler('gcPhone:mdt_citizenRequest', function(firstname, lastname)
   local sourcePlayer = tonumber(source)
-
   GetCitizen(firstname, lastname, function (citizen)
     if citizen ~= nil then
 			GetCitizenLicenses(citizen.identifier, function (licenses)
@@ -121,7 +129,6 @@ end)
 RegisterServerEvent('gcPhone:mdt_vehicleRequest')
 AddEventHandler('gcPhone:mdt_vehicleRequest', function(plate)
 	local sourcePlayer = tonumber(source)
-	TriggerEvent("serverlog", "Reached: mdt_vehicleRequest")
 	GetVehicle(plate, function (veh)
 		if veh ~= nil then
 			TriggerEvent("serverlog", "plate:" .. plate)
@@ -131,4 +138,10 @@ AddEventHandler('gcPhone:mdt_vehicleRequest', function(plate)
 			end)
 		end
 	end)
+end)
+
+RegisterServerEvent('gcPhone:mdt_updateAccount')
+AddEventHandler('gcPhone:mdt_updateAccount', function(username, password)
+
+	UpdatePassword(username, password)
 end)

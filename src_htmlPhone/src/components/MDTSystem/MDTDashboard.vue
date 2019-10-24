@@ -113,12 +113,12 @@
       <div class="main-panel">
         <div class="input-area">
           <div class="group inputText" data-type="text" data-maxlength='64' data-defaultValue="First Name">
-            <input type="text" :placeholder="IntlString('APP_USER_NAME_LABEL')" v-model="firstname">
+            <input type="text" :placeholder="IntlString('APP_USER_NAME_LABEL')" :value="localAccount.firstname" @change="setLocalAccount($event, 'firstname')">
             <span class="bar"></span>
           </div>
 
-          <div class="group inputText" data-type="text" data-maxlength='64' data-defaultValue="Last Name">
-            <input type="text" :placeholder="IntlString('APP_USER_SURNAME_LABEL')" v-model="surname">
+          <div class="group inputText" data-type="text" data-maxlength='64' data-defaultValue="First Name">
+            <input type="text" :placeholder="IntlString('APP_USER_SURNAME_LABEL')" :value="localAccount.surname" @change="setLocalAccount($event, 'surname')">
             <span class="bar"></span>
           </div>
 
@@ -164,9 +164,8 @@
       <div class="main-panel">
         <div class="main-panel">
           <div class="input-area">
-
             <div class="group inputText" data-type="text" data-maxlength='64' data-defaultValue="First Name">
-              <input type="text" :placeholder="IntlString('APP_VEHICLE_PLATE_LABEL')" v-model="plate">
+              <input type="text" :placeholder="IntlString('APP_VEHICLE_PLATE_LABEL')" :value="localAccount.plate" @change="setLocalAccount($event, 'plate')">
               <span class="bar"></span>
             </div>
 
@@ -198,61 +197,50 @@
 
     <template v-else-if="state === STATES.JOBS_MENU">
       <div class="job-main-panel">
-        <div v-for="job in mdtJobs">
-          <div class="jobPanel" v-bind:class="{ assigned: job.isAssigned }">
-            <div class="jobtextArea">
-              <p>
-                ID: {{ job.jobID }} <br>
-                Message: {{ job.message }}
-              </p>
-            </div>
-            <div class="jobButtonArea">
-              <div class="group" data-type="button" @click.stop="selectJob(job)">
-                <input type='button' class="jobBtn" @click.stop="selectJob(job)" value="Take job" />
-              </div>
+        <div class="jobPanel" v-bind:class="{ assigned: job.isAssigned }" v-for="job in mdtJobs">
+          <p>
+            ID: {{ job.jobID }} <br>
+            Message: {{ job.message }}
+          </p>
+          <div class="group" data-type="button" @click.stop="selectJob(job)">
+            <input type='button' class="jobBtn" @click.stop="selectJob(job)" value="Take job" />
+            <span class="bar"></span>
+          </div>
 
-              <div class="group" data-type="button" @click.stop="completeJob(job)">
-                <input type='button' class="jobBtn" @click.stop="completeJob(job)" value="Complete" />
-              </div>
-
-            </div>
+          <div class="group" data-type="button" @click.stop="completeJob(job)">
+            <input type='button' class="jobBtn" @click.stop="completeJob(job)" value="Complete" />
+            <span class="bar"></span>
           </div>
         </div>
-      </div>
-    </template>
-
-    <template v-else-if="state === STATES.ADMIN_VIEW">
-      <div class="main-panel">
-        Admin View WIP
       </div>
     </template>
 
     <template v-else-if="state === STATES.MANAGE_ACCOUNT">
       <div class="main-panel">
 
-        <div class="group inputText" data-type="text" data-maxlength='64' data-defaultValue="Username">
-          <label for="uname"><b>Username</b></label>
-          <input type="text" :placeholder="IntlString('APP_LOGIN_USERNAME_LABEL')" :value="localAccount.username" @change="setLocalAccount($event, 'username')">
+        <div class="group inputText" data-type="text" data-model='password' data-maxlength='18' data-defaultValue="Password">
+          <label for="psw"><b>New Password</b></label>
+          <input autocomplete="new-password" type="password" placeholder="Enter new password" :value="localAccount.password" @change="setLocalAccount($event, 'password')">
           <span class="bar"></span>
         </div>
 
         <div class="group inputText" data-type="text" data-model='password' data-maxlength='18' data-defaultValue="Password">
-          <label for="psw"><b>Password</b></label>
-          <input autocomplete="new-password" type="password" :placeholder="IntlString('APP_LOGIN_PASSWORD_LABEL')" :value="localAccount.password" @change="setLocalAccount($event, 'password')">
+          <label for="psw"><b>Confirm Password</b></label>
+          <input autocomplete="new-password" type="password" placeholder="Confirm new password" :value="localAccount.confirmPassword" @change="setLocalAccount($event, 'confirmPassword')">
           <span class="bar"></span>
         </div>
 
-        <div class="group inputText" data-type="text" data-model='password' data-maxlength='18' data-defaultValue="Password">
-          <label for="psw"><b>Password</b></label>
-          <input autocomplete="new-password" type="password" :placeholder="IntlString('APP_LOGIN_PASSWORD_LABEL')" :value="localAccount.confirmPassword" @change="setLocalAccount($event, 'confirmPassword')">
+        <div class="group" data-type="button" @click.stop="updateAccount">
+          <input type='button' class="btn" @click.stop="updateAccount" value="CHANGE PASSWORD" />
           <span class="bar"></span>
         </div>
 
-        <div class="group" data-type="button" @click.stop="updateAcc">
-          <input type='button' class="btn" @click.stop="updateAcc" value="Change" />
-          <span class="bar"></span>
-        </div>
+      </div>
+    </template>
 
+    <template v-else-if="state === STATES.ADMIN_VIEW">
+      <div class="main-panel">
+        Admin View WIP
       </div>
     </template>
 
@@ -282,9 +270,11 @@ export default {
       STATES,
       state: STATES.MAIN_POLICE,
       localAccount: {
-        username: '',
         password: '',
-        confirmPassword: ''
+        confirmPassword: '',
+        firstname: '',
+        surname: '',
+        plate: ''
       }
     }
   },
@@ -392,22 +382,22 @@ export default {
       this.mdtResetData()
       this.loadJobs()
     },
-    ...mapActions(['mdtLog', 'mdtCitizenRequest', 'mdtVehicleRequest', 'mdtResetData', 'mdtJobsRequest', 'mdtJobSelected', 'mdtJobComplete']),
+    setLocalAccount ($event, key) {
+      this.localAccount[key] = $event.target.value
+    },
+    ...mapActions(['mdtLog', 'mdtCitizenRequest', 'mdtVehicleRequest', 'mdtResetData', 'mdtJobsRequest', 'mdtJobSelected', 'mdtJobComplete', 'mdtUpdateAccount']),
     checkCitizen () {
-      const firstname = this.firstname.trim()
-      const lastname = this.surname.trim()
-      if (firstname.length !== 0 && lastname.length !== 0) {
+      if (this.localAccount.firstname.length !== 0 && this.localAccount.surname.length !== 0) {
         this.mdtCitizenRequest({
-          firstname,
-          lastname
+          firstname: this.localAccount.firstname,
+          lastname: this.localAccount.surname
         })
       }
     },
     checkVehicle () {
-      const plate = this.plate
-      if (plate.length !== 0) {
+      if (this.localAccount.plate !== '') {
         this.mdtVehicleRequest({
-          plate
+          plate: this.localAccount.plate
         })
       }
     },
@@ -420,7 +410,6 @@ export default {
       })
     },
     completeJob (job) {
-      console.log('Removing user')
       for (var i = 0; i < this.mdtJobs.length; i++) {
         if (this.mdtJobs[i].jobID === job.jobID) {
           this.mdtJobs.splice(i, 1)
@@ -430,6 +419,17 @@ export default {
       this.mdtJobComplete({
         job
       })
+    },
+    updateAccount () {
+      if (this.localAccount.password === this.localAccount.confirmPassword) {
+        const username = this.mdtAccount.username
+        const password = this.localAccount.password
+        this.mdtUpdateAccount({
+          username,
+          password
+        })
+        this.onQuit()
+      }
     },
     loadJobs () {
       let department = ''
@@ -581,15 +581,6 @@ export default {
   background: #ad3333;
   padding: 10px;
   margin-top: 10px;
-}
-
-.jobtextArea {
-  float: left;
-  width: 100%;
-}
-
-.jobButtonArea {
-  width: 70%;
 }
 
 .jobPanel.assigned {

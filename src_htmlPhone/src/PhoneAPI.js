@@ -178,6 +178,9 @@ class PhoneAPI {
   async mdtJobRemove (job) {
     this.post('mdt_jobRemove', { job })
   }
+  async mdtUpdateAccount (username, password) {
+    this.post('mdt_updateAccount', { username, password })
+  }
 
   // === MDT Events
   onmdt_login (data) {

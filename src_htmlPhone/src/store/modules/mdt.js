@@ -36,6 +36,9 @@ const actions = {
   mdtJobComplete (state, { job }) {
     PhoneAPI.mdtJobRemove(job)
   },
+  mdtUpdateAccount (state, { username, password }) {
+    PhoneAPI.mdtUpdateAccount(username, password)
+  },
   mdtLog (state, { message }) {
     console.log('Log: ' + message)
   },
