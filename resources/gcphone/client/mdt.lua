@@ -98,6 +98,18 @@ AddEventHandler("removeBlips", function()
   allBlips = {}
 end)
 
+RegisterNetEvent("gcPhone:mdt_requestUsers")
+AddEventHandler("gcPhone:mdt_requestUsers", function(username, password, work, id, adminlevel)
+  SendNUIMessage({
+    event = 'mdt_addUser',
+      username = username,
+      password = password,
+      work = work,
+      id = id,
+      adminlevel = adminlevel
+  })
+end)
+
 --====================================================================================
 -- #NUI Callbacks
 --====================================================================================
@@ -135,4 +147,16 @@ end)
 
 RegisterNUICallback('mdt_updateAccount', function(data, cb)
   TriggerServerEvent('gcPhone:mdt_updateAccount', data.username, data.password)
+end)
+
+RegisterNUICallback('mdt_requestUsers', function(data, cb)
+  TriggerServerEvent('gcPhone:mdt_requestUsers', data.work)
+end)
+
+RegisterNUICallback('mdt_resetPassword', function(data, cb)
+
+  local password = "@" .. data.user .. "_" .. data.id
+  print("New User password: " .. password)
+
+  TriggerServerEvent('gcPhone:mdt_resetPassword', password, data.id)
 end)

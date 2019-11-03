@@ -33,7 +33,7 @@
             <span class="bar"></span>
           </div>
 
-          <div v-if="isAdmin" class="main-button-item" data-type="button" @click.stop="state = STATES.ADMIN_VIEW">
+          <div v-if="isAdmin" class="main-button-item-admin" data-type="button" @click.stop="state = STATES.ADMIN_VIEW">
             <input type='button' class="mainBtn" @click.stop="state = STATES.ADMIN_VIEW" value="Admin" />
             <span class="bar"></span>
           </div>
@@ -69,7 +69,7 @@
             <span class="bar"></span>
           </div>
 
-          <div v-if="isAdmin" class="main-button-item" data-type="button" @click.stop="state = STATES.ADMIN_VIEW">
+          <div v-if="isAdmin" class="main-button-item-admin" data-type="button" @click.stop="state = STATES.ADMIN_VIEW">
             <input type='button' class="mainBtn" @click.stop="state = STATES.ADMIN_VIEW" value="Admin" />
             <span class="bar"></span>
           </div>
@@ -100,7 +100,7 @@
             <span class="bar"></span>
           </div>
 
-          <div v-if="isAdmin" class="main-button-item" data-type="button" @click.stop="state = STATES.ADMIN_VIEW">
+          <div v-if="isAdmin" class="main-button-item-admin" data-type="button" @click.stop="state = STATES.ADMIN_VIEW">
             <input type='button' class="mainBtn" @click.stop="state = STATES.ADMIN_VIEW" value="Admin" />
             <span class="bar"></span>
           </div>
@@ -197,19 +197,26 @@
 
     <template v-else-if="state === STATES.JOBS_MENU">
       <div class="job-main-panel">
-        <div class="jobPanel" v-bind:class="{ assigned: job.isAssigned }" v-for="job in mdtJobs">
-          <p>
-            ID: {{ job.jobID }} <br>
-            Message: {{ job.message }}
-          </p>
-          <div class="group" data-type="button" @click.stop="selectJob(job)">
-            <input type='button' class="jobBtn" @click.stop="selectJob(job)" value="Take job" />
-            <span class="bar"></span>
+        <div class="jobPanel">
+          <label for="jobText">Call {{ job.jobID }}</label>
+          <div class="jobText">
+            <p>
+              {{ job.message }}
+            </p>
+            <div class="taken" v-bind:class="{ yes: job.isAssigned }">
+            </div>
           </div>
 
-          <div class="group" data-type="button" @click.stop="completeJob(job)">
-            <input type='button' class="jobBtn" @click.stop="completeJob(job)" value="Complete" />
-            <span class="bar"></span>
+          <div class="jobButtons">
+            <div class="group" data-type="button" @click.stop="selectJob(job)">
+              <input type='button' class="jobBtn" @click.stop="selectJob(job)" value="Respond to call" />
+              <span class="bar"></span>
+            </div>
+
+            <div class="group" data-type="button" @click.stop="completeJob(job)">
+              <input type='button' class="jobBtn" @click.stop="completeJob(job)" value="Finish Call" />
+              <span class="bar"></span>
+            </div>
           </div>
         </div>
       </div>
@@ -239,8 +246,36 @@
     </template>
 
     <template v-else-if="state === STATES.ADMIN_VIEW">
-      <div class="main-panel">
-        Admin View WIP
+      <div class="main-panel-admin">
+        <span><label class="adminLabel">Admin Menu</label></span>
+        <div class="userPanel" v-for="user in mdtUsers">
+          <span>User {{ user.username }} </span>
+          <span>UserID: {{ user.id }}</span>
+
+          <div class="grid-cont">
+            <div class="group griditem" data-type="button" @click.stop="editUser(user)">
+              <input type='button' class="btnEdit" @click.stop="editUser(user)" value="Edit User" />
+              <span class="bar"></span>
+            </div>
+            <div class="group griditem" data-type="button" @click.stop="resetPassword(user)">
+              <input type='button' class="btnEdit" @click.stop="resetPassword(user)" value="Reset Password" />
+              <span class="bar"></span>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="group" data-type="button" @click.stop="state = STATES.ADMIN_CREATE">
+          <input type='button' class="btn" @click.stop="state = STATES.ADMIN_CREATE" value="Create User" />
+          <span class="bar"></span>
+        </div>
+
+      </div>
+    </template>
+
+    <template v-else-if="state === STATE.ADMIN_CREATE">
+      <div class="main-panel-admin">
+        <span><label class="adminLabel">Create User</label></span>
       </div>
     </template>
 
@@ -258,7 +293,8 @@ const STATES = Object.freeze({
   VEHICLE_DATABASE: 4,
   JOBS_MENU: 5,
   ADMIN_VIEW: 6,
-  MANAGE_ACCOUNT: 7
+  ADMIN_CREATE: 7,
+  MANAGE_ACCOUNT: 8
 })
 
 export default {
@@ -274,12 +310,14 @@ export default {
         confirmPassword: '',
         firstname: '',
         surname: '',
-        plate: ''
+        plate: '',
+        newUsername: '',
+        newPassword: ''
       }
     }
   },
   computed: {
-    ...mapGetters(['IntlString', 'useMouse', 'mdtAccount', 'mdtVehicle', 'mdtCitizen', 'mdtJobs']),
+    ...mapGetters(['IntlString', 'useMouse', 'mdtAccount', 'mdtVehicle', 'mdtCitizen', 'mdtJobs', 'mdtUsers']),
     isAdmin () {
       return this.mdtAccount.adminlevel >= 1
     }
@@ -381,11 +419,14 @@ export default {
       }
       this.mdtResetData()
       this.loadJobs()
+      if (this.isAdmin) {
+        this.loadUsers()
+      }
     },
     setLocalAccount ($event, key) {
       this.localAccount[key] = $event.target.value
     },
-    ...mapActions(['mdtLog', 'mdtCitizenRequest', 'mdtVehicleRequest', 'mdtResetData', 'mdtJobsRequest', 'mdtJobSelected', 'mdtJobComplete', 'mdtUpdateAccount']),
+    ...mapActions(['mdtLog', 'mdtCitizenRequest', 'mdtVehicleRequest', 'mdtResetData', 'mdtJobsRequest', 'mdtJobSelected', 'mdtJobComplete', 'mdtUpdateAccount', 'mdtResetPassword']),
     checkCitizen () {
       if (this.localAccount.firstname.length !== 0 && this.localAccount.surname.length !== 0) {
         this.mdtCitizenRequest({
@@ -431,6 +472,12 @@ export default {
         this.onQuit()
       }
     },
+    resetPassword (user) {
+      this.mdtResetPassword({
+        user: user.username,
+        id: user.id
+      })
+    },
     loadJobs () {
       let department = ''
       switch (this.mdtAccount.work) {
@@ -446,6 +493,12 @@ export default {
       }
       this.mdtJobsRequest({ department })
     },
+    loadUsers () {
+      this.mdtUsersRequest({
+        work: this.mdtAccount.work,
+        adminlevel: this.mdtAccount.adminlevel
+      })
+    },
     onLoad () {
       switch (this.mdtAccount.work) {
         case '0':
@@ -460,6 +513,9 @@ export default {
       }
       this.mdtResetData()
       this.loadJobs()
+      if (this.isAdmin) {
+        this.loadUsers()
+      }
     }
   },
   created () {
@@ -529,6 +585,18 @@ export default {
   margin-top: 2%;
 }
 
+.group.main-button-item-admin {
+  background-color: #080808;
+  color: #dbdbdb;
+  height: 70px;
+  font-size: 30px;
+  bottom: 20px;
+  text-align: center;
+  box-shadow: 0px 5px 5px grey;
+
+  margin-top: 2%;
+}
+
 .mainBtn {
   width: 100%;
   height: 65px;
@@ -578,15 +646,34 @@ export default {
 }
 
 .jobPanel {
-  background: #ad3333;
+  background: #f2f2f2;
   padding: 10px;
   margin-top: 10px;
 }
 
-.jobPanel.assigned {
+.jobText {
+  display: grid;
+  grid-template-columns: 3fr 0.5fr;
+}
+
+.taken {
+  width: 100%;
+  height: 100%;
+  background: #ad3333;
+  border-radius: 5px;
+
+  -webkit-transition: all 0.5s ease;
+  -moz-transition: all 0.5s ease;
+  -o-transition: all 0.5s ease;
+  transition: all 0.5s ease;
+}
+
+.taken.yes {
+  width: 100%;
+  height: 100%;
   background: #33ad35;
-  padding: 10px;
-  margin-top: 10px;
+  border-radius: 5px;
+
 }
 
 .jobBtn {
@@ -603,6 +690,57 @@ export default {
 .jobBtn:hover {
   opacity: 0.8;
 }
+
+/*ADMIN VIEW =================================== */
+.main-panel-admin {
+  width: 100%;
+  height: 100%;
+  background: #dbdbdb;
+}
+
+.adminLabel {
+  display: block;
+  text-align: center;
+  font-size: 24px;
+}
+
+.userPanel {
+  background: #ad3333;
+  color: white;
+  padding: 10px 10px 1px 10px;
+  margin-top: 10px;
+  border-radius: 10px;
+}
+
+.userPanel span {
+  display: block;
+  margin-top: 10px;
+}
+
+.grid-cont {
+  margin-top: 4px;
+  display: grid;
+  grid-template-columns: auto auto;
+}
+
+.group.griditem {
+  margin: 0px 2px
+}
+
+.btnEdit {
+  background: black;
+  color: white;
+  padding: 8px 10px;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  height: 40px;
+  font-size: 16px;
+}
+.btnEdit:hover {
+  background: #222;
+}
+
 
 /*BUTTON DESIGN ================================ */
 input[type=text], input[type=password] {
@@ -665,19 +803,4 @@ input:focus ~ .bar:before, input:focus ~ .bar:after,
 .group.select input ~ .bar:before, .group.select input ~ .bar:after{
   width:50%;
 }
-
-/* ANIMATIONS ================ */
-@-webkit-keyframes inputHighlighter {
-  from { background:#ad3333; }
-  to 	{ width:0; background:transparent; }
-}
-@-moz-keyframes inputHighlighter {
-  from { background:#ad3333; }
-  to 	{ width:0; background:transparent; }
-}
-@keyframes inputHighlighter {
-  from { background:#ad3333; }
-  to 	{ width:0; background:transparent; }
-}
-
 </style>

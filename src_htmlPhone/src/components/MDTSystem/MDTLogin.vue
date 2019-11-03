@@ -20,6 +20,11 @@
         <input type='button' class="btn" @click.stop="login" value="Login" />
         <span class="bar"></span>
       </div>
+      <div class="version">
+        <p>
+          MDT System v1.0
+        </p>
+      </div>
 
     </div>
   </div>
@@ -209,6 +214,14 @@ export default {
     animation-duration: 0.6s;
     animation-fill-mode: forwards;
   }
+
+  .version {
+    font-size: 11px;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+  }
+
   @keyframes zoom {
     from {width: 200px;}
       to {width: 250px;}

@@ -4,14 +4,16 @@ const state = {
   mdtAccount: {},
   mdtJobs: [],
   mdtCitizen: {},
-  mdtVehicle: {}
+  mdtVehicle: {},
+  mdtUsers: []
 }
 
 const getters = {
   mdtAccount: ({ mdtAccount }) => mdtAccount,
   mdtJobs: ({ mdtJobs }) => mdtJobs,
   mdtCitizen: ({ mdtCitizen }) => mdtCitizen,
-  mdtVehicle: ({ mdtVehicle }) => mdtVehicle
+  mdtVehicle: ({ mdtVehicle }) => mdtVehicle,
+  mdtUsers: ({ mdtUsers }) => mdtUsers
 }
 
 const actions = {
@@ -38,6 +40,12 @@ const actions = {
   },
   mdtUpdateAccount (state, { username, password }) {
     PhoneAPI.mdtUpdateAccount(username, password)
+  },
+  mdtUsersRequest (state, { work, adminlevel }) {
+    PhoneAPI.mdtUsersRequest(work, adminlevel)
+  },
+  mdtResetPassword (state, { user, id }) {
+    PhoneAPI.mdtResetPassword(user, id)
   },
   mdtLog (state, { message }) {
     console.log('Log: ' + message)
@@ -89,7 +97,17 @@ const actions = {
       coordZ: data.coordZ,
       jobID: data.jobID
     }
-    commit('ADD_JOB', job)
+    commit('MDT_ADD_JOB', job)
+  },
+  mdtAddUser ({ commit }, data) {
+    var user = {
+      username: data.username,
+      password: data.password,
+      work: data.work,
+      id: data.id,
+      adminlevel: data.adminlevel
+    }
+    commit('MDT_ADD_USER', user)
   }
 }
 
@@ -103,7 +121,7 @@ const mutations = {
       adminlevel: adminlevel
     }
   },
-  UPDATE_CITIZEN (state, {firstname, lastname, dateofbirth, sex, height, identifier, license}) {
+  UPDATE_CITIZEN (state, { firstname, lastname, dateofbirth, sex, height, identifier, license }) {
     state.mdtCitizen = {
       firstname: firstname,
       lastname: lastname,
@@ -114,7 +132,7 @@ const mutations = {
       license: license
     }
   },
-  UPDATE_VEHICLE (state, {firstname, lastname, plate, model}) {
+  UPDATE_VEHICLE (state, { firstname, lastname, plate, model }) {
     state.mdtVehicle = {
       firstname: firstname,
       lastname: lastname,
@@ -122,7 +140,7 @@ const mutations = {
       model: model
     }
   },
-  MDT_ADD_JOB (state, {message, department, isAssigned, coordX, coordY, coordZ, jobID}) {
+  MDT_ADD_JOB (state, { message, department, isAssigned, coordX, coordY, coordZ, jobID }) {
     state.mdtJobs.unshift({
       message: message,
       department: department,
@@ -133,10 +151,20 @@ const mutations = {
       jobID: jobID
     })
   },
+  MDT_ADD_USER (state, { username, password, work, id, adminlevel }) {
+    state.mdtUsers.unshift({
+      username: username,
+      password: password,
+      work: work,
+      id: id,
+      adminlevel: adminlevel
+    })
+  },
   RESET_DATA (state, {type}) {
     state.mdtJobs = []
     state.mdtCitizen = {}
     state.mdtVehicle = {}
+    state.mdtUsers = []
   }
 }
 

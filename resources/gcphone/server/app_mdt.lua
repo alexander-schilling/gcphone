@@ -145,3 +145,48 @@ AddEventHandler('gcPhone:mdt_updateAccount', function(username, password)
 
 	UpdatePassword(username, password)
 end)
+
+---------------------------------------
+-- Admin Panel Stuff
+---------------------------------------
+
+RegisterServerEvent('gcPhone:mdt_requestJobs')
+AddEventHandler('gcPhone:mdt_requestJobs', function(work, adminlevel)
+  local sourcePlayer = tonumber(source)
+
+  MySQL.Async.fetchAll("SELECT * FROM mdt_accounts WHERE mdt_accounts.work = @work AND mdt_accounts.adminlevel < @adminlevel", {
+    ['@work'] = work,
+		['@adminlevel'] = adminlevel
+  }, function (data)
+    for k,v in pairs(data) do
+      TriggerClientEvent('gcPhone:mdt_requestUsers', sourcePlayer, data[k].username, data[k].password, data[k].work, data[k].id, data[k].adminlevel)
+    end
+  end)
+end)
+
+RegisterServerEvent('gcPhone:mdt_addUser')
+AddEventHandler('gcPhone:mdt_addUser', function(username, password, work, adminlevel)
+	local sourcePlayer = tonumber(source)
+
+	MySQL.Sync.execute("INSERT INTO mdt_accounts (`username`, `password`,`work`,`adminlevel`) VALUES(@username, @password, @work, @adminlevel);", {
+		['@username'] = username,
+		['@password'] = password,
+		['@work'] = work,
+		['@adminlevel'] = adminlevel
+	})
+end)
+
+RegisterServerEvent('gcPhone:mdt_removeUser')
+AddEventHandler('gcPhone:mdt_removeUser', function(id)
+	MySQL.Sync.execute("DELETE FROM `mdt_accounts` WHERE `id` = @id;", {
+    ['@id'] = id
+  })
+end)
+
+RegisterServerEvent('gcPhone:mdt_resetPassword')
+AddEventHandler('gcPhone:mdt_resetPassword', function(password, id)
+	MySQL.Sync.execute("UPDATE mdt_accounts set password=@password WHERE id=@id", {
+    ['@password'] = password,
+		['@id']= id
+  })
+end)

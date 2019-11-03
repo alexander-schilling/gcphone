@@ -181,6 +181,12 @@ class PhoneAPI {
   async mdtUpdateAccount (username, password) {
     this.post('mdt_updateAccount', { username, password })
   }
+  async mdtUsersRequest (work, adminlevel) {
+    this.post('mdt_requestUsers', { work, adminlevel })
+  }
+  async mdtResetPassword (user, id) {
+    this.post('mdt_resetPassword', { user, id })
+  }
 
   // === MDT Events
   onmdt_login (data) {
@@ -197,6 +203,10 @@ class PhoneAPI {
 
   onmdt_addJob (data) {
     store.commit('MDT_ADD_JOB', data)
+  }
+
+  onmdt_addUser (data) {
+    store.commit('MDT_ADD_USER', data)
   }
 
   // ==========================================================================

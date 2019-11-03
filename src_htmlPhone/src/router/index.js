@@ -31,6 +31,7 @@ import App9GAG from '@/components/App9GAG'
 
 import MDTLogIn from '@/components/MDTSystem/MDTLogin'
 import MDTDashboard from '@/components/MDTSystem/MDTDashboard'
+import MDTSplash from '@/components/MDTSystem/MDTSplash'
 
 Vue.use(Router)
 
@@ -122,6 +123,10 @@ export default new Router({
       path: '/9gag',
       name: '9gag',
       component: App9GAG
+    }, {
+      path: '/mdt/spash',
+      name: 'mdt.splash',
+      component: MDTSplash
     }, {
       path: '/mdt',
       name: 'mdt',

@@ -27,9 +27,9 @@
   "useWebRTCVocal": true,
   "RTCConfig": {
     "iceServers": [{
-      "urls": ["turn:barrax.needrp.net"],
-      "username": "gcphone",
-      "credential": "gcphone"
+      "urls": ["turn:103.212.225.131:3478"],
+      "username": "dirtnap",
+      "credential": "dirtnap"
     }]
   },
 
@@ -39,13 +39,15 @@
   "fileUploadService_Field": "files[]",
 
   "background": {
-    "Calvin & Hobbes": "back001.jpg",
-    "Destiny": "back002.jpg",
-    "Stormtrooper": "back003.jpg",
+    "Black Beauty": "back001.jpg",
+    "Lava Lamp": "back002.jpg",
+    "Warlocks": "back003.jpg",
+    "Galaxy": "back004.jpg",
+    "Green Hex": "back005.jpg",
     "Custom URL": "URL"
   },
   "background_default": {
-    "label": "Calvin & Hobbes",
+    "label": "Black Beauty",
     "value": "back001.jpg"
   },
 
@@ -222,7 +224,7 @@
     {
       "name": "CAD/MDT",
       "icons": "/html/static/img/icons_app/mdt.png",
-      "routeName": "mdt",
+      "routeName": "mdt.splash",
       "inHomePage": true
     }
   ],
