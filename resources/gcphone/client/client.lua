@@ -11,7 +11,7 @@ local KeyToucheCloseEvent = {
   { code = 176, event = 'Enter' },
   { code = 177, event = 'Backspace' },
 }
-local KeyOpenClose = 244 -- F2
+local KeyOpenClose = 288 -- F2: 244 | F1: 288
 local KeyTakeCall = 38 -- E
 local menuIsOpen = false
 local contacts = {}
@@ -33,22 +33,22 @@ local soundDistanceMax = 8.0
 --  Check si le joueurs poséde un téléphone
 --  Callback true or false
 --====================================================================================
-function hasPhone (cb)
+--[[function hasPhone (cb)
   cb(true)
 end
 --====================================================================================
 --  Que faire si le joueurs veut ouvrir sont téléphone n'est qu'il en a pas ?
 --====================================================================================
 function ShowNoPhoneWarning ()
-end
+end]]
 
 --[[
   Ouverture du téphone lié a un item
   Un solution ESC basé sur la solution donnée par HalCroves
   https://forum.fivem.net/t/tutorial-for-gcphone-with-call-and-job-message-other/177904
 --]]
---[[
 ESX = nil
+
 Citizen.CreateThread(function()
 	while ESX == nil do
 		TriggerEvent('esx:getSharedObject', function(obj) ESX = obj end)
@@ -57,16 +57,16 @@ Citizen.CreateThread(function()
 end)
 
 function hasPhone (cb)
-  if (ESX == nil) then return cb(0) end
+  if (ESX == nil) then cb(0) end
   ESX.TriggerServerCallback('gcphone:getItemAmount', function(qtty)
     cb(qtty > 0)
-  end, 'phone')
+  end, 'blackberry')
 end
+
 function ShowNoPhoneWarning ()
   if (ESX == nil) then return end
-  ESX.ShowNotification("Vous n'avez pas de ~r~téléphone~s~")
+  ESX.ShowNotification("No tienes un ~r~celular~s~. Compra uno en el ~g~supermercado~s~.")
 end
---]]
 
 
 --====================================================================================
@@ -159,7 +159,7 @@ function showFixePhoneHelper (coords)
       coords.x, coords.y, coords.z, 1)
     if dist <= 2.0 then
       SetTextComponentFormat("STRING")
-      AddTextComponentString("~g~" .. data.name .. ' ~o~' .. number .. '~n~~INPUT_PICKUP~~w~ Use')
+      AddTextComponentString("~g~" .. data.name .. ' ~o~' .. number .. '~n~~INPUT_PICKUP~~w~ Usar')
       DisplayHelpTextFromStringLabel(0, 0, 0, -1)
       if IsControlJustPressed(1, KeyTakeCall) then
         startFixeCall(number)
@@ -188,7 +188,7 @@ Citizen.CreateThread(function ()
           inRangedist = dist
           if (dist <= 1.5) then
             SetTextComponentFormat("STRING")
-            AddTextComponentString("~INPUT_PICKUP~ Accept")
+            AddTextComponentString("~INPUT_PICKUP~ Responder")
             DisplayHelpTextFromStringLabel(0, 0, 1, -1)
             if IsControlJustPressed(1, KeyTakeCall) then
               PhonePlayCall(true)
@@ -234,16 +234,6 @@ function StopSoundJS (sound)
 end
 
 
-
-
-
-
-
-
-
-
-
-
 RegisterNetEvent("gcPhone:forceOpenPhone")
 AddEventHandler("gcPhone:forceOpenPhone", function(_myPhoneNumber)
   if menuIsOpen == false then
@@ -283,12 +273,12 @@ AddEventHandler("gcPhone:receiveMessage", function(message)
   SendNUIMessage({event = 'newMessage', message = message})
   table.insert(messages, message)
   if message.owner == 0 then
-    local text = '~o~New Message'
+    local text = '~o~Nuevo mensaje'
     if ShowNumberNotification == true then
-      text = '~o~New message from ~y~'.. message.transmitter
+      text = '~o~Nuevo mensaje de ~y~'.. message.transmitter
       for _,contact in pairs(contacts) do
         if contact.number == message.transmitter then
-          text = '~o~~New message from ~g~'.. contact.display
+          text = '~o~Nuevo mensaje de ~g~'.. contact.display
           break
         end
       end
@@ -501,65 +491,6 @@ AddEventHandler('gcphone:autoAcceptCall', function(infoCall)
 end)
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 --====================================================================================
 --  Gestion des evenements NUI
 --====================================================================================
@@ -639,7 +570,7 @@ end)
 -- Add security for event (leuit#0100)
 RegisterNUICallback('callEvent', function(data, cb)
   local eventName = data.eventName or ''
-  if string.match(eventName, 'gcphone') then
+  if string.match(eventName, 'gcphone') or string.match(eventName, 'esx_addons_gcphone') then
     if data.data ~= nil then
       TriggerEvent(data.eventName, data.data)
     else
@@ -663,6 +594,7 @@ end)
 function TooglePhone()
   menuIsOpen = not menuIsOpen
   SendNUIMessage({show = menuIsOpen})
+  TriggerEvent('RadarWhileDriving:toggleBigMap', menuIsOpen)
   if menuIsOpen == true then
     PhonePlayIn()
   else
@@ -672,6 +604,7 @@ end
 RegisterNUICallback('faketakePhoto', function(data, cb)
   menuIsOpen = false
   SendNUIMessage({show = false})
+  TriggerEvent('RadarWhileDriving:toggleBigMap', false)
   cb()
   TriggerEvent('camera:open')
 end)
@@ -679,6 +612,7 @@ end)
 RegisterNUICallback('closePhone', function(data, cb)
   menuIsOpen = false
   SendNUIMessage({show = false})
+  TriggerEvent('RadarWhileDriving:toggleBigMap', false)
   PhonePlayOut()
   cb()
 end)

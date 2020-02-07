@@ -109,7 +109,7 @@ export default {
           title: this.IntlString('APP_CONFIG_MOUSE_SUPPORT'),
           onValid: 'onChangeMouseSupport',
           values: {
-            'Yes': true,
+            'Sí': true,
             'No': false,
             ...cancelOption
           }

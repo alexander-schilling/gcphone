@@ -1,5 +1,5 @@
 {
-  "reseau": "Dirt Nap RP",
+  "reseau": "WEOM",
   "warningMessageCount": 250,
   "themeColor": "#303f9f",
   "colors": [
@@ -22,9 +22,9 @@
     "#78909C"
   ],
 
-  "useFormatNumberFrance": true,
+  "useFormatNumberFrance": false,
 
-  "useWebRTCVocal": true,
+  "useWebRTCVocal": false,
   "RTCConfig": {
     "iceServers": [{
       "urls": ["turn:103.212.225.131:3478"],
@@ -39,43 +39,43 @@
   "fileUploadService_Field": "files[]",
 
   "background": {
-    "Black Beauty": "back001.jpg",
-    "Lava Lamp": "back002.jpg",
-    "Warlocks": "back003.jpg",
-    "Galaxy": "back004.jpg",
-    "Green Hex": "back005.jpg",
-    "Custom URL": "URL"
+    "Hispano 1": "back001.jpg",
+    "Hispano 2": "back002.jpg",
+    "Hispano 3": "back003.jpg",
+    "URL personalizada": "URL"
   },
   "background_default": {
-    "label": "Black Beauty",
+    "label": "Hispano 1",
     "value": "back001.jpg"
   },
 
 
   "coque": {
-    "Sansumg S8": "s8.png",
-    "Iphone X": "iphonex.png",
-    "Brick Base": "base.png",
-    "Transparent": "transparent.png"
+    "SS8": "s8.png",
+    "IPX": "iphonex.png",
+    "Bloque": "base.png",
+    "Transparente": "transparent.png"
   },
   "coque_default": {
-    "label": "Sansumg S8",
+    "label": "SS8",
     "value": "s8.png"
   },
 
 
-  "serviceCall": [{
-      "display": "Police",
-      "icon": "/html/static/img/icons_app/police.png",
-      "subMenu": [{
-          "title": "Send Message",
+  "serviceCall": [
+    {
+      "display": "Carabineros",
+      "backgroundColor": "green",
+      "subMenu": [
+        {
+          "title": "Enviar un mensaje",
           "eventName": "esx_addons_gcphone:call",
           "type": {
             "number": "police"
           }
         },
         {
-          "title": "Call 911",
+          "title": "Llamar 911",
           "eventName": "gcphone:autoCallNumber",
           "type": {
             "number": "911"
@@ -84,29 +84,113 @@
       ]
     },
     {
-      "display": "Ambulance",
+      "display": "EMS",
       "backgroundColor": "red",
-      "subMenu": [{
-        "title": "Send message",
-        "eventName": "esx_addons_gcphone:call",
-        "type": {
-          "number": "ambulance"
+      "subMenu": [
+        {
+          "title": "Enviar un mensaje",
+          "eventName": "esx_addons_gcphone:call",
+          "type": {
+            "number": "ambulance"
+          }
         }
-      }]
+      ]
+    },
+    {
+      "display": "Mecánicos",
+      "backgroundColor": "blue",
+      "subMenu": [
+        {
+          "title": "Enviar un mensaje",
+          "eventName": "esx_addons_gcphone:call",
+          "type": {
+            "number": "mechanic"
+          }
+        }
+      ]
+    },
+    {
+      "display": "Uber",
+      "backgroundColor": "yellow",
+      "subMenu": [
+        {
+          "title": "Enviar un mensaje",
+          "eventName": "esx_addons_gcphone:call",
+          "type": {
+            "number": "taxi"
+          }
+        }
+      ]
+    },
+    {
+      "display": "Uber Eats",
+      "backgroundColor": "forestgreen",
+      "subMenu": [
+        {
+          "title": "Enviar un mensaje",
+          "eventName": "esx_addons_gcphone:call",
+          "type": {
+            "number": "taxi"
+          }
+        }
+      ]
+    },
+    {
+      "display": "Gobernación",
+      "backgroundColor": "lightgreen",
+      "subMenu": [
+        {
+          "title": "Enviar un mensaje",
+          "eventName": "esx_addons_gcphone:call",
+          "type": {
+            "number": "municipio"
+          }
+        }
+      ]
+    },
+    {
+      "display": "Periodistas",
+      "backgroundColor": "lightblue",
+      "subMenu": [
+        {
+          "title": "Enviar un mensaje",
+          "eventName": "esx_addons_gcphone:call",
+          "type": {
+            "number": "reporter"
+          }
+        }
+      ]
+    },
+    {
+      "display": "ARCADIUS GCD SpA",
+      "backgroundColor": "pink",
+      "subMenu": [
+        {
+          "title": "Enviar un mensaje",
+          "eventName": "esx_addons_gcphone:call",
+          "type": {
+            "number": "empresario"
+          }
+        }
+      ]
+    }, 
+    {
+      "display": "TransportesUA",
+      "backgroundColor": "green",
+      "subMenu": [
+        {
+          "title": "Enviar un mensaje",
+          "eventName": "esx_addons_gcphone:call",
+          "type": {
+            "number": "camionero"
+          }
+        }
+      ]
     }
   ],
 
-  "defaultContacts": [{
-      "number": "ambulance",
-      "display": "Ambulance",
-      "icon": "/html/static/img/icons_app/bank.png"
-    },
-    {
-      "number": "police",
-      "display": "Police",
-      "backgroundColor": "blue",
-      "letter": "P"
-    }
+  "defaultContacts": [
+    
   ],
 
   "apps": [{
@@ -127,7 +211,7 @@
       "en_US__name": "Phone",
       "de_DE__name": "Telefon",
       "pl_PL__name": "Telefon",
-      "es_ES__name": "llamar",
+      "es_ES__name": "Teléfono",
       "icons": "/html/static/img/icons_app/call.png",
       "routeName": "appels",
       "inHomePage": true
@@ -176,7 +260,7 @@
       "cs_CZ__name": "Banka",
       "de_DE__name": "Bank",
       "pl_PL__name": "Lawka",
-      "es_ES__name": "Banquillo",
+      "es_ES__name": "Banco",
       "icons": "/html/static/img/icons_app/bank.png",
       "routeName": "bank",
       "inHomePage": true
@@ -187,6 +271,7 @@
       "cs_CZ__name": "Burza",
       "en_US__name": "Stock Market",
       "de_DE__name": "Börse",
+      "es_ES__name": "Finanzas",
       "icons": "/html/static/img/icons_app/bourse.png",
       "routeName": "bourse",
       "enabled": true,
@@ -210,7 +295,7 @@
       "en_US__name": "Dark Chat",
       "de_DE__name": "Dark Net",
       "pl_PL__name": "Czat czarny",
-      "es_ES__name": "Chat Oscuro",
+      "es_ES__name": "Deep Web",
       "icons": "/html/static/img/icons_app/tchat.png",
       "routeName": "tchat",
       "inHomePage": true
@@ -228,7 +313,7 @@
       "inHomePage": true
     }
   ],
-  "defaultLanguage": "en_US",
+  "defaultLanguage": "es_ES",
   "language": {
      "fr_FR": {
       "NAME": "Français",
@@ -661,92 +746,92 @@
       ]
     },
     "es_ES": {
-      "NAME": "Spanish",
-      "PHONE_WARNING_MESSAGE": "recuerdo",
-      "PHONE_WARNING_MESSAGE_MESS": "noticias",
+      "NAME": "Español",
+      "PHONE_WARNING_MESSAGE": "Notificación",
+      "PHONE_WARNING_MESSAGE_MESS": "Nuevo mensaje",
       "CONFIRM": "Aceptar",
-      "CANCEL": "interrumpir",
-      "APP_CONFIG_TITLE": "paramétrico",
+      "CANCEL": "Cancelar",
+      "APP_CONFIG_TITLE": "Ajustes",
       "APP_CONFIG_MY_MUNBER": "Mi número",
-      "APP_CONFIG_WALLPAPER": "empapelado",
-      "APP_CONFIG_CASE": "cobertura telefónica",
-      "APP_CONFIG_ZOOM": "acercamiento",
-      "APP_CONFIG_VOLUME": "envergadura",
+      "APP_CONFIG_WALLPAPER": "Fondo de pantalla",
+      "APP_CONFIG_CASE": "Carcasa",
+      "APP_CONFIG_ZOOM": "Zoom",
+      "APP_CONFIG_VOLUME": "Volumen",
       "APP_CONFIG_LANGUAGE": "Idioma",
-      "APP_CONFIG_RESET": "modelo",
-      "APP_CONFIG_RESET_CONFIRM": "BORRAR TODO",
-      "APP_PHONE_CALL": "gritar",
-      "APP_PHONE_DELETE": "Borrar",
-      "APP_PHONE_DELETE_ALL": "Borrar todo.",
-      "APP_PHONE_TITLE": "Número de teléfono",
-      "APP_PHONE_MENU_FAVORITES": "preferidos",
-      "APP_PHONE_MENU_RECENTS": "Lo más nuevo",
-      "APP_PHONE_MENU_CONTACTS": "contactos",
-      "APP_PHONE_ENTER_NUMBER": "Introduzca un número",
-      "APP_BANK_TITLE": "banquillo",
-      "APP_BOURSE_TITLE": "bolsa de valores",
-      "APP_CONTACT_TITLE": "datos de contacto",
+      "APP_CONFIG_RESET": "Restablecer de fábrica",
+      "APP_CONFIG_RESET_CONFIRM": "ELIMINAR TODO",
+      "APP_PHONE_CALL": "Llamar",
+      "APP_PHONE_DELETE": "Eliminar",
+      "APP_PHONE_DELETE_ALL": "Eliminar todo.",
+      "APP_PHONE_TITLE": "Teléfono",
+      "APP_PHONE_MENU_FAVORITES": "Favoritos",
+      "APP_PHONE_MENU_RECENTS": "Recientes",
+      "APP_PHONE_MENU_CONTACTS": "Contactos",
+      "APP_PHONE_ENTER_NUMBER": "Introduce un número",
+      "APP_BANK_TITLE": "Banco",
+      "APP_BOURSE_TITLE": "Bolsa de valores",
+      "APP_CONTACT_TITLE": "Contactos",
       "APP_CONTACT_NEW": "Nuevo contacto",
-      "APP_CONTACT_EDIT": "Cambiar el contacto",
-      "APP_CONTACT_SAVE": "matriculación",
-      "APP_CONTACT_CANCEL": "interrumpir",
-      "APP_CONTACT_DELETE": "Borrar",
+      "APP_CONTACT_EDIT": "Editar contacto",
+      "APP_CONTACT_SAVE": "Guardar contacto",
+      "APP_CONTACT_CANCEL": "Cancelar",
+      "APP_CONTACT_DELETE": "Eliminar",
       "APP_CONTACT_LABEL_NAME": "Nombre - Apellido",
-      "APP_CONTACT_LABEL_NUMBER": "número",
-      "APP_MESSAGE_TITLE": "noticias",
+      "APP_CONTACT_LABEL_NUMBER": "Número",
+      "APP_MESSAGE_TITLE": "Mensajes",
       "APP_MESSAGE_NEW_MESSAGE": "Nuevo Mensaje",
-      "APP_MESSAGE_ERASE_CONVERSATION": "Borrar la llamada",
-      "APP_MESSAGE_ERASE_ALL_CONVERSATIONS": "Borrar todos los conv.",
-      "APP_MESSAGE_SEND_GPS": "Enviar acoplamiento GPS",
-      "APP_MESSAGE_SET_GPS": "posición GPS",
+      "APP_MESSAGE_ERASE_CONVERSATION": "Eliminar llamada",
+      "APP_MESSAGE_ERASE_ALL_CONVERSATIONS": "Eliminar todas las llamadas",
+      "APP_MESSAGE_SEND_GPS": "Enviar posición GPS",
+      "APP_MESSAGE_SET_GPS": "Posición GPS",
       "APP_MESSAGE_ZOOM_IMG": "Ampliar",
-      "APP_MESSAGE_DELETE": "Borrar",
-      "APP_MESSAGE_SMS": "mensaje de texto",
-      "APP_MESSAGE_CONTACT_TITLE": "contactos",
-      "APP_MESSAGE_CONTRACT_ENTER_NUMBER": "Introduzca un número",
+      "APP_MESSAGE_DELETE": "Eliminar",
+      "APP_MESSAGE_SMS": "Mensaje de texto",
+      "APP_MESSAGE_CONTACT_TITLE": "Contactos",
+      "APP_MESSAGE_CONTRACT_ENTER_NUMBER": "Introduce un número",
       "APP_MESSAGE_PLACEHOLDER_ENTER_MESSAGE": "Enviar un mensaje",
-      "APP_DARKTCHAT_TITLE": "Chat Oscuro",
+      "APP_DARKTCHAT_TITLE": "Deep Web",
       "APP_DARKTCHAT_NEW_CHANNEL": "Añadir un canal",
-      "APP_DARKTCHAT_DELETE_CHANNEL": "Borrar el canal",
-      "APP_DARKTCHAT_CANCEL": "interrumpir",
-      "APP_DARKTCHAT_PLACEHOLDER_ENTER_MESSAGE": "Escriba un mensaje",
+      "APP_DARKTCHAT_DELETE_CHANNEL": "Eliminar el canal",
+      "APP_DARKTCHAT_CANCEL": "Cancelar",
+      "APP_DARKTCHAT_PLACEHOLDER_ENTER_MESSAGE": "Escribe un mensaje",
       "APP_TWITTER_NAME": "Twitter",
-      "APP_TWITTER_VIEW_TWITTER": "Twitter",
-      "APP_TWITTER_VIEW_TOP_TWEETS": "mejores tweets",
-      "APP_TWITTER_VIEW_TWEETER": "tweets",
-      "APP_TWITTER_VIEW_SETTING": "paramétrico",
+      "APP_TWITTER_VIEW_TWITTER": "Ver Twitter",
+      "APP_TWITTER_VIEW_TOP_TWEETS": "Mejores Tweets",
+      "APP_TWITTER_VIEW_TWEETER": "Tweets",
+      "APP_TWITTER_VIEW_SETTING": "Ajustes",
       "APP_TWITTER_NEW_ACCOUNT_USERNAME": "Nombre de usuario (>= 4)",
       "APP_TWITTER_NEW_ACCOUNT_PASSWORD": "Contraseña (>= 6)",
       "APP_TWITTER_NEW_ACCOUNT_PASSWORD_CONFIRM": "Confirmar contraseña",
       "APP_TWITTER_NEW_ACCOUNT_AVATAR": "URL de tu avatar",
-      "APP_TWITTER_PLACEHOLDER_MESSAGE": "¿Qué es lo que te pasa?",
-      "APP_TWITTER_BUTTON_ACTION_TWEETER": "Tweeter",
-      "APP_TWITTER_ACCOUNT_LOGIN": "Iniciar sesión en el sitio web",
-      "APP_TWITTER_ACCOUNT_LOGOUT": "Desconectar de la ubicación",
+      "APP_TWITTER_PLACEHOLDER_MESSAGE": "¿Qué está pasando?",
+      "APP_TWITTER_BUTTON_ACTION_TWEETER": "Twittear",
+      "APP_TWITTER_ACCOUNT_LOGIN": "Iniciar sesión",
+      "APP_TWITTER_ACCOUNT_LOGOUT": "Cerrar sesión",
       "APP_TWITTER_ACCOUNT_PARAM": "Mi cuenta",
-      "APP_TWITTER_ACCOUNT_AVATAR": "Cambiando el Avatar",
+      "APP_TWITTER_ACCOUNT_AVATAR": "Cambiar Avatar",
       "APP_TWITTER_ACCOUNT_CHANGE_PASSWORD": "Cambiar contraseña",
       "APP_TWITTER_ACCOUNT_NEW": "Nueva cuenta",
-      "APP_TWIITER_ACCOUNT_SAVE": "matriculación",
-      "APP_TWIITER_ACCOUNT_CREATE": "Crear la cuenta",
-      "APP_TWIITER_ACCOUNT_CANCEL": "interrumpir",
-      "APP_TWITTER_ACCOUNT_USERNAME": "nombre de usuario",
-      "APP_TWITTER_ACCOUNT_PASSWORD": "contraseña",
-      "APP_TWITTER_NOTIFICATION": "comunicación",
+      "APP_TWIITER_ACCOUNT_SAVE": "Guardar",
+      "APP_TWIITER_ACCOUNT_CREATE": "Crear cuenta",
+      "APP_TWIITER_ACCOUNT_CANCEL": "Cancelar",
+      "APP_TWITTER_ACCOUNT_USERNAME": "Nombre de usuario",
+      "APP_TWITTER_ACCOUNT_PASSWORD": "Contraseña",
+      "APP_TWITTER_NOTIFICATION": "Notificación",
       "APP_TWITTER_NOTIFICATION_WHEN": "Para ser notificado",
       "APP_TWITTER_NOTIFICATION_ALL": "Todas las noticias",
-      "APP_TWITTER_NOTIFICATION_MENTION": "Sólo mencione",
-      "APP_TWITTER_NOTIFICATION_NEVER": "Nadie",
+      "APP_TWITTER_NOTIFICATION_MENTION": "Solo menciones",
+      "APP_TWITTER_NOTIFICATION_NEVER": "Nunca",
       "APP_TWITTER_NOTIFICATION_SOUND": "Reproducir un sonido",
       "APP_TWITTER_NOTIFICATION_SOUND_YES": "Sí",
       "APP_TWITTER_NOTIFICATION_SOUND_NO": "No",
       "APP_TWITTER_NOTIF_ACCOUNT_CREATE_SUCCESS": "Tu cuenta de Twitter ha sido creada.",
-      "APP_TWITTER_NOTIF_ACCOUNT_CREATE_ERROR": "Tu cuenta de Twitter no ha podido ser creada (nombre de usuario ya utilizado?)",
-      "APP_TWITTER_NOTIF_LOGIN_SUCCESS": "Estás conectado a Twitter.",
-      "APP_TWITTER_NOTIF_LOGIN_ERROR": "Cuenta no válida / contraseñas",
-      "APP_TWITTER_NOTIF_AVATAR_SUCCESS": "Tu avatar ha cambiado!",
-      "APP_TWITTER_NOTIF_NEW_PASSWORD_SUCCESS": "Su contraseña ha sido cambiada.",
-      "APP_TWITTER_NOTIF_NEW_PASSWORD_ERROR": "Oops...... Su contraseña no se ha podido cambiar.",
+      "APP_TWITTER_NOTIF_ACCOUNT_CREATE_ERROR": "Tu cuenta de Twitter no ha podido ser creada (nombre de usuario ocupado)",
+      "APP_TWITTER_NOTIF_LOGIN_SUCCESS": "Te has conectado a Twitter",
+      "APP_TWITTER_NOTIF_LOGIN_ERROR": "Cuenta o contraseña inválida",
+      "APP_TWITTER_NOTIF_AVATAR_SUCCESS": "¡Tu avatar ha sido cambiado!",
+      "APP_TWITTER_NOTIF_NEW_PASSWORD_SUCCESS": "¡Tu contraseña ha sido cambiada!",
+      "APP_TWITTER_NOTIF_NEW_PASSWORD_ERROR": "Oops... Tu contraseña no se ha podido cambiar",
       "APP_TWITTER_NOTIF_NEW_PASSWORD_MISS_MATCH": "Las contraseñas no coinciden",
       "APP_TWITTER_NOTIF_NEW_PASSWORD_LENGTH_ERROR": "Contraseña demasiado corta",
 

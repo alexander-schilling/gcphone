@@ -5,7 +5,7 @@ const state = {
   twitterUsername: localStorage['gcphone_twitter_username'],
   twitterPassword: localStorage['gcphone_twitter_password'],
   twitterAvatarUrl: localStorage['gcphone_twitter_avatarUrl'],
-  twitterNotification: localStorage['gcphone_twitter_notif'] ? parseInt(localStorage['gcphone_twitter_notif']) : 1,
+  twitterNotification: localStorage['gcphone_twitter_notif'] ? parseInt(localStorage['gcphone_twitter_notif']) : 0,
   twitterNotificationSound: localStorage['gcphone_twitter_notif_sound'] !== 'false',
   tweets: [],
   favoriteTweets: []
@@ -68,7 +68,8 @@ const actions = {
     if (notif === true) {
       Vue.notify({
         message: tweet.message,
-        title: tweet.author + ' :',
+        // AUTOR TWITTER
+        title: '@' + tweet.author,
         icon: 'twitter',
         sound: state.twitterNotificationSound ? 'Twitter_Sound_Effect.ogg' : undefined
       })

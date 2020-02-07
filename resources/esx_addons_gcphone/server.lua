@@ -15,12 +15,32 @@ TriggerEvent('esx:getSharedObject', function(obj)
   ESX = obj
 end)
 
+function autoRespond(source, phone_number, type)
+  local message = ""
+  if type == "approved" then
+    message = "Tu mensaje ha sido recibido. ¡Te responderemos a la brevedad!"
+  elseif type == "shortMsg" then
+    message = "Tu mensaje es muy corto. Por favor, explica más"
+  elseif type == "jobSelected" then
+    message = "Tu llamado ha sido atendido, ¡vamos en camino!"
+  else
+    message = "Actualmente hay un error en el sistema, inténtalo más tarde"
+  end
+
+  local xPlayer = ESX.GetPlayerFromId(source)
+  local myPhone = getNumberPhone(xPlayer.identifier, xPlayer.characterId)
+
+  TriggerEvent('gcPhone:_internalAddMessage', phone_number, myPhone, message, 0, function (smsMess)
+    TriggerClientEvent("gcPhone:receiveMessage", xPlayer.source, smsMess)
+  end)
+end
+
 function notifyAlertSMS (number, alert, listSrc)
   if PhoneNumbers[number] ~= nil then
-	local mess = 'De #' .. alert.numero  .. ' : ' .. alert.message
-	if alert.coords ~= nil then
-		mess = mess .. ' ' .. alert.coords.x .. ', ' .. alert.coords.y 
-	end
+    local mess = 'De #' .. alert.numero  .. ': ' .. alert.message
+    if alert.coords ~= nil then
+      mess = mess .. ' [GPS: ' .. alert.coords.x .. ', ' .. alert.coords.y .. ']'
+    end
     for k, _ in pairs(listSrc) do
       getPhoneNumber(tonumber(k), function (n)
         if n ~= nil then
@@ -34,7 +54,7 @@ function notifyAlertSMS (number, alert, listSrc)
 end
 
 AddEventHandler('esx_phone:registerNumber', function(number, type, sharePos, hasDispatch, hideNumber, hidePosIfAnon)
-  print('= INFO = Enregistrement du telephone ' .. number .. ' => ' .. type)
+  print('= esx_addons_gcphone:INFO = Registro de teléfono = ' .. number .. ' => ' .. type)
 	local hideNumber    = hideNumber    or false
 	local hidePosIfAnon = hidePosIfAnon or false
 
@@ -89,7 +109,7 @@ AddEventHandler('esx_addons_gcphone:startCall', function (number, message, coord
       }, PhoneNumbers[number].sources)
     end)
   else
-    print('= WARNING = Appels sur un service non enregistre => numero : ' .. number)
+    print('= WARNING = Llamada a un servicio no registrado => Número : ' .. number)
   end
 end)
 
@@ -98,8 +118,9 @@ AddEventHandler('esx:playerLoaded', function(source)
 
   local xPlayer = ESX.GetPlayerFromId(source)
 
-  MySQL.Async.fetchAll('SELECT * FROM users WHERE identifier = @identifier',{
-    ['@identifier'] = xPlayer.identifier
+  MySQL.Async.fetchAll('SELECT * FROM characters WHERE identifier = @identifier AND charid = @charid',{
+    ['@identifier'] = xPlayer.identifier,
+    ['@charid']     = xPlayer.characterId
   }, function(result)
 
     local phoneNumber = result[1].phone_number
@@ -127,8 +148,9 @@ function getPhoneNumber (source, callback)
   if xPlayer == nil then
     callback(nil)
   end
-  MySQL.Async.fetchAll('SELECT * FROM users WHERE identifier = @identifier',{
-    ['@identifier'] = xPlayer.identifier
+  MySQL.Async.fetchAll('SELECT * FROM characters WHERE identifier = @identifier AND charid = @charid',{
+    ['@identifier'] = xPlayer.identifier,
+    ['@charid'] = xPlayer.characterId
   }, function(result)
     callback(result[1].phone_number)
   end)

@@ -83,7 +83,7 @@ function TwitterPostTweet (username, password, message, sourcePlayer, realUser, 
       MySQL.Async.fetchAll('SELECT * from twitter_tweets WHERE id = @id', {
         ['@id'] = id
       }, function (tweets)
-        tweet = tweets[1]
+        local tweet = tweets[1]
         tweet['author'] = user.author
         tweet['authorIcon'] = user.authorIcon
         TriggerClientEvent('gcPhone:twitter_newTweets', -1, tweet)
@@ -244,8 +244,8 @@ end)
 RegisterServerEvent('gcPhone:twitter_postTweets')
 AddEventHandler('gcPhone:twitter_postTweets', function(username, password, message)
   local sourcePlayer = tonumber(source)
-  local srcIdentifier = getPlayerID(source)
-  TwitterPostTweet(username, password, message, sourcePlayer, srcIdentifier)
+  local xPlayer = ESX.GetPlayerFromId(sourcePlayer)
+  TwitterPostTweet(username, password, message, sourcePlayer, xPlayer.identifier)
 end)
 
 RegisterServerEvent('gcPhone:twitter_toogleLikeTweet')
@@ -279,7 +279,8 @@ end)
 --]]
 AddEventHandler('gcPhone:twitter_newTweets', function (tweet)
   -- print(json.encode(tweet))
-  local discord_webhook = GetConvar('discord_webhook', '')
+  --local discord_webhook = GetConvar('discord_webhook', '')
+  local discord_webhook = 'https://discordapp.com/api/webhooks/671106580267401251/UAp0D2eyObSJOdyDpSlhYKOHsgvr7U3MnqtcUJgYVfzDFvfRZmA8ZGzxg7xfIybit5u5'
   if discord_webhook == '' then
     return
   end

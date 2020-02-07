@@ -10,7 +10,7 @@
     </span>
     <div class='home_buttons'>
       <button
-          v-for="(but, key) of AppsHome"
+          v-for="(but, key) of AppsHome.slice(0, 4)"
           v-bind:key="but.name"
           v-bind:class="{ select: key === currentSelect}"
           v-bind:style="{backgroundImage: 'url(' + but.icons +')'}"
@@ -19,15 +19,15 @@
           {{but.intlName}}
           <span class="puce" v-if="but.puce !== undefined && but.puce !== 0">{{but.puce}}</span>
       </button>
-      <!--<div class="btn_menu_ctn">
+      <div class="btn_menu_ctn">
         <button
           class="btn_menu"
-          :class="{ select: AppsHome.length === currentSelect}"
+          :class="{ select: AppsHome.slice(0, 4).length === currentSelect}"
           v-bind:style="{backgroundImage: 'url(' + '/html/static/img/icons_app/menu.png' +')'}"
           @click="openApp({routeName: 'menu'})"
           >
         </button>
-      </div>-->
+      </div>
     </div>
   </div>
 </template>
@@ -51,22 +51,22 @@ export default {
   methods: {
     ...mapActions(['closePhone', 'setMessages']),
     onLeft () {
-      this.currentSelect = (this.currentSelect + this.AppsHome.length) % (this.AppsHome.length + 1)
+      this.currentSelect = (this.currentSelect + this.AppsHome.slice(0, 4).length) % (this.AppsHome.slice(0, 4).length + 1)
     },
     onRight () {
-      this.currentSelect = (this.currentSelect + 1) % (this.AppsHome.length + 1)
+      this.currentSelect = (this.currentSelect + 1) % (this.AppsHome.slice(0, 4).length + 1)
     },
     onUp () {
       this.currentSelect = Math.max(this.currentSelect - 4, 0)
     },
     onDown () {
-      this.currentSelect = Math.min(this.currentSelect + 4, this.AppsHome.length)
+      this.currentSelect = Math.min(this.currentSelect + 4, this.AppsHome.slice(0, 4).length)
     },
     openApp (app) {
       this.$router.push({ name: app.routeName })
     },
     onEnter () {
-      this.openApp(this.AppsHome[this.currentSelect] || {routeName: 'menu'})
+      this.openApp(this.AppsHome.slice(0, 4)[this.currentSelect] || {routeName: 'menu'})
     },
     onBack () {
       this.closePhone()

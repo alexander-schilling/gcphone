@@ -32,7 +32,7 @@ export default {
       const dataNotif = {
         ...event,
         id: this.currentId ++,
-        duration: parseInt(event.duration) || 3000
+        duration: parseInt(event.duration) || 15000
       }
       this.list.push(dataNotif)
       window.setTimeout(() => {
@@ -59,8 +59,22 @@ export default {
 </script>
 
 <style scoped>
+  .notifications {
+    height: 100%;
+    width: 100%;
+
+    display: flex;
+    flex-direction: column-reverse;
+    flex-wrap: nowrap;
+    align-items: flex-start;
+    align-content: flex-start;
+
+    padding-bottom: 5%;
+    padding-left: 16.5%;
+  }
+
   .notification {
-    width: 450px;
+    max-width: 450px;
     background-color: rgba(29, 161, 242, 0.6);
     color: white;
     padding: 8px 16px;

@@ -125,10 +125,10 @@ export default {
     deleteC () {
       if (this.id !== -1) {
         this.ignoreControls = true
-        let choix = [{title: 'Annuler'}, {title: 'Annuler'}, {title: 'Supprimer', color: 'red'}, {title: 'Annuler'}, {title: 'Annuler'}]
+        let choix = [{title: this.IntlString('APP_CONTACT_CANCEL')}, {title: this.IntlString('APP_CONTACT_CANCEL')}, {title: this.IntlString('APP_CONTACT_DELETE'), color: 'red'}, {title: this.IntlString('APP_CONTACT_CANCEL')}, {title: this.IntlString('APP_CONTACT_CANCEL')}]
         Modal.CreateModal({choix}).then(reponse => {
           this.ignoreControls = false
-          if (reponse.title === 'Supprimer') {
+          if (reponse.title === this.IntlString('APP_CONTACT_DELETE')) {
             this.$phoneAPI.deleteContact(this.id)
             history.back()
           }

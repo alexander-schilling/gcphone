@@ -78,11 +78,11 @@ export default {
       const tweet = this.tweets[this.selectMessage]
       let optionsChoix = [{
         id: 1,
-        title: 'Like / Unlike',
+        title: 'Me Gusta',
         icons: 'fa-heart'
       }, {
         id: 2,
-        title: 'Répondre',
+        title: 'Responder',
         icons: 'fa-reply'
       }, {
         id: -1,
@@ -118,7 +118,7 @@ export default {
       try {
         this.ignoreControls = true
         const rep = await Modal.CreateTextModal({
-          title: 'Répondre',
+          title: 'Responder',
           text: `@${authorName} `
         })
         if (rep !== undefined && rep.text !== undefined) {

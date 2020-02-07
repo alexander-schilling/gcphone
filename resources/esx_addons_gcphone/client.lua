@@ -16,9 +16,9 @@ AddEventHandler('esx_addons_gcphone:call', function(data)
   end
   if message ~= nil and message ~= "" then
     TriggerServerEvent('esx_addons_gcphone:startCall', number, message, {
-      x = coords.x,
-      y = coords.y,
-      z = coords.z
+      x = tonumber(string.format("%.2f", coords.x)),
+      y = tonumber(string.format("%.2f", coords.y)),
+      z = tonumber(string.format("%.2f", coords.z))
     })
   end
 end)
