@@ -279,8 +279,7 @@ end)
 --]]
 AddEventHandler('gcPhone:twitter_newTweets', function (tweet)
   -- print(json.encode(tweet))
-  --local discord_webhook = GetConvar('discord_webhook', '')
-  local discord_webhook = 'https://discordapp.com/api/webhooks/671106580267401251/UAp0D2eyObSJOdyDpSlhYKOHsgvr7U3MnqtcUJgYVfzDFvfRZmA8ZGzxg7xfIybit5u5'
+  local discord_webhook = GetConvar('twitter_webhook', '')
   if discord_webhook == '' then
     return
   end
