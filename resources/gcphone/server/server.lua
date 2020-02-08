@@ -49,10 +49,10 @@ end)
 --  Utils
 --====================================================================================
 
-function getSourceFromCharacter(character)
-	if character ~= nil and character.identifier ~= nil and character.characterId ~= nil then
+function getSourceFromCharacter(character, cb)
+    if character ~= nil and character.identifier ~= nil and character.characterId ~= nil then
 		local yPlayer = ESX.GetPlayerFromIdentifier(character.identifier)
-		if yPlayer ~= nil and yPlayer.characterId == character.characterId then
+        if yPlayer ~= nil and yPlayer.characterId == character.characterId then
 			return yPlayer.source
 		else
 			return nil
@@ -533,7 +533,8 @@ AddEventHandler('gcPhone:internal_startCall', function(source, phone_number, rtc
         srcPhone = getNumberPhone(xPlayer.identifier, xPlayer.characterId)
     end
     local destPlayer = getCharacterByPhoneNumber(phone_number)
-    local is_valid = destPlayer ~= nil and destPlayer.identifier ~= xPlayer.identifier and destPlayer.characterId ~= xPlayer.characterId
+
+    local is_valid = destPlayer ~= nil and destPlayer.identifier ~= xPlayer.identifier
     AppelsEnCours[indexCall] = {
         id = indexCall,
         transmitter_src = sourcePlayer,
@@ -547,19 +548,17 @@ AddEventHandler('gcPhone:internal_startCall', function(source, phone_number, rtc
         extraData = extraData
     }
 
-
-    if is_valid == true then
-        getSourceFromCharacter(destPlayer, function (srcTo)
-            if srcTo ~= nill then
-                AppelsEnCours[indexCall].receiver_src = srcTo
-                TriggerEvent('gcPhone:addCall', AppelsEnCours[indexCall])
-                TriggerClientEvent('gcPhone:waitingCall', sourcePlayer, AppelsEnCours[indexCall], true)
-                TriggerClientEvent('gcPhone:waitingCall', srcTo, AppelsEnCours[indexCall], false)
-            else
-                TriggerEvent('gcPhone:addCall', AppelsEnCours[indexCall])
-                TriggerClientEvent('gcPhone:waitingCall', sourcePlayer, AppelsEnCours[indexCall], true)
-            end
-        end)
+    if is_valid then
+        srcTo = getSourceFromCharacter(destPlayer)
+        if srcTo ~= nil then
+            AppelsEnCours[indexCall].receiver_src = srcTo
+            TriggerEvent('gcPhone:addCall', AppelsEnCours[indexCall])
+            TriggerClientEvent('gcPhone:waitingCall', sourcePlayer, AppelsEnCours[indexCall], true)
+            TriggerClientEvent('gcPhone:waitingCall', srcTo, AppelsEnCours[indexCall], false)
+        else
+            TriggerEvent('gcPhone:addCall', AppelsEnCours[indexCall])
+            TriggerClientEvent('gcPhone:waitingCall', sourcePlayer, AppelsEnCours[indexCall], true)
+        end
     else
         TriggerEvent('gcPhone:addCall', AppelsEnCours[indexCall])
         TriggerClientEvent('gcPhone:waitingCall', sourcePlayer, AppelsEnCours[indexCall], true)
@@ -795,7 +794,7 @@ function onAcceptFixePhone(source, infoCall, rtcAnswer)
         PhoneFixeInfo[id] = nil
         TriggerClientEvent('gcPhone:notifyFixePhoneChange', -1, PhoneFixeInfo)
         TriggerClientEvent('gcPhone:acceptCall', AppelsEnCours[id].transmitter_src, AppelsEnCours[id], true)
-        SetTimeout(1000, function() -- change to +1000, if necessary.
+        SetTimeout(5000, function() -- change to +1000, if necessary.
             TriggerClientEvent('gcPhone:acceptCall', AppelsEnCours[id].receiver_src, AppelsEnCours[id], false)
         end)
         saveAppels(AppelsEnCours[id])
